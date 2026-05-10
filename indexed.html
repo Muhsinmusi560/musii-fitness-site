@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MUSII ELITE FITNESS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+/* ── ROOT ── */
+:root{
+  --bg:#06060e;--surface:#0d0d1a;--surface2:#121225;--border:#1e1e3a;
+  --red:#ff2020;--orange:#ff6a00;--gold:#ffc200;--green:#00e676;--blue:#2979ff;
+  --text:#f0f0ff;--muted:#6a6a9a;--muted2:#9090c0;
+  --grad:linear-gradient(135deg,#ff2020,#ff6a00);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;line-height:1.6}
+img{display:block;width:100%}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:'Barlow',sans-serif}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:62px;
+  background:rgba(6,6,14,.85);
+  border-bottom:1px solid rgba(255,32,32,.2);
+  backdrop-filter:blur(14px);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);transition:color .2s}
+.nav-links a:hover{color:var(--red)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.nav-hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.mobile-menu{
+  display:none;position:fixed;top:62px;left:0;right:0;
+  background:rgba(6,6,14,.97);border-bottom:1px solid var(--border);
+  padding:20px;z-index:998;
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:12px 0;font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);border-bottom:1px solid var(--border)}
+.mobile-menu a:last-child{border:none}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;
+  background:
+    linear-gradient(to bottom,rgba(6,6,14,.6),rgba(6,6,14,.9)),
+    url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+  padding:100px 20px 60px;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 40%, rgba(255,32,32,.12) 0%, transparent 70%);
+}
+.hero-inner{position:relative;z-index:1;max-width:800px}
+.hero-tag{
+  display:inline-block;padding:5px 16px;border:1px solid var(--red);
+  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--red);border-radius:20px;margin-bottom:24px;
+}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,110px);
+  line-height:.95;letter-spacing:4px;margin-bottom:20px;
+  background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.5));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text}
+.hero p{font-size:18px;font-weight:300;color:var(--muted2);max-width:560px;margin:0 auto 36px;line-height:1.8}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{
+  padding:15px 36px;background:var(--red);color:#fff;font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:3px;border:none;border-radius:6px;transition:all .25s;
+  box-shadow:0 0 30px rgba(255,32,32,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(255,32,32,.5)}
+.btn-outline{
+  padding:14px 36px;background:transparent;color:var(--text);
+  font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;
+  border:1px solid rgba(255,255,255,.3);border-radius:6px;transition:all .25s;
+}
+.btn-outline:hover{border-color:var(--red);color:var(--red)}
+.hero-stats{
+  display:flex;gap:32px;justify-content:center;flex-wrap:wrap;
+  margin-top:56px;padding-top:32px;border-top:1px solid var(--border);
+}
+.hero-stat span{display:block}
+.hero-stat .num{font-family:'Bebas Neue',sans-serif;font-size:38px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat .lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* ── SECTIONS ── */
+.section{padding:80px 20px;max-width:1200px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:50px}
+.sec-tag{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--red);margin-bottom:12px;
+}
+.sec-head h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,60px);letter-spacing:3px;line-height:1}
+.sec-head p{font-size:16px;color:var(--muted2);margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
+
+/* ── WEEK SPLIT TABS ── */
+.split-tabs{
+  display:flex;gap:0;background:var(--surface);border-radius:10px;
+  overflow:hidden;border:1px solid var(--border);margin-bottom:32px;
+}
+.split-tab{
+  flex:1;padding:14px;text-align:center;font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:2px;cursor:pointer;color:var(--muted);
+  background:none;border:none;transition:all .2s;
+  border-right:1px solid var(--border);
+}
+.split-tab:last-child{border-right:none}
+.split-tab.active{background:var(--red);color:#fff}
+
+/* ── DAY TABS ── */
+.day-tabs-wrap{
+  display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;margin-bottom:28px;
+  scrollbar-width:none;
+}
+.day-tabs-wrap::-webkit-scrollbar{display:none}
+.day-tab{
+  flex-shrink:0;padding:8px 20px;border-radius:24px;
+  font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;color:var(--muted2);background:var(--surface2);
+  border:1px solid var(--border);transition:all .2s;white-space:nowrap;
+}
+.day-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* ── EXERCISE LIST ── */
+.ex-grid{display:flex;flex-direction:column;gap:10px}
+.ex-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:border-color .2s;
+}
+.ex-item:hover{border-color:rgba(255,32,32,.3)}
+.ex-item.pelvic{border-color:rgba(255,106,0,.25);background:#0f0e08}
+.ex-row{
+  display:flex;align-items:center;padding:13px 14px;gap:12px;cursor:pointer;
+}
+.ex-badge{
+  width:42px;height:42px;flex-shrink:0;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;
+  background:var(--surface2);border:1px solid var(--border);color:var(--muted2);
+}
+.ex-meta{flex:1;min-width:0}
+.ex-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.2}
+.ex-sets{font-size:11px;color:var(--red);font-weight:600;margin-top:2px;letter-spacing:.5px}
+.ex-gtag{
+  font-size:9px;padding:2px 7px;border-radius:6px;margin-top:3px;
+  display:inline-block;letter-spacing:.8px;text-transform:uppercase;font-weight:700;
+  background:var(--surface2);color:var(--muted);
+}
+.ex-gtag.pelvic{background:rgba(255,106,0,.12);color:var(--orange);border:1px solid rgba(255,106,0,.2)}
+.ex-toggle{
+  width:26px;height:26px;border-radius:50%;background:var(--surface2);
+  border:1px solid var(--border);color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;transition:all .2s;line-height:1;
+}
+.ex-toggle.open{background:var(--red);color:#fff;border-color:var(--red);transform:rotate(45deg)}
+.ex-detail{
+  display:none;padding:14px;border-top:1px solid var(--border);
+  background:rgba(0,0,0,.25);
+}
+.ex-detail.open{display:block}
+.ex-detail-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.muscle-img-box{
+  flex:1;min-width:140px;background:var(--surface2);border-radius:10px;
+  padding:12px;border:1px solid var(--border);
+}
+.muscle-img-title{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:8px;font-family:'Bebas Neue',sans-serif;font-size:13px;
+}
+.muscle-img-box canvas{border-radius:7px;display:block;margin:0 auto}
+.muscle-list{margin-top:8px}
+.ml-item{display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px;font-weight:600}
+.ml-dot{width:8px;height:8px;border-radius:50%}
+.cue-box{background:rgba(0,230,118,.03);border:1px solid rgba(0,230,118,.12);border-radius:8px;padding:10px 13px}
+.cue-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--green);margin-bottom:7px}
+.cue-line{display:flex;gap:6px;margin-bottom:4px;font-size:11.5px;color:#c0c0e0;line-height:1.45;font-weight:500}
+.warn-line{display:flex;gap:6px;margin-bottom:4px;font-size:11.5px;color:#ff9040;line-height:1.45;font-weight:500}
+
+/* ── CHECKBOX COMPLETE ── */
+.ex-check{
+  width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
+  flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;margin-right:4px;
+}
+.ex-check.done{background:var(--green);border-color:var(--green)}
+.ex-check.done::after{content:'✓';font-size:12px;color:#000;font-weight:700}
+.progress-bar-wrap{background:var(--surface2);border-radius:4px;height:6px;margin-bottom:8px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--grad);border-radius:4px;transition:width .4s}
+.progress-text{font-size:11px;color:var(--muted2);margin-bottom:14px;font-weight:600}
+
+/* ── SLEEP TRACKER ── */
+.sleep-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sleep-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;
+}
+.sleep-card h3{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--muted2);margin-bottom:14px}
+.sleep-input-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.inp{
+  flex:1;min-width:100px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Barlow',sans-serif;
+  outline:none;transition:border-color .2s;
+}
+.inp:focus{border-color:var(--blue)}
+.inp-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;display:block}
+.btn-sm{
+  padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:8px;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;
+  transition:all .2s;white-space:nowrap;
+}
+.btn-sm:hover{filter:brightness(1.15)}
+.btn-sm.red{background:var(--red)}
+.btn-sm.green{background:var(--green);color:#000}
+.btn-sm.orange{background:var(--orange)}
+.sleep-chart{width:100%;height:120px;margin-top:8px}
+.sleep-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.sleep-stat{flex:1;min-width:70px;background:var(--surface2);border-radius:8px;padding:10px;text-align:center}
+.sleep-stat .sv{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--blue)}
+.sleep-stat .sl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
+/* ── CARDIO TRACKER ── */
+.cardio-log{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.cardio-entry{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);border-radius:8px;padding:12px 14px;
+  border:1px solid var(--border);
+}
+.cardio-icon{font-size:22px;flex-shrink:0}
+.cardio-info{flex:1;min-width:0}
+.cardio-info strong{font-size:13px;font-weight:700;display:block}
+.cardio-info span{font-size:11px;color:var(--muted2)}
+.cardio-done{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px}
+.cardio-done.yes{background:rgba(0,230,118,.15);color:var(--green)}
+.cardio-done.no{background:rgba(255,32,32,.1);color:var(--red)}
+
+/* ── ANALYTICS CHARTS ── */
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;
+}
+.chart-card h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:16px}
+canvas.bigchart{width:100% !important;height:180px !important;display:block}
+
+/* ── NUTRITION ── */
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.macro-card{
+  background:var(--surface2);border-radius:10px;padding:16px 12px;text-align:center;
+  border:1px solid var(--border);
+}
+.macro-val{font-family:'Bebas Neue',sans-serif;font-size:32px}
+.macro-unit{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.macro-label{font-size:13px;font-weight:600;margin-top:2px;color:var(--muted2)}
+
+/* ── BODY STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad);
+}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1}
+.stat-unit{font-size:12px;color:var(--muted);font-weight:600}
+.stat-lbl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-top:6px}
+.stat-change{font-size:11px;margin-top:4px;font-weight:600}
+.stat-change.up{color:var(--green)}
+.stat-change.dn{color:var(--red)}
+
+/* ── MISC ── */
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.badge.red{background:rgba(255,32,32,.12);color:var(--red);border:1px solid rgba(255,32,32,.25)}
+.badge.blue{background:rgba(41,121,255,.12);color:var(--blue);border:1px solid rgba(41,121,255,.25)}
+.badge.green{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.badge.gold{background:rgba(255,194,0,.1);color:var(--gold);border:1px solid rgba(255,194,0,.2)}
+.badge.orange{background:rgba(255,106,0,.12);color:var(--orange);border:1px solid rgba(255,106,0,.25)}
+
+.section-full{padding:60px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.section-full .section{padding-top:0;padding-bottom:0}
+
+footer{
+  padding:50px 20px;text-align:center;background:var(--surface);
+  border-top:1px solid var(--border);
+}
+footer .logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:5px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+footer p{font-size:13px;color:var(--muted);letter-spacing:1px}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.footer-links a{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);transition:color .2s}
+.footer-links a:hover{color:var(--red)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .sleep-grid{grid-template-columns:1fr}
+  .hero h1{font-size:52px}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .6s ease both}
+.fade-up-2{animation:fadeUp .6s .15s ease both}
+.fade-up-3{animation:fadeUp .6s .3s ease both}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(255,32,32,.3)}50%{box-shadow:0 0 40px rgba(255,32,32,.6)}}
+.glow-pulse{animation:glow 3s infinite}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:20px;right:20px;z-index:9999;
+  padding:12px 20px;border-radius:8px;font-size:13px;font-weight:700;
+  color:#fff;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--green);color:#000}
+.toast.info{background:var(--blue)}
+.toast.warning{background:var(--orange)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MUSII ELITE</div>
+  <ul class="nav-links">
+    <li><a href="#workouts">Workouts</a></li>
+    <li><a href="#cardio">Cardio</a></li>
+    <li><a href="#sleep">Sleep</a></li>
+    <li><a href="#nutrition">Nutrition</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#body">Body Stats</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#workouts" onclick="closeMobile()">Workouts</a>
+  <a href="#cardio" onclick="closeMobile()">Cardio</a>
+  <a href="#sleep" onclick="closeMobile()">Sleep</a>
+  <a href="#nutrition" onclick="closeMobile()">Nutrition</a>
+  <a href="#analytics" onclick="closeMobile()">Analytics</a>
+  <a href="#body" onclick="closeMobile()">Body Stats</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner fade-up">
+    <div class="hero-tag">Premium Fitness Program</div>
+    <h1>MUSII<br><span>ELITE</span><br>FITNESS</h1>
+    <p>Science-based training for maximum muscle volume, aesthetics, and body recomposition. Built for serious athletes.</p>
+    <div class="hero-btns">
+      <a href="#workouts" class="btn-primary glow-pulse">START TRAINING</a>
+      <a href="#analytics" class="btn-outline">MY ANALYTICS</a>
+    </div>
+    <div class="hero-stats fade-up-2">
+      <div class="hero-stat"><span class="num">6</span><span class="lbl">Days / Week</span></div>
+      <div class="hero-stat"><span class="num">2</span><span class="lbl">Week Split</span></div>
+      <div class="hero-stat"><span class="num">48+</span><span class="lbl">Exercises</span></div>
+      <div class="hero-stat"><span class="num">∞</span><span class="lbl">Gains</span></div>
+    </div>
+  </div>
+</header>
+<div class="divider"></div>
+
+<!-- ══ WORKOUT SPLIT ══ -->
+<section class="section" id="workouts">
+  <div class="sec-head">
+    <div class="sec-tag">2-Week Training Split</div>
+    <h2>YOUR WORKOUT PLAN</h2>
+    <p>Progressive overload system for maximum muscle volume and shred</p>
+  </div>
+
+  <div class="split-tabs">
+    <button class="split-tab active" onclick="switchWeek(1,this)">WEEK 1 — FOUNDATION</button>
+    <button class="split-tab" onclick="switchWeek(2,this)">WEEK 2 — PROGRESSION</button>
+  </div>
+
+  <div id="weekContent"></div>
+</section>
+<div class="divider"></div>
+
+<!-- ══ CARDIO TRACKER ══ -->
+<div class="section-full" id="cardio">
+<section class="section">
+  <div class="sec-head">
+    <div class="sec-tag">Cardio Module</div>
+    <h2>CARDIO SESSIONS</h2>
+    <p>Track your cardio, mark sessions done, monitor weekly minutes</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+    <!-- Add cardio -->
+    <div class="sleep-card">
+      <h3>LOG CARDIO SESSION</h3>
+      <div style="margin-bottom:10px">
+        <label class="inp-label">Type</label>
+        <select id="cardioType" class="inp">
+          <option>Running</option><option>Cycling</option><option>Swimming</option>
+          <option>Brisk Walk</option><option>HIIT</option><option>Jump Rope</option>
+          <option>Treadmill</option><option>Elliptical</option>
+        </select>
+      </div>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Duration (min)</label>
+          <input type="number" id="cardioDur" class="inp" value="25" min="1" max="180">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Date</label>
+          <input type="date" id="cardioDate" class="inp">
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label class="inp-label">Intensity</label>
+        <select id="cardioIntensity" class="inp">
+          <option>Low (Zone 2)</option><option>Moderate</option><option>High (HIIT)</option>
+        </select>
+      </div>
+      <button class="btn-sm green" style="width:100%" onclick="logCardio()">LOG SESSION</button>
+    </div>
+
+    <!-- Weekly cardio summary -->
+    <div class="sleep-card">
+      <h3>THIS WEEK'S CARDIO</h3>
+      <canvas id="cardioChart" class="bigchart"></canvas>
+      <div class="sleep-stats" id="cardioStats">
+        <div class="sleep-stat"><span class="sv" id="totalCardioMin">0</span><span class="sl">Minutes</span></div>
+        <div class="sleep-stat"><span class="sv" id="totalCardioSess">0</span><span class="sl">Sessions</span></div>
+        <div class="sleep-stat"><span class="sv" id="cardioStreak">0</span><span class="sl">Day Streak</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cardio Log -->
+  <div style="margin-top:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px">SESSION LOG</h3>
+      <button class="btn-sm red" onclick="clearCardioLog()">CLEAR ALL</button>
+    </div>
+    <div class="cardio-log" id="cardioLog">
+      <div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No sessions logged yet. Add your first cardio session above!</div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="divider"></div>
+
+<!-- ══ SLEEP TRACKER ══ -->
+<section class="section" id="sleep">
+  <div class="sec-head">
+    <div class="sec-tag">Sleep Module</div>
+    <h2>SLEEP ANALYSIS</h2>
+    <p>Muscle is built during sleep. Track your recovery for maximum gains.</p>
+  </div>
+
+  <div class="sleep-grid">
+    <div class="sleep-card">
+      <h3>LOG SLEEP</h3>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Bedtime</label>
+          <input type="time" id="sleepBed" class="inp" value="22:30">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Wake Time</label>
+          <input type="time" id="sleepWake" class="inp" value="06:30">
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="inp-label">Quality (1–10)</label>
+        <input type="range" id="sleepQuality" min="1" max="10" value="7" style="width:100%;accent-color:var(--blue)" oninput="document.getElementById('sqVal').textContent=this.value">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
+          <span>Poor</span><span id="sqVal" style="font-weight:700;color:var(--blue)">7</span><span>Perfect</span>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="inp-label">Notes (optional)</label>
+        <input type="text" id="sleepNotes" class="inp" placeholder="e.g. Woke up once, felt rested...">
+      </div>
+      <button class="btn-sm" style="width:100%" onclick="logSleep()">LOG SLEEP</button>
+    </div>
+
+    <div class="sleep-card">
+      <h3>SLEEP CHART (7 DAYS)</h3>
+      <canvas id="sleepChart" class="bigchart"></canvas>
+      <div class="sleep-stats" id="sleepStats">
+        <div class="sleep-stat"><span class="sv" id="avgSleep">–</span><span class="sl">Avg hrs</span></div>
+        <div class="sleep-stat"><span class="sv" id="bestSleep">–</span><span class="sl">Best</span></div>
+        <div class="sleep-stat"><span class="sv" id="sleepScore">–</span><span class="sl">Score</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sleep log -->
+  <div style="margin-top:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px">SLEEP LOG</h3>
+      <button class="btn-sm red" onclick="clearSleepLog()">CLEAR ALL</button>
+    </div>
+    <div id="sleepLog">
+      <div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No sleep data yet. Start logging tonight!</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══ NUTRITION ══ -->
+<div class="section-full" id="nutrition">
+<section class="section">
+  <div class="sec-head">
+    <div class="sec-tag">Nutrition Module</div>
+    <h2>DAILY NUTRITION</h2>
+    <p>Fuel your muscle growth. Track macros daily for body recomposition.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:28px">
+    <div class="sleep-card">
+      <h3>LOG TODAY'S MACROS</h3>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Calories (kcal)</label>
+          <input type="number" id="nutCal" class="inp" value="2800" min="0">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Protein (g)</label>
+          <input type="number" id="nutPro" class="inp" value="140" min="0">
+        </div>
+      </div>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Carbs (g)</label>
+          <input type="number" id="nutCarb" class="inp" value="300" min="0">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Fats (g)</label>
+          <input type="number" id="nutFat" class="inp" value="70" min="0">
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="inp-label">Water (Litres)</label>
+        <input type="number" id="nutWater" class="inp" value="3" min="0" step="0.1">
+      </div>
+      <button class="btn-sm green" style="width:100%" onclick="logNutrition()">SAVE TODAY</button>
+    </div>
+
+    <div class="sleep-card">
+      <h3>TODAY'S TARGETS</h3>
+      <div class="macro-grid" style="margin-bottom:0">
+        <div class="macro-card">
+          <div class="macro-val" style="color:var(--red)" id="dispCal">2800</div>
+          <div class="macro-unit">kcal</div>
+          <div class="macro-label">Calories</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val" style="color:var(--blue)" id="dispPro">140</div>
+          <div class="macro-unit">grams</div>
+          <div class="macro-label">Protein</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val" style="color:var(--gold)" id="dispCarb">300</div>
+          <div class="macro-unit">grams</div>
+          <div class="macro-label">Carbs</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-val" style="color:var(--green)" id="dispFat">70</div>
+          <div class="macro-unit">grams</div>
+          <div class="macro-label">Fats</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended Kerala Diet -->
+  <div class="sleep-card">
+    <h3>RECOMMENDED KERALA MEAL PLAN — LEAN BULK</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px">
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--red);text-transform:uppercase;margin-bottom:6px">☀️ Morning (7am)</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">4 egg whites + 2 whole eggs</div>
+        <div style="font-size:12px;color:var(--muted2)">2 chapati · 1 banana · Black coffee</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--gold);text-transform:uppercase;margin-bottom:6px">🌅 Mid-Morning (10am)</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Handful peanuts + almonds</div>
+        <div style="font-size:12px;color:var(--muted2)">1 glass whole milk</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--orange);text-transform:uppercase;margin-bottom:6px">🌞 Lunch (1pm)</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">2 cups rice · Fish curry (Ayala)</div>
+        <div style="font-size:12px;color:var(--muted2)">Vegetable thoran · Curd</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--blue);text-transform:uppercase;margin-bottom:6px">⚡ Pre-Workout (4pm)</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Banana + Black coffee</div>
+        <div style="font-size:12px;color:var(--muted2)">Small rice meal or dates</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:6px">💪 Post-Workout</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">3 boiled eggs or whey protein</div>
+        <div style="font-size:12px;color:var(--muted2)">Immediate after session</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted2);text-transform:uppercase;margin-bottom:6px">🌙 Dinner (8pm)</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">1.5 cups rice · Chicken/fish</div>
+        <div style="font-size:12px;color:var(--muted2)">Dal · Salad · Glass of milk before bed</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="divider"></div>
+
+<!-- ══ ANALYTICS ══ -->
+<section class="section" id="analytics">
+  <div class="sec-head">
+    <div class="sec-tag">Progress Analytics</div>
+    <h2>YOUR PROGRESS CHARTS</h2>
+    <p>Visual analytics for workout completion, sleep, nutrition and body composition</p>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>📊 WORKOUT COMPLETION</h3>
+      <canvas id="workoutChart" class="bigchart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>😴 SLEEP TREND</h3>
+      <canvas id="sleepTrendChart" class="bigchart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>🏃 WEEKLY CARDIO MINS</h3>
+      <canvas id="cardioTrendChart" class="bigchart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>🥩 PROTEIN INTAKE</h3>
+      <canvas id="proteinChart" class="bigchart"></canvas>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ══ BODY STATS ══ -->
+<div class="section-full" id="body">
+<section class="section">
+  <div class="sec-head">
+    <div class="sec-tag">Body Composition</div>
+    <h2>BODY STATS TRACKER</h2>
+    <p>Track weight, measurements and progress photos to see real transformation</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:24px">
+    <div class="sleep-card">
+      <h3>UPDATE STATS</h3>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Weight (kg)</label>
+          <input type="number" id="statWeight" class="inp" placeholder="72" step="0.1">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Body Fat %</label>
+          <input type="number" id="statBF" class="inp" placeholder="15" step="0.1">
+        </div>
+      </div>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Chest (cm)</label>
+          <input type="number" id="statChest" class="inp" placeholder="96">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Arms (cm)</label>
+          <input type="number" id="statArm" class="inp" placeholder="35">
+        </div>
+      </div>
+      <div class="sleep-input-row">
+        <div style="flex:1">
+          <label class="inp-label">Waist (cm)</label>
+          <input type="number" id="statWaist" class="inp" placeholder="78">
+        </div>
+        <div style="flex:1">
+          <label class="inp-label">Quads (cm)</label>
+          <input type="number" id="statQuad" class="inp" placeholder="55">
+        </div>
+      </div>
+      <button class="btn-sm red" style="width:100%" onclick="saveBodyStats()">SAVE STATS</button>
+    </div>
+
+    <div class="sleep-card">
+      <h3>CURRENT STATS</h3>
+      <div class="stats-grid" id="currentStats">
+        <div class="stat-card"><div class="stat-val" id="dWeight">–</div><div class="stat-unit">kg</div><div class="stat-lbl">Weight</div></div>
+        <div class="stat-card"><div class="stat-val" id="dBF">–</div><div class="stat-unit">%</div><div class="stat-lbl">Body Fat</div></div>
+        <div class="stat-card"><div class="stat-val" id="dChest">–</div><div class="stat-unit">cm</div><div class="stat-lbl">Chest</div></div>
+        <div class="stat-card"><div class="stat-val" id="dArm">–</div><div class="stat-unit">cm</div><div class="stat-lbl">Arms</div></div>
+        <div class="stat-card"><div class="stat-val" id="dWaist">–</div><div class="stat-unit">cm</div><div class="stat-lbl">Waist</div></div>
+        <div class="stat-card"><div class="stat-val" id="dQuad">–</div><div class="stat-unit">cm</div><div class="stat-lbl">Quads</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h3>📈 WEIGHT PROGRESS</h3>
+    <canvas id="weightChart" class="bigchart"></canvas>
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">MUSII ELITE FITNESS</div>
+  <p>Discipline · Consistency · Aesthetics · Transformation</p>
+  <div class="footer-links">
+    <a href="#workouts">Workouts</a>
+    <a href="#cardio">Cardio</a>
+    <a href="#sleep">Sleep</a>
+    <a href="#nutrition">Nutrition</a>
+    <a href="#analytics">Analytics</a>
+    <a href="#body">Body Stats</a>
+  </div>
+  <p style="margin-top:20px;font-size:11px">Built for Musii · Kannur, Kerala · 2026</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2500);
+}
+
+function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+function load(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function toggleMobile() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ════════════════════════════════════════════════
+// MUSCLE DIAGRAM CANVAS
+// ════════════════════════════════════════════════
+function drawMuscle(canvas, primary, secondary, stabilizers, front) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0a0a18';
+  ctx.fillRect(0, 0, W, H);
+  const sx = W / 100, sy = H / 130;
+  function fc(m) {
+    if (primary.includes(m)) return '#ff2020';
+    if (secondary.includes(m)) return '#ff6a00';
+    if (stabilizers.includes(m)) return '#2979ff';
+    return '#1e1e3a';
+  }
+  function fo(m) {
+    return (primary.includes(m)||secondary.includes(m)||stabilizers.includes(m)) ? 1 : 0.22;
+  }
+  function el(cx,cy,rx,ry,m) {
+    ctx.save();
+    ctx.globalAlpha = fo(m);
+    ctx.fillStyle = fc(m);
+    if (primary.includes(m)||secondary.includes(m)) { ctx.shadowColor=fc(m); ctx.shadowBlur=8; }
+    ctx.beginPath();
+    ctx.ellipse(cx*sx,cy*sy,rx*sx,ry*sy,0,0,Math.PI*2);
+    ctx.fill(); ctx.restore();
+  }
+  function rr(x,y,w,h,r,m) {
+    ctx.save();
+    ctx.globalAlpha = fo(m);
+    ctx.fillStyle = fc(m);
+    if (primary.includes(m)||secondary.includes(m)) { ctx.shadowColor=fc(m); ctx.shadowBlur=8; }
+    ctx.beginPath();
+    ctx.roundRect(x*sx,y*sy,w*sx,h*sy,r);
+    ctx.fill(); ctx.restore();
+  }
+  // head + torso bg
+  ctx.save(); ctx.fillStyle='#252540';
+  ctx.beginPath(); ctx.ellipse(50*sx,9*sy,8.5*sx,8.5*sy,0,0,Math.PI*2); ctx.fill();
+  ctx.fillRect(45*sx,17*sy,10*sx,5*sy);
+  ctx.restore();
+  ctx.save(); ctx.fillStyle='#14142a';
+  ctx.beginPath();
+  ctx.moveTo(20*sx,22*sy); ctx.quadraticCurveTo(14*sx,24*sy,12*sx,32*sy);
+  ctx.lineTo(12*sx,62*sy); ctx.quadraticCurveTo(12*sx,66*sy,17*sx,66*sy);
+  ctx.lineTo(83*sx,66*sy); ctx.quadraticCurveTo(88*sx,66*sy,88*sx,62*sy);
+  ctx.lineTo(88*sx,32*sy); ctx.quadraticCurveTo(86*sx,24*sy,80*sx,22*sy);
+  ctx.closePath(); ctx.fill(); ctx.restore();
+
+  if (front) {
+    el(34,38,12,10,'chest'); el(66,38,12,10,'chest');
+    rr(38,48,8,5,2,'core'); rr(54,48,8,5,2,'core');
+    rr(38,54,8,5,2,'core'); rr(54,54,8,5,2,'core');
+    el(29,67,9,4,'hip_flexors'); el(71,67,9,4,'hip_flexors');
+    el(18,30,7,8,'shoulders_front'); el(82,30,7,8,'shoulders_front');
+    el(12,35,4,6,'shoulders_side'); el(88,35,4,6,'shoulders_side');
+    el(12,48,5,10,'biceps'); el(88,48,5,10,'biceps');
+    el(32,90,11,17,'quads'); el(68,90,11,17,'quads');
+    el(32,114,8,8,'calves'); el(68,114,8,8,'calves');
+  } else {
+    ctx.save(); ctx.globalAlpha=fo('traps'); ctx.fillStyle=fc('traps');
+    if(primary.includes('traps')||secondary.includes('traps')){ctx.shadowColor=fc('traps');ctx.shadowBlur=8;}
+    ctx.beginPath(); ctx.moveTo(28*sx,22*sy); ctx.lineTo(50*sx,17*sy); ctx.lineTo(72*sx,22*sy);
+    ctx.lineTo(68*sx,34*sy); ctx.lineTo(50*sx,37*sy); ctx.lineTo(32*sx,34*sy);
+    ctx.closePath(); ctx.fill(); ctx.restore();
+    el(22,42,10,16,'lats'); el(78,42,10,16,'lats');
+    el(50,36,10,8,'back_upper'); el(50,52,9,8,'back_lower');
+    el(18,30,7,8,'shoulders_rear'); el(82,30,7,8,'shoulders_rear');
+    el(12,48,5,10,'triceps'); el(88,48,5,10,'triceps');
+    el(32,68,12,10,'glutes'); el(68,68,12,10,'glutes');
+    el(32,88,11,17,'hamstrings'); el(68,88,11,17,'hamstrings');
+    el(32,114,8,8,'calves'); el(68,114,8,8,'calves');
+  }
+}
+
+// ════════════════════════════════════════════════
+// POSTURE DIAGRAM CANVAS
+// ════════════════════════════════════════════════
+function drawPosture(canvas, key) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.7);
+  bg.addColorStop(0,'#12122a'); bg.addColorStop(1,'#060610');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  function ln(x1,y1,x2,y2,c,w,dash){
+    ctx.save(); ctx.strokeStyle=c; ctx.lineWidth=w||2; ctx.lineCap='round';
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+  function circ(x,y,r,fill,stroke,sw){
+    ctx.save();
+    if(fill){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+    if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=sw||2;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();}
+    ctx.restore();
+  }
+  function arr(x1,y1,x2,y2,c){
+    const a=Math.atan2(y2-y1,x2-x1);
+    ln(x1,y1,x2,y2,c,2);
+    ctx.save(); ctx.fillStyle=c; ctx.translate(x2,y2); ctx.rotate(a);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-9,-4); ctx.lineTo(-9,4); ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  function lbl(t,x,y,c,sz){
+    ctx.save(); ctx.fillStyle=c; ctx.font=`600 ${sz||10}px Barlow,sans-serif`; ctx.textAlign='center'; ctx.fillText(t,x,y); ctx.restore();
+  }
+  function seg(x1,y1,x2,y2,w,c){
+    ctx.save(); ctx.strokeStyle=c||'#4a4a8a'; ctx.lineWidth=w||8; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+  function glow(x1,y1,x2,y2,c,w){
+    ctx.save(); ctx.strokeStyle=c; ctx.lineWidth=w||10; ctx.lineCap='round';
+    ctx.shadowColor=c; ctx.shadowBlur=8;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+  function bar(x1,x2,y,ph){
+    ctx.save(); ctx.fillStyle='#888';
+    ctx.beginPath(); ctx.roundRect(x1,y-3,x2-x1,6,3); ctx.fill();
+    ctx.fillStyle='#555'; ctx.strokeStyle='#777'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(x1,y-(ph||10),(ph||10)*1.2,(ph||10)*2,3); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(x2-(ph||10)*1.2,y-(ph||10),(ph||10)*1.2,(ph||10)*2,3); ctx.fill(); ctx.stroke();
+    ctx.restore();
+  }
+  function bench(x,y,w,h){
+    ctx.save(); ctx.fillStyle='#1e1e3a'; ctx.strokeStyle='#3a3a6a'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.roundRect(x,y,w,h,4); ctx.fill(); ctx.stroke();
+    ln(x+10,y+h,x+10,y+h+16,'#252540',5);
+    ln(x+w-10,y+h,x+w-10,y+h+16,'#252540',5);
+    ctx.restore();
+  }
+
+  const poses = {
+    bench_press:()=>{
+      bench(25,80,190,13); bar(32,218,52,13);
+      circ(72,72,10,'#252540','#00e676',2);
+      seg(72,82,195,82,13,'#1e2a4a'); glow(72,82,195,82,'#00e676',8);
+      seg(88,83,68,52,8,'#4a4a8a'); seg(155,83,172,52,8,'#4a4a8a');
+      seg(195,82,208,118,10,'#3a3a6a'); seg(208,118,212,142,9,'#3a3a6a');
+      arr(130,50,130,26,'#00e676');
+      lbl('DRIVE UP',130,18,'#00e676',10);
+      lbl('Bar to mid-chest → Press up explosively',W/2,H-6,'#ffc200',9);
+    },
+    incline_press:()=>{
+      ctx.save(); ctx.translate(35,92); ctx.rotate(-0.38);
+      ctx.fillStyle='#1e1e3a'; ctx.strokeStyle='#3a3a6a'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(0,0,150,11,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      ln(20,128,28,152,'#252540',5); ln(195,128,200,152,'#252540',5);
+      ctx.save(); ctx.fillStyle='#181830';
+      ctx.beginPath(); ctx.roundRect(12,122,220,10,3); ctx.fill(); ctx.restore();
+      circ(50,40,10,'#252540','#00e676',2);
+      seg(50,50,168,94,12,'#1e2a4a'); seg(50,50,168,94,8,'#00e676');
+      seg(70,62,50,34,8,'#4a4a8a'); seg(110,76,130,34,8,'#4a4a8a');
+      bar(32,155,30,11);
+      arr(94,32,94,14,'#00e676');
+      lbl('30–45°',185,60,'#ff6a00',10);
+      lbl('Incline targets UPPER CHEST',W/2,H-6,'#00e676',9);
+    },
+    ohp:()=>{
+      circ(W/2,18,10,'#252540','#00e676',2);
+      seg(W/2,28,W/2,76,12,'#1e2a4a'); seg(W/2,28,W/2,76,8,'#00e676');
+      seg(W/2-5,34,W/2-42,18,8,'#4a4a8a'); seg(W/2+5,34,W/2+42,18,8,'#4a4a8a');
+      ln(W/2-42,18,W/2-42,5,'#4a4a8a',7); ln(W/2+42,18,W/2+42,5,'#4a4a8a',7);
+      bar(W/2-55,W/2+55,5,10);
+      seg(W/2,76,W/2-18,122,10,'#3a3a6a'); seg(W/2,76,W/2+18,122,10,'#3a3a6a');
+      ln(W/2,28,W/2,76,'#00e676',1.5,[3,3]);
+      ctx.save(); ctx.fillStyle='rgba(255,106,0,.15)'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(W/2+22,48,65,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('CORE BRACE!',W/2+54,58,'#ff6a00',9);
+      arr(W/2,4,W/2,-4,'#00e676');
+      lbl('SPINE STRAIGHT — BRACE CORE',W/2,H-6,'#00e676',9);
+    },
+    deadlift:()=>{
+      bar(14,W-14,H-22,17);
+      circ(115,20,10,'#252540','#00e676',2);
+      seg(111,30,88,72,13,'#1e2a4a'); seg(111,30,88,72,9,'#00e676');
+      seg(95,53,78,H-25,7,'#4a4a8a'); seg(102,51,96,H-25,7,'#4a4a8a');
+      seg(88,72,68,H-10,12,'#3a3a6a'); seg(88,72,106,H-10,12,'#3a3a6a');
+      ln(111,30,88,72,'#00e676',2,[3,2]);
+      ctx.save(); ctx.fillStyle='rgba(0,230,118,.1)'; ctx.strokeStyle='#00e676'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(122,30,92,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('NEUTRAL SPINE ✓',168,40,'#00e676',9);
+      ctx.save(); ctx.fillStyle='rgba(255,106,0,.1)'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(122,52,92,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('BAR CLOSE TO SHINS',168,62,'#ff6a00',9);
+      lbl('DRIVE THE FLOOR — LOCK OUT GLUTES',W/2,H-6,'#ffc200',9);
+    },
+    squat:()=>{
+      bar(22,W-22,32,12);
+      circ(W/2,20,10,'#252540','#00e676',2);
+      seg(W/2,30,W/2-12,70,13,'#1e2a4a'); seg(W/2,30,W/2-12,70,9,'#00e676');
+      glow(W/2-12,70,46,106,13,'#ff2020'); glow(W/2-12,70,W/2+28,106,13,'#ff2020');
+      seg(46,106,40,146,10,'#3a3a6a'); seg(W/2+28,106,W/2+34,146,10,'#3a3a6a');
+      ln(34,106,W-34,106,'#ffc200',1.5,[4,3]);
+      ctx.save(); ctx.fillStyle='rgba(255,194,0,.1)'; ctx.strokeStyle='#ffc200'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(W-75,98,68,14,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('PARALLEL!',W-41,107,'#ffc200',9);
+      ctx.save(); ctx.fillStyle='rgba(0,230,118,.1)'; ctx.strokeStyle='#00e676'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(W-82,32,75,14,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('SQUEEZE TOP!',W-44,41,'#00e676',9);
+      lbl('PARALLEL DEPTH — SQUEEZE GLUTES AT TOP',W/2,H-6,'#00e676',9);
+    },
+    hip_thrust:()=>{
+      bench(5,46,48,12); bar(60,W-12,38,13);
+      circ(32,34,9,'#252540','#00e676',2);
+      ctx.save(); ctx.fillStyle='#1e2a4a'; ctx.strokeStyle='#00e676'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(10,38,28,10,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      glow(40,42,82,30,13,'#ff2020');
+      seg(82,30,100,72,10,'#3a3a6a'); seg(84,30,112,66,10,'#3a3a6a');
+      circ(100,74,8,'#1e1e3a','#4a4a8a'); circ(112,68,8,'#1e1e3a','#4a4a8a');
+      arr(80,28,80,13,'#00e676');
+      ctx.save(); ctx.fillStyle='rgba(0,230,118,.15)'; ctx.strokeStyle='#00e676'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(88,6,100,18,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('⭐ MAX SQUEEZE!',138,17,'#00e676',10);
+      lbl('MOST IMPORTANT — FULL GLUTE SQUEEZE',W/2,H-6,'#ff2020',9);
+    },
+    plank:()=>{
+      ln(8,H-16,W-8,H-16,'#1a1a32',3);
+      circ(32,76,9,'#252540','#00e676',2);
+      ctx.save(); ctx.fillStyle='#1e2a4a'; ctx.strokeStyle='#00e676'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.roundRect(36,78,148,13,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      ctx.save(); ctx.fillStyle='#2a2a4a'; ctx.beginPath(); ctx.roundRect(28,91,11,18,3); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.fillStyle='#2a2a4a'; ctx.beginPath(); ctx.roundRect(30,H-18,32,6,3); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.fillStyle='#2a2a4a'; ctx.beginPath(); ctx.roundRect(172,91,11,18,3); ctx.fill(); ctx.restore();
+      ln(36,84,182,84,'#00e676',1.5,[4,2]);
+      arr(110,78,110,62,'#ffc200');
+      ctx.save(); ctx.fillStyle='rgba(255,194,0,.15)'; ctx.strokeStyle='#ffc200'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(70,52,84,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('TUCK PELVIS!',112,62,'#ffc200',10);
+      lbl('STRAIGHT LINE — POSTERIOR PELVIC TILT',W/2,H-6,'#ffc200',9);
+    },
+    glute_bridge:()=>{
+      ln(8,H-14,W-8,H-14,'#1a1a32',3);
+      circ(24,90,9,'#252540','#ff6a00',2);
+      ctx.save(); ctx.fillStyle='#1e1e30'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(26,94,38,11,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      glow(62,96,94,70,13,'#ff2020');
+      seg(94,70,115,108,10,'#3a3a6a'); seg(96,70,130,102,10,'#3a3a6a');
+      circ(115,110,8,'#1e1e3a','#4a4a8a'); circ(130,104,8,'#1e1e3a','#4a4a8a');
+      arr(90,68,90,50,'#ff6a00');
+      ctx.save(); ctx.fillStyle='rgba(255,106,0,.15)'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(96,42,92,18,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('SQUEEZE 2 SEC!',142,53,'#ff6a00',10);
+      lbl('HIPS UP — POSTERIOR PELVIC TILT',W/2,H-6,'#ff6a00',9);
+    },
+    hip_flexor:()=>{
+      ln(8,H-14,W-8,H-14,'#1a1a32',3);
+      circ(W/2-10,20,9,'#252540','#ff6a00',2);
+      seg(W/2-10,29,W/2-10,62,11,'#1e2a4a'); seg(W/2-10,29,W/2-10,62,7,'#ff6a00');
+      seg(W/2-14,62,W/2-38,96,9,'#3a3a6a'); seg(W/2-38,96,W/2-48,H-16,9,'#3a3a6a');
+      seg(W/2-6,62,W/2+20,82,9,'#3a3a6a'); seg(W/2+20,82,W/2+32,H-16,9,'#3a3a6a');
+      arr(W/2+5,66,W/2+28,66,'#ff6a00');
+      ctx.save(); ctx.fillStyle='rgba(255,106,0,.15)'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(W/2+30,58,80,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('PUSH HIPS FORWARD!',W/2+70,68,'#ff6a00',9);
+      ctx.save(); ctx.fillStyle='rgba(255,32,32,.1)'; ctx.strokeStyle='#ff2020'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(6,66,56,14,3); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('STRETCH HERE',34,75,'#ff2020',8);
+      lbl('KNEELING LUNGE — PUSH HIPS FORWARD DAILY',W/2,H-6,'#ffc200',9);
+    },
+    dead_bug:()=>{
+      ln(8,H-14,W-8,H-14,'#1a1a32',3);
+      circ(W/2,80,9,'#252540','#ff6a00',2);
+      ctx.save(); ctx.fillStyle='#1e1e30'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(W/2-38,85,76,13,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      glow(W/2-20,86,W/2-46,58,7,'#ff2020');
+      ln(W/2+20,86,W/2+56,60,'#3a3a5a',6);
+      glow(W/2-12,98,W/2-52,128,7,'#ff2020');
+      ln(W/2+12,98,W/2+48,74,'#3a3a5a',6);
+      ln(W/2-38,92,W/2+38,92,'#ffc200',1.5,[3,2]);
+      ctx.save(); ctx.fillStyle='rgba(255,194,0,.15)'; ctx.strokeStyle='#ffc200'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(W/2-72,42,76,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      lbl('BACK FLAT!',W/2-34,52,'#ffc200',10);
+      lbl('LOWER BACK FLAT — OPPOSITE ARM+LEG',W/2,H-6,'#ff6a00',9);
+    },
+    bird_dog:()=>{
+      circ(W/2,32,9,'#252540','#ff6a00',2);
+      ctx.save(); ctx.fillStyle='#1e1e30'; ctx.strokeStyle='#ff6a00'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(W/2-28,36,56,13,4); ctx.fill(); ctx.stroke(); ctx.restore();
+      seg(W/2-18,49,W/2-35,74,8,'#3a3a6a'); circ(W/2-38,75,6,'#1e1e3a','#4a4a8a');
+      seg(W/2+18,49,W/2+35,74,8,'#3a3a6a'); circ(W/2+38,75,6,'#1e1e3a','#4a4a8a');
+      glow(W/2-22,40,W/2-80,40,7,'#ff2020'); circ(W/2-83,40,5,'#ff2020');
+      glow(W/2+22,43,W/2+82,43,7,'#ff2020'); circ(W/2+84,43,5,'#ff2020');
+      ln(W/2-28,42,W/2+28,42,'#00e676',1.5,[3,2]);
+      arr(W/2-80,40,W/2-96,40,'#00e676'); arr(W/2+82,43,W/2+96,43,'#00e676');
+      lbl('BACK FLAT',W/2,20,'#00e676',9);
+      lbl('PAUSE 2 SEC — SQUEEZE GLUTE',W/2,H-6,'#ff6a00',9);
+    },
+    default:()=>{
+      circ(W/2,20,10,'#252540','#00e676',2);
+      seg(W/2,30,W/2,78,12,'#1e2a4a'); seg(W/2,30,W/2,78,8,'#00e676');
+      seg(W/2-4,40,W/2-38,52,7,'#4a4a8a'); seg(W/2+4,40,W/2+38,52,7,'#4a4a8a');
+      seg(W/2,78,W/2-18,126,10,'#3a3a6a'); seg(W/2,78,W/2+18,126,10,'#3a3a6a');
+      arr(W/2,28,W/2,14,'#00e676');
+      lbl('CONTROLLED MOVEMENT — FULL RANGE',W/2,H-6,'#00e676',9);
+    }
+  };
+  const n = key.toLowerCase();
+  if(n.includes('bench press')||n.includes('dumbbell bench')) poses.bench_press();
+  else if(n.includes('incline')) poses.incline_press();
+  else if(n.includes('overhead')||n.includes('arnold')||n.includes('shoulder press')) poses.ohp();
+  else if(n.includes('deadlift')&&!n.includes('romanian')&&!n.includes('stiff')&&!n.includes('rdl')) poses.deadlift();
+  else if(n.includes('sumo')||n.includes('rack pull')) poses.deadlift();
+  else if(n.includes('romanian')||n.includes('rdl')||n.includes('stiff')) { // rdl uses default with labels
+    circ(W/2+30,16,10,'#252540','#00e676',2);
+    seg(W/2+26,26,W/2+6,66,13,'#1e2a4a'); seg(W/2+26,26,W/2+6,66,9,'#00e676');
+    seg(W/2+12,48,W/2-4,H-24,7,'#4a4a8a'); seg(W/2+18,46,W/2+22,H-24,7,'#4a4a8a');
+    seg(W/2+6,66,W/2-12,H-12,12,'#3a3a6a'); seg(W/2+8,66,W/2+24,H-12,12,'#3a3a6a');
+    ln(W/2+26,26,W/2+6,66,'#00e676',2,[3,2]);
+    bar(14,W/2-4,H-22,12);
+    ctx.save(); ctx.fillStyle='rgba(255,32,32,.12)'; ctx.strokeStyle='#ff2020'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(W/2+38,54,78,16,4); ctx.fill(); ctx.stroke(); ctx.restore();
+    lbl('FEEL STRETCH!',W/2+77,64,'#ff2020',9);
+    lbl('PUSH HIPS BACK — FEEL HAMSTRINGS',W/2,H-6,'#00e676',9);
+  }
+  else if(n.includes('pull-up')||n.includes('pullup')||n.includes('pull up')) poses.pullup();
+  else if(n.includes('squat')) poses.squat();
+  else if(n.includes('hip thrust')) poses.hip_thrust();
+  else if(n.includes('plank')) poses.plank();
+  else if(n.includes('glute bridge')) poses.glute_bridge();
+  else if(n.includes('hip flexor')) poses.hip_flexor();
+  else if(n.includes('dead bug')) poses.dead_bug();
+  else if(n.includes('bird dog')) poses.bird_dog();
+  else poses.default();
+}
+
+// ════════════════════════════════════════════════
+// WORKOUT DATA
+// ════════════════════════════════════════════════
+const DAYS = [
+ {label:'Push',title:'PUSH DAY',sub:'Chest · Shoulders · Triceps',goal:'Muscle Volume + Strength',exercises:[
+  {n:'Flat Barbell Bench Press',s:'4×6-8',g:'Chest',p:['chest'],sec:['shoulders_front','triceps'],st:['back_upper','core'],front:true,pelvic:false,cues:['Shoulder blades pinched back and DOWN','Bar lowers to MID-CHEST — not neck','Drive up explosively — chest squeeze at top','Feet flat on floor throughout'],warns:['Don\'t flare elbows 90° — keep at ~75°','Never bounce bar off chest']},
+  {n:'Incline Dumbbell Press',s:'3×10',g:'Chest',p:['chest'],sec:['shoulders_front'],st:['triceps','core'],front:true,pelvic:false,cues:['30–45° incline for upper chest','Elbows at 75° — not flared wide','Full stretch at bottom every rep','Press up and slightly inward at top'],warns:['Don\'t let shoulders roll forward','Higher incline = more shoulder, less chest']},
+  {n:'Cable Crossovers',s:'3×12-15',g:'Chest',p:['chest'],sec:['shoulders_front'],st:['core'],front:true,pelvic:false,cues:['Arms slightly bent throughout','Squeeze pecs HARD at center — 1 second hold','Slow 3-second return for constant tension','Feel the stretch at the open position'],warns:['Don\'t use momentum — feel the muscle','Constant tension is the goal here']},
+  {n:'Overhead Barbell Press',s:'3×8-10',g:'Shoulders',p:['shoulders_front','shoulders_side'],sec:['triceps'],st:['core','traps'],front:true,pelvic:false,cues:['BRACE CORE HARD before every rep','Press straight overhead — full extension','Lower to chin/upper chest level','Spine straight — controlled movement'],warns:['⚠️ Core bracing here = pelvic tilt correction cue','Arching lower back worsens pelvic tilt']},
+  {n:'Lateral Raises',s:'3×12-15',g:'Shoulders',p:['shoulders_side'],sec:['traps'],st:['core'],front:true,pelvic:false,cues:['Lead with ELBOWS — slightly higher than hands','Raise to shoulder height only','3-second slow negative for side delt growth','10° forward lean for better activation angle'],warns:['Don\'t shrug at top — keep traps out','No momentum or body rocking']},
+  {n:'Tricep Dips',s:'3×Failure',g:'Triceps',p:['triceps'],sec:['chest','shoulders_front'],st:['core'],front:false,pelvic:false,cues:['Stay UPRIGHT for tricep focus','Full range — upper arm parallel at bottom','Lock out arms at top, squeeze triceps','Elbows point back, not flared out'],warns:['Leaning forward = chest exercise not triceps']},
+  {n:'Rope Pushdowns',s:'3×12',g:'Triceps',p:['triceps'],sec:[],st:['core'],front:false,pelvic:false,cues:['Split rope at bottom for full contraction','Elbows GLUED to sides at all times','Full extension — hold 1 second at bottom','Stand tall, core braced throughout'],warns:['Elbows forward = front delts not triceps']},
+  {n:'Hanging Leg Raises',s:'3×15',g:'Abs',p:['core','hip_flexors'],sec:[],st:['lats'],front:true,pelvic:false,cues:['Dead hang — no swinging','Raise to 90° — tuck pelvis at top','Slow controlled descent','Exhale raising, inhale descending'],warns:['No kipping — strict form only']},
+  {n:'🔧 Hip Flexor Stretch',s:'60 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['Kneeling lunge — push hips FORWARD','Torso upright — don\'t lean forward','Breathe and relax deeper each breath','Both sides equal time'],warns:['⚠️ After EVERY session — non-negotiable','#1 daily pelvic tilt correction habit']},
+ ]},
+ {label:'Pull',title:'PULL DAY',sub:'Back · Rear Delts · Traps · Biceps',goal:'Back Thickness + Width',exercises:[
+  {n:'Deadlift',s:'4×5',g:'Back',p:['back_lower','hamstrings','glutes'],sec:['back_upper','lats','traps'],st:['core','quads'],front:false,pelvic:false,cues:['Bar over mid-foot — NEUTRAL SPINE always','Hip hinge — chest up, drive through floor','Lockout: squeeze glutes HARD at top','Bar stays close to shins entire way'],warns:['⚠️ NEVER round your lower back','#1 exercise for pelvic tilt AND mass']},
+  {n:'Pull-Ups',s:'3×Failure',g:'Back',p:['lats'],sec:['back_upper','biceps'],st:['core','shoulders_rear'],front:false,pelvic:false,cues:['Full DEAD HANG at bottom — stretch lats','Pull elbows DOWN and BACK to pockets','Chin over bar at the top','Slight lean back at top for full lat squeeze'],warns:['Partial reps don\'t build lats — full range']},
+  {n:'Barbell Row',s:'3×6-8',g:'Back',p:['back_upper','lats'],sec:['biceps','shoulders_rear'],st:['core','back_lower'],front:false,pelvic:false,cues:['Hinge 45° — chest up, back flat','Pull to LOWER chest — squeeze blades','Keep bar close to body','Control the descent — don\'t drop'],warns:['Standing upright shifts to traps, not back']},
+  {n:'Seated Cable Row',s:'2×10-12',g:'Back',p:['back_upper','lats'],sec:['biceps'],st:['core'],front:false,pelvic:false,cues:['Sit tall — chest up throughout','Full stretch at extended position','Drive elbows past body at peak','Squeeze shoulder blades at contraction'],warns:['Don\'t lean back — that\'s momentum not muscle']},
+  {n:'Face Pulls',s:'3×15',g:'Rear Delts',p:['shoulders_rear'],sec:['traps','back_upper'],st:['core'],front:false,pelvic:false,cues:['Cable at face/eye level','Pull to face — hands end near ears','Externally rotate at end — thumbs back','Elbows high and wide throughout'],warns:['Must be face level — not chin level','Critical posture exercise']},
+  {n:'Barbell Curls',s:'3×10-12',g:'Biceps',p:['biceps'],sec:[],st:['core'],front:true,pelvic:false,cues:['Upper arms PINNED to sides always','Supinate wrist at top for peak','Full stretch at bottom every rep','Controlled 2-second descent'],warns:['No swinging — weight is too heavy if needed']},
+  {n:'Hammer Curls',s:'2×12',g:'Biceps',p:['biceps'],sec:[],st:['core'],front:true,pelvic:false,cues:['Neutral grip — thumbs facing up','Hits brachialis for arm thickness','Full range of motion both ways','Upper arms still — only forearm moves'],warns:['Don\'t rotate to regular curl grip']},
+  {n:'Plank Hold',s:'3×60 sec',g:'Abs',p:['core'],sec:[],st:['shoulders_front','back_upper'],front:true,pelvic:true,cues:['TUCK PELVIS UNDER — posterior tilt','Elbows under shoulders exactly','Squeeze glutes throughout hold','Breathe normally — don\'t hold breath'],warns:['⚠️ Tucking pelvis = fixing anterior tilt in real time','Don\'t let hips sag']},
+  {n:'🔧 Hip Flexor Stretch',s:'60 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['Kneeling lunge — hips forward','Go deeper than previous session','Both sides equal time always'],warns:['⚠️ Non-negotiable. Every session.']},
+ ]},
+ {label:'Legs',title:'LEG DAY',sub:'Quads · Hamstrings · Glutes · Calves',goal:'Leg Mass + Glute Power',exercises:[
+  {n:'🔧 Glute Bridges (Warm-Up)',s:'3×15',g:'Pelvic Fix',p:['glutes'],sec:['hamstrings'],st:['core'],front:false,pelvic:true,cues:['Lie on back — drive hips UP','Squeeze glutes HARD at top — 2 sec','Feel the posterior pelvic tilt','ALWAYS before squatting'],warns:['⚠️ Cold glutes = hip flexors take over squat','This IS the pelvic correction movement']},
+  {n:'Back Squats',s:'4×8',g:'Quads',p:['quads'],sec:['glutes','hamstrings'],st:['core','back_lower'],front:true,pelvic:false,cues:['Feet shoulder-width — go to PARALLEL','SQUEEZE GLUTES HARD at top of every rep','Chest up — bar on upper traps','Knees track over toes throughout'],warns:['⚠️ Squeezing glutes at top = pelvic tilt correction','Don\'t let knees cave inward']},
+  {n:'Leg Press',s:'3×12-15',g:'Quads',p:['quads'],sec:['glutes'],st:['core'],front:true,pelvic:false,cues:['Full range — don\'t lock knees at top','Push through HEELS not toes','Don\'t let lower back peel off seat','Wide feet = glutes, narrow = quads'],warns:['Partial reps rob you of quad growth']},
+  {n:'Bulgarian Split Squats',s:'3×10 each',g:'Quads',p:['quads','glutes'],sec:['hamstrings'],st:['core'],front:true,pelvic:false,cues:['Rear foot on bench — deep stretch at bottom','Hip flexor stretches with every rep','Push through front heel to stand','Torso upright throughout'],warns:['Deep stretch = hip flexor + glute benefit combined']},
+  {n:'Romanian Deadlifts',s:'3×8',g:'Hamstrings',p:['hamstrings','glutes'],sec:['back_lower'],st:['core'],front:false,pelvic:false,cues:['Push hips BACK — feel the stretch','Bar/dumbbells close to body','Neutral spine — flat back always','Drive hips FORWARD with glute squeeze to stand'],warns:['Hip hinge — not a squat','Feel the hamstring stretch as the cue to stop']},
+  {n:'Lying Leg Curls',s:'3×12',g:'Hamstrings',p:['hamstrings'],sec:['glutes'],st:[],front:false,pelvic:false,cues:['Full range — squeeze at top 1 sec','3-second slow eccentric (lowering)','Don\'t let hips lift off pad','Toes slightly inward for full activation'],warns:['Partial reps don\'t build hamstrings']},
+  {n:'Standing Calf Raises',s:'4×20',g:'Calves',p:['calves'],sec:[],st:[],front:true,pelvic:false,cues:['Full stretch at bottom — heels below step','Full squeeze at top — pause 1 second','Full range is the only way to build calves','Add weight when 20 reps feels easy'],warns:['Partial reps will never build calf size']},
+  {n:'🔧 Hip Flexor Stretch',s:'90 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['90 seconds on leg days — most important session','Sink deeper at halfway — let gravity help','Both sides always equal time'],warns:['⚠️ Leg day = most important stretch session']},
+ ]},
+ {label:'Upper',title:'UPPER DAY',sub:'All 3 Shoulder Heads · Chest · Back · Arms',goal:'Complete Upper Body',exercises:[
+  {n:'Lat Pulldowns',s:'3×10-12',g:'Back',p:['lats'],sec:['biceps','back_upper'],st:['core'],front:false,pelvic:false,cues:['Grip slightly wider than shoulders','Pull to upper chest — elbows to hips','Full stretch at top each rep','Slight lean back as you initiate pull'],warns:['Think elbows to hips — not hands to chest']},
+  {n:'Incline DB Press',s:'4×8-10',g:'Chest',p:['chest'],sec:['shoulders_front','triceps'],st:['core'],front:true,pelvic:false,cues:['30-45° — upper chest focus','Elbows at 75° — not flared','Full stretch at bottom of each rep','Feel upper chest contracting'],warns:['Don\'t let shoulders roll forward at bottom']},
+  {n:'DB Shoulder Press',s:'3×10-12',g:'Shoulders (Front)',p:['shoulders_front','shoulders_side'],sec:['triceps'],st:['core','traps'],front:true,pelvic:false,cues:['CORE BRACED — protects lower back','Dumbbells at ear level to start','Press directly overhead — palms forward','Don\'t fully lock elbows'],warns:['Core bracing here = pelvic tilt cue']},
+  {n:'Lateral Raises',s:'3×15',g:'Shoulders (Side)',p:['shoulders_side'],sec:['traps'],st:['core'],front:true,pelvic:false,cues:['Side delt isolation — strict form','3-second slow negative','Lead with elbows throughout','Light weight — feel every rep'],warns:['No shrugging at top']},
+  {n:'Rear Delt Flyes',s:'3×15',g:'Shoulders (Rear)',p:['shoulders_rear'],sec:['back_upper','traps'],st:['core'],front:false,pelvic:false,cues:['Hinge forward 45° — back flat','Raise elbows OUT to sides','Squeeze blades together at top','All 3 shoulder heads trained today'],warns:['No momentum — isolation only']},
+  {n:'Preacher Curls',s:'3×12',g:'Biceps',p:['biceps'],sec:[],st:[],front:true,pelvic:false,cues:['Full arm extension at bottom — the stretch is the key','Don\'t lift elbows off pad','Squeeze peak hard at top','3-second slow negative'],warns:['Partial reps = losing the stretch benefit']},
+  {n:'Close Grip Bench Press',s:'3×10',g:'Triceps',p:['triceps'],sec:['chest'],st:['core'],front:true,pelvic:false,cues:['Shoulder-width grip — not too narrow','Elbows TUCKED to body throughout','Same path as regular bench','Touch chest — full extension at top'],warns:['Too narrow stresses wrists — shoulder width is right']},
+  {n:'🔧 Bird Dog',s:'3×10 each',g:'Pelvic Fix',p:['core','glutes'],sec:['back_lower'],st:['shoulders_front'],front:false,pelvic:true,cues:['All fours — wrists under shoulders','Extend OPPOSITE arm and leg simultaneously','Back stays COMPLETELY FLAT — no rotation','Pause 2 sec at full extension — squeeze glute'],warns:['⚠️ Hip rotation = gone too far — shorten range','Builds glute-core connection for pelvic fix']},
+  {n:'🔧 Hip Flexor Stretch',s:'60 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['End every session — no exceptions','Go deeper each session progressively','14 days straight = permanent habit'],warns:['Consistency is everything']},
+ ]},
+ {label:'Lower',title:'LOWER DAY',sub:'Glutes · Hamstrings · Quads · Calves',goal:'Glute Power + Posterior Chain',exercises:[
+  {n:'🔧 Glute Bridges (Warm-Up)',s:'3×15',g:'Pelvic Fix',p:['glutes'],sec:['hamstrings','core'],st:[],front:false,pelvic:true,cues:['ALWAYS before hip thrusts — never skip','Hold 2 sec at top — posterior tilt every rep','Cold glutes = wrong hip thrust mechanics'],warns:['⚠️ Skipping this = ineffective hip thrusts']},
+  {n:'⭐ Hip Thrusts (Barbell)',s:'4×10-12',g:'Glutes',p:['glutes'],sec:['hamstrings'],st:['core','quads'],front:false,pelvic:false,cues:['Upper back on bench — bar padded across hips','FULLY extend hips at top — max glute squeeze','Squeeze HARD — hold 1 full second at top','Chin tucked — don\'t look at ceiling'],warns:['⭐ Most important exercise for pelvic tilt correction','Load heavy — this fixes your issue directly']},
+  {n:'Romanian Deadlifts',s:'4×6-8',g:'Hamstrings+Glutes',p:['hamstrings','glutes'],sec:['back_lower'],st:['core'],front:false,pelvic:false,cues:['Push hips back — feel the stretch build','Neutral spine flat back always','Drive hips FORWARD with glute squeeze to stand','Hip hinge — not a squat'],warns:['The hip drive forward IS the pelvic tilt correction']},
+  {n:'Front Squats',s:'3×8-10',g:'Quads',p:['quads'],sec:['core','glutes'],st:['back_upper'],front:true,pelvic:false,cues:['Bar on front delts — elbows STAY HIGH','Upright torso is automatic here','Core BRACED — elbows drive torso upright','Best squat for pelvic tilt correction'],warns:['Elbows dropping = bar falls — that\'s the cue system']},
+  {n:'Nordic Curls',s:'3×8-10',g:'Hamstrings',p:['hamstrings'],sec:['glutes'],st:['core'],front:false,pelvic:false,cues:['Feet anchored — body upright to start','Lower SLOWLY — 3-4 second eccentric','Hamstrings resist gravity — that IS the exercise','Use hands to push back up if needed'],warns:['Slow negative is what builds the strength']},
+  {n:'Step-Ups',s:'3×10 each',g:'Quads',p:['quads','glutes'],sec:['hamstrings'],st:['core','calves'],front:true,pelvic:false,cues:['Step height at or above knee','Push through HEEL of elevated foot','Full hip extension at top — squeeze glute','Step down controlled always'],warns:['All work through top leg — don\'t push off bottom']},
+  {n:'Standing Calf Raises',s:'3×20',g:'Calves',p:['calves'],sec:[],st:[],front:true,pelvic:false,cues:['Full range always — stretch at bottom','Squeeze at top — pause 1 second','Add weight when 20 feels easy'],warns:['Partial reps never build calves']},
+  {n:'🔧 Hip Flexor Stretch',s:'90 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['90 sec on lower body days','Go deepest of the week today','Cumulative effect over 14 days fixes the tilt'],warns:['⚠️ Most important stretch session of the week']},
+ ]},
+ {label:'Recovery',title:'ACTIVE RECOVERY',sub:'Posture Correction + Mobility + Cardio',goal:'Recovery + Pelvic Fix',exercises:[
+  {n:'Brisk Walk / Cycling',s:'25 minutes',g:'Cardio',p:['quads','hamstrings'],sec:['calves','glutes'],st:['core'],front:true,pelvic:false,cues:['Walk TALL — glutes active, pelvis neutral','Focus on posture — every step is practice','Moderate pace — conversational speed'],warns:['Don\'t slouch — this is posture practice']},
+  {n:'🔧 Hip Flexor Stretch',s:'90 sec/side',g:'Pelvic Fix',p:['hip_flexors'],sec:[],st:[],front:true,pelvic:true,cues:['Longest most relaxed stretch of the week','Fully relax into it — breathe deeply','Recovery day = best day for flexibility gains'],warns:['This habit over time = permanent pelvic fix']},
+  {n:'🔧 Glute Bridges',s:'3×20',g:'Pelvic Fix',p:['glutes'],sec:['hamstrings'],st:['core'],front:false,pelvic:true,cues:['No weight — pure mind-muscle connection','20 reps light — building the neural habit','Feel posterior pelvic tilt every rep'],warns:['Keeps pelvic correction going on rest days']},
+  {n:'🔧 Dead Bug',s:'3×12 each',g:'Pelvic Fix',p:['core'],sec:[],st:[],front:true,pelvic:true,cues:['Lower back FLAT on floor — the only rule','3 seconds each direction — slow','Breathe out on extension'],warns:['If lower back lifts — shorten the range']},
+  {n:'🔧 Bird Dog',s:'3×12 each',g:'Pelvic Fix',p:['core','glutes'],sec:['back_lower'],st:[],front:false,pelvic:true,cues:['2-second pause at full extension','Squeeze glute of extended leg hard','Back completely flat always'],warns:['Most underrated pelvic tilt fix — do forever']},
+  {n:'🔧 Wall Sit (Back Flat)',s:'3×45 sec',g:'Pelvic Fix',p:['quads'],sec:['glutes'],st:['core'],front:true,pelvic:true,cues:['Back FLAT against wall — lower back pressed IN','Thighs parallel — 90° knee angle','Memorise this sensation — carry into daily life'],warns:['This is what neutral pelvis feels like — remember it']},
+ ]},
+];
+
+const ML_MAP = {chest:'Chest',shoulders_front:'Front Delts',shoulders_side:'Side Delts',shoulders_rear:'Rear Delts',triceps:'Triceps',biceps:'Biceps',back_upper:'Upper Back',back_lower:'Lower Back',lats:'Lats',traps:'Traps',quads:'Quads',hamstrings:'Hamstrings',glutes:'Glutes',calves:'Calves',core:'Core/Abs',hip_flexors:'Hip Flexors'};
+
+// ════════════════════════════════════════════════
+// WORKOUT RENDER
+// ════════════════════════════════════════════════
+let currentWeek = 1;
+let currentDay = 0;
+let completedExercises = load('completedEx', {});
+
+function switchWeek(wk, btn) {
+  currentWeek = wk;
+  document.querySelectorAll('.split-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentDay = 0;
+  renderWorkout();
+}
+
+function switchDay(idx) {
+  currentDay = idx;
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.day-tab')[idx].classList.add('active');
+  renderDayContent();
+}
+
+function getDayKey(wk, di, ei) { return `w${wk}_d${di}_e${ei}`; }
+
+function renderWorkout() {
+  const w2Swaps = {
+    'Flat Barbell Bench Press':'Dumbbell Bench Press',
+    'Overhead Barbell Press':'Arnold Press',
+    'Tricep Dips':'Skull Crushers (EZ Bar)',
+    'Deadlift':'Sumo Deadlift / Rack Pull',
+    'Barbell Row':'Chest-Supported DB Row',
+    'Back Squats':'Hack Squat / Goblet Squat',
+    'Barbell Curls':'Incline DB Curls',
+    '⭐ Hip Thrusts (Barbell)':'⭐ Hip Thrusts (Banded)',
+    'Front Squats':'Goblet Squats (Deep)',
+    'Preacher Curls':'Concentration Curls',
+    'Close Grip Bench Press':'Tricep Pushdowns',
+  };
+
+  let tabs = '<div class="day-tabs-wrap">';
+  DAYS.forEach((d,i) => {
+    tabs += `<div class="day-tab${i===0?' active':''}" onclick="switchDay(${i})">${d.label}</div>`;
+  });
+  tabs += '</div><div id="dayContent"></div>';
+  document.getElementById('weekContent').innerHTML = tabs;
+  renderDayContent();
+}
+
+function renderDayContent() {
+  const day = DAYS[currentDay];
+  const wk = currentWeek;
+  const w2Swaps = {
+    'Flat Barbell Bench Press':'Dumbbell Bench Press',
+    'Overhead Barbell Press':'Arnold Press',
+    'Tricep Dips':'Skull Crushers (EZ Bar)',
+    'Deadlift':'Sumo Deadlift / Rack Pull',
+    'Barbell Row':'Chest-Supported DB Row',
+    'Back Squats':'Hack Squat / Goblet Squat',
+    'Barbell Curls':'Incline DB Curls',
+    '⭐ Hip Thrusts (Barbell)':'⭐ Hip Thrusts (Banded)',
+    'Front Squats':'Goblet Squats (Deep)',
+    'Preacher Curls':'Concentration Curls',
+    'Close Grip Bench Press':'Tricep Pushdowns',
+  };
+
+  const exercises = day.exercises.map(ex => {
+    if (wk === 2 && w2Swaps[ex.n]) return {...ex, n: w2Swaps[ex.n]};
+    return ex;
+  });
+
+  const doneCount = exercises.filter((_,ei) => completedExercises[getDayKey(wk, currentDay, ei)]).length;
+  const pct = Math.round((doneCount / exercises.length) * 100);
+
+  let html = `
+    <div class="day-hdr-block" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:20px">
+      <div class="badge-row">
+        <span class="badge red">Week ${wk}</span>
+        <span class="badge blue">${day.title}</span>
+        <span class="badge green">${day.goal}</span>
+      </div>
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;margin-bottom:4px">${day.title}</h3>
+      <p style="font-size:14px;color:var(--muted2);margin-bottom:14px">${day.sub}</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div class="progress-text">${doneCount} / ${exercises.length} exercises completed (${pct}%)</div>
+    </div>
+    <div class="ex-grid">`;
+
+  exercises.forEach((ex, ei) => {
+    const key = getDayKey(wk, currentDay, ei);
+    const done = completedExercises[key];
+    const id = `ex_${wk}_${currentDay}_${ei}`;
+    const allM = [
+      ...ex.p.map(m=>({name:ML_MAP[m]||m,type:'Primary',color:'#ff2020'})),
+      ...ex.sec.map(m=>({name:ML_MAP[m]||m,type:'Secondary',color:'#ff6a00'})),
+      ...ex.st.map(m=>({name:ML_MAP[m]||m,type:'Stabilizer',color:'#2979ff'})),
+    ];
+    const legendHtml = allM.map(m=>`<div class="ml-item"><div class="ml-dot" style="background:${m.color}"></div><span style="color:#ddd">${m.name}</span><span style="color:var(--muted);font-size:9px;margin-left:4px">${m.type}</span></div>`).join('');
+    const cueHtml = (ex.cues||[]).map(c=>`<div class="cue-line"><span style="color:#00e676;flex-shrink:0">→</span><span>${c}</span></div>`).join('');
+    const warnHtml = (ex.warns||[]).map(w=>`<div class="warn-line"><span style="flex-shrink:0">⚠</span><span>${w}</span></div>`).join('');
+
+    html += `
+      <div class="ex-item${ex.pelvic?' pelvic':''}${done?' done':''}" id="card_${id}" style="${done?'opacity:.65;':''}">
+        <div class="ex-row" onclick="toggleEx('${id}')">
+          <div class="ex-check${done?' done':''}" onclick="event.stopPropagation();markDone('${key}','${id}')" title="Mark complete"></div>
+          <div class="ex-badge" style="${done?'background:rgba(0,230,118,.1);color:var(--green);border-color:rgba(0,230,118,.3)':''}">${ei+1}</div>
+          <div class="ex-meta">
+            <div class="ex-name">${ex.n}${done?' <span style="color:var(--green);font-size:11px">✓ Done</span>':''}</div>
+            <div class="ex-sets">${ex.s}</div>
+            <span class="ex-gtag${ex.pelvic?' pelvic':''}">${ex.pelvic?'🔧 Pelvic Fix':ex.g}</span>
+          </div>
+          <div class="ex-toggle" id="tog_${id}">+</div>
+        </div>
+        <div class="ex-detail" id="detail_${id}">
+          <div class="ex-detail-grid">
+            <div class="muscle-img-box">
+              <div class="muscle-img-title">📐 Correct Position</div>
+              <canvas id="pos_${id}" width="230" height="148" style="border-radius:8px;border:1px solid var(--border)"></canvas>
+            </div>
+            <div class="muscle-img-box">
+              <div class="muscle-img-title">💪 Muscles Worked</div>
+              <canvas id="mus_${id}" width="90" height="117" style="border-radius:8px;border:1px solid var(--border)"></canvas>
+              <div class="muscle-list">${legendHtml}</div>
+            </div>
+          </div>
+          <div class="cue-box">
+            <div class="cue-title">✅ FORM CUES &amp; ⚠️ AVOID</div>
+            ${cueHtml}${warnHtml}
+          </div>
+        </div>
+      </div>`;
+  });
+
+  html += '</div>';
+  document.getElementById('dayContent').innerHTML = html;
+  updateAnalyticsCharts();
+}
+
+let openExercises = {};
+function toggleEx(id) {
+  const detail = document.getElementById('detail_' + id);
+  const tog = document.getElementById('tog_' + id);
+  if (!detail) return;
+  const isOpen = detail.classList.contains('open');
+  detail.classList.toggle('open', !isOpen);
+  tog.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    const parts = id.split('_');
+    const wk = parseInt(parts[1]), di = parseInt(parts[2]), ei = parseInt(parts[3]);
+    const day = DAYS[di];
+    const w2Swaps = {'Flat Barbell Bench Press':'Dumbbell Bench Press','Overhead Barbell Press':'Arnold Press','Tricep Dips':'Skull Crushers (EZ Bar)','Deadlift':'Sumo Deadlift / Rack Pull','Barbell Row':'Chest-Supported DB Row','Back Squats':'Hack Squat / Goblet Squat','Barbell Curls':'Incline DB Curls','⭐ Hip Thrusts (Barbell)':'⭐ Hip Thrusts (Banded)','Front Squats':'Goblet Squats (Deep)','Preacher Curls':'Concentration Curls','Close Grip Bench Press':'Tricep Pushdowns'};
+    const ex = day.exercises[ei];
+    const exName = (wk === 2 && w2Swaps[ex.n]) ? w2Swaps[ex.n] : ex.n;
+    setTimeout(() => {
+      const mc = document.getElementById('mus_' + id);
+      const pc = document.getElementById('pos_' + id);
+      if (mc) drawMuscle(mc, ex.p, ex.sec, ex.st, ex.front);
+      if (pc) drawPosture(pc, exName);
+    }, 20);
+  }
+}
+
+function markDone(key, id) {
+  completedExercises[key] = !completedExercises[key];
+  save('completedEx', completedExercises);
+  renderDayContent();
+  if (completedExercises[key]) toast('Exercise marked complete! 💪', 'success');
+  updateAnalyticsCharts();
+}
+
+// ════════════════════════════════════════════════
+// SLEEP TRACKER
+// ════════════════════════════════════════════════
+let sleepData = load('sleepData', []);
+
+function logSleep() {
+  const bed = document.getElementById('sleepBed').value;
+  const wake = document.getElementById('sleepWake').value;
+  const quality = document.getElementById('sleepQuality').value;
+  const notes = document.getElementById('sleepNotes').value;
+  if (!bed || !wake) return toast('Enter bedtime and wake time', 'warning');
+  const [bh, bm] = bed.split(':').map(Number);
+  const [wh, wm] = wake.split(':').map(Number);
+  let hrs = (wh + wm/60) - (bh + bm/60);
+  if (hrs < 0) hrs += 24;
+  hrs = Math.round(hrs * 10) / 10;
+  sleepData.push({ date: today(), bed, wake, hrs, quality: parseInt(quality), notes, ts: Date.now() });
+  if (sleepData.length > 14) sleepData = sleepData.slice(-14);
+  save('sleepData', sleepData);
+  renderSleepLog();
+  drawSleepChart();
+  toast(`Logged ${hrs}h sleep ✨`, 'success');
+}
+
+function renderSleepLog() {
+  const log = document.getElementById('sleepLog');
+  if (!sleepData.length) { log.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No sleep data yet. Start logging tonight!</div>'; return; }
+  const avg = Math.round((sleepData.reduce((a,b)=>a+b.hrs,0)/sleepData.length)*10)/10;
+  const best = Math.max(...sleepData.map(d=>d.hrs));
+  const score = Math.round((avg/8)*100);
+  document.getElementById('avgSleep').textContent = avg;
+  document.getElementById('bestSleep').textContent = best + 'h';
+  document.getElementById('sleepScore').textContent = score + '%';
+  let html = '<div style="display:flex;flex-direction:column;gap:8px">';
+  sleepData.slice().reverse().forEach((d,i) => {
+    const color = d.hrs>=8?'#00e676':d.hrs>=6?'#ffc200':'#ff2020';
+    html += `<div style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:8px;padding:10px 14px;border:1px solid var(--border)">
+      <span style="font-size:22px">😴</span>
+      <div style="flex:1">
+        <strong style="font-size:13px">${d.date} — ${d.hrs}h sleep</strong>
+        <span style="display:block;font-size:11px;color:var(--muted2)">${d.bed} → ${d.wake} · Quality: ${d.quality}/10${d.notes?' · '+d.notes:''}</span>
+      </div>
+      <span style="font-weight:700;font-size:13px;color:${color}">${d.hrs>=8?'Optimal':d.hrs>=6?'OK':'Low'}</span>
+    </div>`;
+  });
+  html += '</div>';
+  log.innerHTML = html;
+}
+
+function clearSleepLog() { sleepData=[]; save('sleepData',sleepData); renderSleepLog(); drawSleepChart(); toast('Sleep log cleared','info'); }
+
+function drawSleepChart() {
+  const canvas = document.getElementById('sleepChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width || 300, H = canvas.height || 120;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#0a0a18'; ctx.fillRect(0,0,W,H);
+  if (!sleepData.length) { ctx.fillStyle='#555'; ctx.font='12px Barlow,sans-serif'; ctx.textAlign='center'; ctx.fillText('No data yet',W/2,H/2); return; }
+  const last7 = sleepData.slice(-7);
+  const maxH = 10, pad = 24;
+  const bw = (W - pad*2) / last7.length - 4;
+  last7.forEach((d,i) => {
+    const barH = (d.hrs/maxH) * (H - pad*2);
+    const x = pad + i*(bw+4), y = H - pad - barH;
+    const color = d.hrs>=8?'#00e676':d.hrs>=6?'#2979ff':'#ff2020';
+    ctx.fillStyle = color + '33';
+    ctx.beginPath(); ctx.roundRect(x,y,bw,barH,4); ctx.fill();
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.roundRect(x,y,bw,4,2); ctx.fill();
+    ctx.fillStyle = '#666'; ctx.font='9px Barlow,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(d.date.slice(5), x+bw/2, H-6);
+    ctx.fillStyle=color; ctx.font='bold 10px Barlow,sans-serif';
+    ctx.fillText(d.hrs+'h', x+bw/2, y-4);
+  });
+  const targetY = H - pad - (8/maxH)*(H-pad*2);
+  ctx.strokeStyle='rgba(0,230,118,.4)'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(pad,targetY); ctx.lineTo(W-pad,targetY); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,230,118,.6)'; ctx.font='8px Barlow,sans-serif'; ctx.textAlign='left';
+  ctx.fillText('8h target',W-50,targetY-3);
+}
+
+// ════════════════════════════════════════════════
+// CARDIO TRACKER
+// ════════════════════════════════════════════════
+let cardioData = load('cardioData', []);
+const CARDIO_ICONS = {Running:'🏃',Cycling:'🚴',Swimming:'🏊','Brisk Walk':'🚶',HIIT:'⚡','Jump Rope':'🪢',Treadmill:'🏃',Elliptical:'🔄'};
+
+function logCardio() {
+  const type = document.getElementById('cardioType').value;
+  const dur = parseInt(document.getElementById('cardioDur').value);
+  const date = document.getElementById('cardioDate').value || today();
+  const intensity = document.getElementById('cardioIntensity').value;
+  if (!dur || dur<1) return toast('Enter a valid duration','warning');
+  cardioData.push({type, dur, date, intensity, ts: Date.now()});
+  if (cardioData.length>30) cardioData=cardioData.slice(-30);
+  save('cardioData', cardioData);
+  renderCardioLog();
+  drawCardioChart();
+  toast(`${type} ${dur} min logged! 🔥`, 'success');
+}
+
+function renderCardioLog() {
+  const log = document.getElementById('cardioLog');
+  if (!cardioData.length) { log.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">No sessions logged yet.</div>'; return; }
+  const totalMin = cardioData.reduce((a,b)=>a+b.dur,0);
+  const streak = calcStreak(cardioData.map(d=>d.date));
+  document.getElementById('totalCardioMin').textContent = totalMin;
+  document.getElementById('totalCardioSess').textContent = cardioData.length;
+  document.getElementById('cardioStreak').textContent = streak;
+  let html = '';
+  cardioData.slice().reverse().forEach(d => {
+    const icon = CARDIO_ICONS[d.type] || '🏃';
+    const iColor = d.intensity.includes('High')?'#ff2020':d.intensity.includes('Low')?'#00e676':'#2979ff';
+    html += `<div class="cardio-entry">
+      <span class="cardio-icon">${icon}</span>
+      <div class="cardio-info"><strong>${d.type} — ${d.dur} min</strong><span>${d.date} · ${d.intensity}</span></div>
+      <span class="cardio-done yes">Done</span>
+    </div>`;
+  });
+  document.getElementById('cardioLog').innerHTML = html;
+}
+
+function clearCardioLog() { cardioData=[]; save('cardioData',cardioData); renderCardioLog(); drawCardioChart(); toast('Cardio log cleared','info'); }
+
+function calcStreak(dates) {
+  if (!dates.length) return 0;
+  const unique = [...new Set(dates)].sort().reverse();
+  let streak=0, cur=new Date();
+  for (const d of unique) {
+    const diff = Math.floor((cur-new Date(d))/(86400000));
+    if (diff<=1) { streak++; cur=new Date(d); } else break;
+  }
+  return streak;
+}
+
+function drawCardioChart() {
+  const canvas = document.getElementById('cardioChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.offsetWidth||280, H=120;
+  canvas.width=W; canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#0a0a18'; ctx.fillRect(0,0,W,H);
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const today = new Date();
+  const weekMins = days.map((_,i) => {
+    const d = new Date(today); d.setDate(today.getDate()-today.getDay()+i+1);
+    const ds = d.toISOString().split('T')[0];
+    return cardioData.filter(c=>c.date===ds).reduce((a,b)=>a+b.dur,0);
+  });
+  const maxM = Math.max(...weekMins,30);
+  const pad=24, bw=(W-pad*2)/7-4;
+  weekMins.forEach((m,i) => {
+    const barH = (m/maxM)*(H-pad*2);
+    const x=pad+i*(bw+4), y=H-pad-barH;
+    const color = m>=30?'#00e676':m>0?'#2979ff':'#1e1e3a';
+    ctx.fillStyle=color+'44';
+    ctx.beginPath(); ctx.roundRect(x,y||H-pad-2,bw,barH||2,4); ctx.fill();
+    if(m>0){ctx.fillStyle=color; ctx.beginPath(); ctx.roundRect(x,y,bw,3,2); ctx.fill();}
+    ctx.fillStyle='#666'; ctx.font='9px Barlow,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(days[i],x+bw/2,H-6);
+    if(m>0){ctx.fillStyle=color; ctx.font='bold 9px Barlow,sans-serif'; ctx.fillText(m+'m',x+bw/2,y-4);}
+  });
+}
+
+// ════════════════════════════════════════════════
+// NUTRITION
+// ════════════════════════════════════════════════
+let nutritionData = load('nutritionData',[]);
+
+function logNutrition(){
+  const cal=parseInt(document.getElementById('nutCal').value)||0;
+  const pro=parseInt(document.getElementById('nutPro').value)||0;
+  const carb=parseInt(document.getElementById('nutCarb').value)||0;
+  const fat=parseInt(document.getElementById('nutFat').value)||0;
+  const water=parseFloat(document.getElementById('nutWater').value)||0;
+  nutritionData.push({date:today(),cal,pro,carb,fat,water,ts:Date.now()});
+  if(nutritionData.length>14) nutritionData=nutritionData.slice(-14);
+  save('nutritionData',nutritionData);
+  document.getElementById('dispCal').textContent=cal;
+  document.getElementById('dispPro').textContent=pro+'g';
+  document.getElementById('dispCarb').textContent=carb+'g';
+  document.getElementById('dispFat').textContent=fat+'g';
+  toast(`Today's nutrition logged! 🥩 ${pro}g protein`,'success');
+  updateAnalyticsCharts();
+}
+
+// ════════════════════════════════════════════════
+// BODY STATS
+// ════════════════════════════════════════════════
+let bodyStats = load('bodyStats',[]);
+
+function saveBodyStats(){
+  const weight=parseFloat(document.getElementById('statWeight').value)||null;
+  const bf=parseFloat(document.getElementById('statBF').value)||null;
+  const chest=parseFloat(document.getElementById('statChest').value)||null;
+  const arm=parseFloat(document.getElementById('statArm').value)||null;
+  const waist=parseFloat(document.getElementById('statWaist').value)||null;
+  const quad=parseFloat(document.getElementById('statQuad').value)||null;
+  if(!weight) return toast('Enter at least your weight','warning');
+  bodyStats.push({date:today(),weight,bf,chest,arm,waist,quad,ts:Date.now()});
+  save('bodyStats',bodyStats);
+  renderBodyStats();
+  drawWeightChart();
+  toast('Body stats saved! 📊','success');
+}
+
+function renderBodyStats(){
+  if(!bodyStats.length) return;
+  const last=bodyStats[bodyStats.length-1];
+  const prev=bodyStats.length>1?bodyStats[bodyStats.length-2]:null;
+  function setv(id,val,unit,prevVal){
+    document.getElementById(id).textContent=val||'–';
+    if(val&&prevVal){
+      const diff=Math.round((val-prevVal)*10)/10;
+      // change indicator could be added here
+    }
+  }
+  setv('dWeight',last.weight,'kg',prev?.weight);
+  setv('dBF',last.bf,'%',prev?.bf);
+  setv('dChest',last.chest,'cm',prev?.chest);
+  setv('dArm',last.arm,'cm',prev?.arm);
+  setv('dWaist',last.waist,'cm',prev?.waist);
+  setv('dQuad',last.quad,'cm',prev?.quad);
+}
+
+function drawWeightChart(){
+  const canvas=document.getElementById('weightChart');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||600, H=180;
+  canvas.width=W; canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#0a0a18'; ctx.fillRect(0,0,W,H);
+  if(!bodyStats.length){ctx.fillStyle='#555';ctx.font='13px Barlow,sans-serif';ctx.textAlign='center';ctx.fillText('No body stats logged yet',W/2,H/2);return;}
+  const data=bodyStats.filter(d=>d.weight);
+  if(data.length<2){ctx.fillStyle='#555';ctx.font='13px Barlow,sans-serif';ctx.textAlign='center';ctx.fillText('Log more entries to see trend',W/2,H/2);return;}
+  const vals=data.map(d=>d.weight);
+  const minV=Math.min(...vals)-1, maxV=Math.max(...vals)+1;
+  const pad=32;
+  function px(i){return pad+(i/(data.length-1))*(W-pad*2);}
+  function py(v){return H-pad-((v-minV)/(maxV-minV))*(H-pad*2);}
+  // Grid lines
+  for(let i=0;i<=4;i++){
+    const y=pad+i*(H-pad*2)/4;
+    ctx.strokeStyle='#1e1e3a'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-pad,y); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  // Line
+  const grad=ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#ff2020'); grad.addColorStop(1,'#ff6a00');
+  ctx.strokeStyle=grad; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  data.forEach((d,i)=>i===0?ctx.moveTo(px(i),py(d.weight)):ctx.lineTo(px(i),py(d.weight)));
+  ctx.stroke();
+  // Dots
+  data.forEach((d,i)=>{
+    ctx.fillStyle='#ff2020'; ctx.beginPath(); ctx.arc(px(i),py(d.weight),4,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 10px Barlow,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(d.weight+'kg',px(i),py(d.weight)-10);
+    ctx.fillStyle='#555'; ctx.font='9px Barlow,sans-serif';
+    ctx.fillText(d.date.slice(5),px(i),H-8);
+  });
+}
+
+// ════════════════════════════════════════════════
+// ANALYTICS CHARTS
+// ════════════════════════════════════════════════
+function updateAnalyticsCharts(){
+  drawWorkoutChart();
+  drawSleepTrendChart();
+  drawCardioTrendChart();
+  drawProteinChart();
+}
+
+function drawBar(canvasId,labels,values,colors,title){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||300, H=180;
+  canvas.width=W; canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#080812'; ctx.fillRect(0,0,W,H);
+  if(!values.some(v=>v>0)){ctx.fillStyle='#444';ctx.font='12px Barlow,sans-serif';ctx.textAlign='center';ctx.fillText('No data yet — start logging!',W/2,H/2);return;}
+  const maxV=Math.max(...values)||1;
+  const pad=28, bw=(W-pad*2)/labels.length-4;
+  values.forEach((v,i)=>{
+    const barH=(v/maxV)*(H-pad*2);
+    const x=pad+i*(bw+4), y=H-pad-barH;
+    const c=Array.isArray(colors)?colors[i%colors.length]:colors;
+    ctx.fillStyle=c+'33';
+    ctx.beginPath(); ctx.roundRect(x,y||H-pad-2,bw,barH||2,4); ctx.fill();
+    if(v>0){ctx.fillStyle=c; ctx.beginPath(); ctx.roundRect(x,y,bw,3,2); ctx.fill();}
+    ctx.fillStyle='#555'; ctx.font='8px Barlow,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i],x+bw/2,H-8);
+    if(v>0){ctx.fillStyle=c; ctx.font='bold 9px Barlow,sans-serif'; ctx.fillText(v,x+bw/2,y-4);}
+  });
+}
+
+function drawWorkoutChart(){
+  const wk=currentWeek, dayNames=['Push','Pull','Legs','Upper','Lower','Recovery'];
+  const counts=DAYS.map((day,di)=>{
+    const total=day.exercises.length;
+    const done=day.exercises.filter((_,ei)=>completedExercises[getDayKey(wk,di,ei)]).length;
+    return done;
+  });
+  drawBar('workoutChart',dayNames,counts,['#ff2020','#ff6a00','#2979ff','#00e676','#ffc200','#9090c0']);
+}
+
+function drawSleepTrendChart(){
+  if(!sleepData.length){drawBar('sleepTrendChart',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],[0,0,0,0,0,0,0],'#2979ff');return;}
+  const last7=sleepData.slice(-7);
+  drawBar('sleepTrendChart',last7.map(d=>d.date.slice(5)),last7.map(d=>d.hrs),'#2979ff');
+}
+
+function drawCardioTrendChart(){
+  if(!cardioData.length){drawBar('cardioTrendChart',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],[0,0,0,0,0,0,0],'#00e676');return;}
+  const last7=cardioData.slice(-7);
+  drawBar('cardioTrendChart',last7.map(d=>d.date.slice(5)),last7.map(d=>d.dur),'#00e676');
+}
+
+function drawProteinChart(){
+  if(!nutritionData.length){drawBar('proteinChart',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],[0,0,0,0,0,0,0],'#ff6a00');return;}
+  const last7=nutritionData.slice(-7);
+  drawBar('proteinChart',last7.map(d=>d.date.slice(5)),last7.map(d=>d.pro),'#ff6a00');
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  // Set default date for cardio
+  document.getElementById('cardioDate').value = today();
+  // Init all modules
+  renderWorkout();
+  renderSleepLog();
+  drawSleepChart();
+  renderCardioLog();
+  drawCardioChart();
+  renderBodyStats();
+  drawWeightChart();
+  updateAnalyticsCharts();
+});
+
+// Resize observer for charts
+window.addEventListener('resize',()=>{
+  drawSleepChart(); drawCardioChart(); drawWeightChart(); updateAnalyticsCharts();
+});
+</script>
+</body>
+</html>
