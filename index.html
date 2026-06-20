@@ -572,45 +572,40 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
 
 <div class="toast" id="toast"></div>
 
+
 <script>
-// ═══ UTILITIES ═══
-const $ = id => document.getElementById(id);
-function toast(msg,type='success'){
-  const t=$('toast');t.textContent=msg;t.className='toast show '+type;
-  setTimeout(()=>t.className='toast',2600);
-}
+
+// ═══ UTILS ═══
+var $=function(id){return document.getElementById(id)};
+function toast(m,t){var el=$('toast');el.textContent=m;el.className='toast show '+(t||'success');setTimeout(function(){el.className='toast'},2600)}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-function lv(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function lv(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function today(){return new Date().toISOString().split('T')[0]}
 function thisMonth(){return today().slice(0,7)}
 
-// ═══ NAVIGATION ═══
-const PAGE_TITLES = {home:'MUSII ELITE',train:'TRAIN',vitals:'VITALS',progress:'PROGRESS'};
-function navigate(page, btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));
+// ═══ NAV ═══
+function navigate(page,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.bni').forEach(function(b){b.classList.remove('on')});
   $('page-'+page).classList.add('on');
-  if(btn) btn.classList.add('on');
-  else document.querySelectorAll('.bnav-item').forEach((b,i)=>{
-    const pages=['home','train','vitals','progress'];
-    if(pages[i]===page) b.classList.add('on');
-  });
-  $('appBarTitle').textContent = page==='home'?'':PAGE_TITLES[page]||'';
+  if(btn){btn.classList.add('on')}else{
+    var ps=['home','train','vitals','progress'];
+    document.querySelectorAll('.bni').forEach(function(b,i){if(ps[i]===page)b.classList.add('on')});
+  }
+  $('pageTitle').textContent=page==='home'?'':page.toUpperCase();
   if(page==='progress'){updateMonthly();renderStreak();renderCal();}
-  if(page==='train'){renderDay();}
   window.scrollTo(0,0);
 }
-
-function switchVTab(idx,btn){
-  document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.vitals-pane').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  $('vpane-'+idx).classList.add('on');
+function switchV(i,btn){
+  document.querySelectorAll('.vtab').forEach(function(b){b.classList.remove('on')});
+  document.querySelectorAll('.vpane').forEach(function(p){p.classList.remove('on')});
+  btn.classList.add('on');$('vp-'+i).classList.add('on');
 }
 
-// ═══ EX_DATA ═══
+// ═══ EX DATA ═══
 
 const EX_DATA = {
+
 'Flat Barbell Bench Press':{
     pos:['Lie flat on bench, feet planted firmly on floor','Grip bar slightly wider than shoulder-width (81cm rings)','Unrack bar, hold directly over chest with arms locked','Lower bar in controlled arc to mid-chest (touch lightly)','Drive bar back up explosively — repeat'],
     alert:'Keep shoulder blades PINCHED and retracted throughout entire set',
@@ -743,337 +738,340 @@ const EX_DATA = {
 'Shrugs':{pos:['Dumbbells at sides — arms straight down','Let shoulders DROP fully at bottom first','Shrug straight UP — not rolling forward','Hold 1-2 full seconds at top — squeeze traps'],alert:'Rolling shoulders adds zero benefit and risks injury.',primary:['Traps (Upper)'],secondary:[],stabilizers:['Core'],intensity:{primary:95,secondary:0,stabilizer:10}},
 'Preacher Curl':{pos:['Armpits rest on top of preacher pad','Arms FULLY extended at bottom — the stretch is the point','Do NOT let elbows lift off pad','3-second slow negative — this builds the peak'],alert:'Best for bicep peak. Partial reps lose the entire benefit.',primary:['Biceps (Peak)'],secondary:[],stabilizers:[],intensity:{primary:92,secondary:0,stabilizer:0}},
 'EZ Bar Curls':{pos:['Grip EZ bar at angled sections — natural wrist position','Upper arms PINNED to sides throughout','Curl to shoulder — squeeze bicep at top','2-second descent — full stretch at bottom'],alert:'EZ bar reduces wrist stress. Same strict form as barbell.',primary:['Biceps'],secondary:['Brachialis'],stabilizers:['Core'],intensity:{primary:90,secondary:40,stabilizer:15}},
-'Hip Thrusts':{pos:['Upper back on bench — bar padded across hips','Drive hips UP AND FORWARD — full extension at top','MAXIMUM GLUTE SQUEEZE at top — hold 1 second','Chin tucked throughout — do not look at ceiling'],alert:'Most important glute exercise. Load heavy. Pelvis neutral at top.',primary:['Glutes'],secondary:['Hamstrings'],stabilizers:['Core','Quads'],intensity:{primary:95,secondary:50,stabilizer:35}}
-};;
+'Hip Thrusts':{pos:['Upper back on bench — bar padded across hips','Drive hips UP AND FORWARD — full extension at top','MAXIMUM GLUTE SQUEEZE at top — hold 1 second','Chin tucked throughout — do not look at ceiling'],alert:'Most important glute exercise. Load heavy. Pelvis neutral at top.',primary:['Glutes'],secondary:['Hamstrings'],stabilizers:['Core','Quads'],intensity:{primary:95,secondary:50,stabilizer:35}},
 
-const DAYS=[
-  {label:'Push A',title:'PUSH DAY A',sub:'Chest + Triceps + Shoulders',goal:'Compound Chest Strength',exercises:[
-    {n:'Decline Barbell Press',s:'3×8-10',g:'Chest'},
-    {n:'Flat Barbell Bench Press',s:'4×6-8',g:'Chest'},
-    {n:'Cable High-to-Low Flyes',s:'3×12-15',g:'Chest'},
-    {n:'Pec Dec Machine',s:'3×12-15',g:'Chest'},
-    {n:'Overhead Press',s:'3×8-10',g:'Shoulders'},
-    {n:'Lateral Raises',s:'3×12-15',g:'Shoulders'},
-    {n:'Dumbbell Front Raise',s:'3×12',g:'Shoulders'},
-    {n:'Overhead Tricep Extension',s:'3×12',g:'Triceps'},
-    {n:'Cable Pushdown',s:'3×12',g:'Triceps'},
-    {n:'Hanging Leg Raises',s:'3×15',g:'Abs'},
-    {n:'Cable Crunches',s:'3×20',g:'Abs'},
-  ]},
-  {label:'Pull A',title:'PULL DAY A',sub:'Back + Biceps + Rear Delts',goal:'Back Mass + Arm Size',exercises:[
-    {n:'Lat Pulldown',s:'3×10-12',g:'Back'},
-    {n:'Seated Cable Row',s:'3×10-12',g:'Back'},
-    {n:'Barbell Row',s:'3×8-10',g:'Back'},
-    {n:'Face Pulls',s:'3×15',g:'Rear Delts'},
-    {n:'Shrugs',s:'3×12',g:'Traps'},
-    {n:'Preacher Curl',s:'3×12',g:'Biceps'},
-    {n:'Hammer Curls',s:'3×12',g:'Biceps'},
-    {n:'EZ Bar Curls',s:'3×10-12',g:'Biceps'},
-    {n:'Cable Curls',s:'3×12',g:'Biceps'},
-    {n:'Cable Crunches',s:'3×20',g:'Abs'},
-  ]},
-  {label:'Legs',title:'LEG DAY',sub:'Quads · Hamstrings · Glutes · Calves',goal:'Total Leg Mass + Glutes',exercises:[
-    {n:'Back Squats',s:'4×8',g:'Quads'},
-    {n:'Romanian Deadlifts',s:'3×8',g:'Hamstrings'},
-    {n:'Leg Press',s:'3×12-15',g:'Quads'},
-    {n:'Bulgarian Split Squats',s:'3×10 each',g:'Quads'},
-    {n:'Hip Thrusts',s:'3×10-12',g:'Glutes'},
-    {n:'Lying Leg Curls',s:'3×12',g:'Hamstrings'},
-    {n:'Standing Calf Raises',s:'4×20',g:'Calves'},
-    {n:'Hanging Leg Raises',s:'3×15',g:'Abs'},
-  ]},
-  {label:'Push B',title:'PUSH DAY B',sub:'Shoulder Focus + Chest + Triceps',goal:'Shoulder Width + Definition',exercises:[
-    {n:'Overhead Press',s:'4×8-10',g:'Shoulders'},
-    {n:'Lateral Raises',s:'4×15',g:'Shoulders'},
-    {n:'Dumbbell Front Raise',s:'3×12',g:'Shoulders'},
-    {n:'Incline Dumbbell Press',s:'4×10',g:'Chest'},
-    {n:'Cable High-to-Low Flyes',s:'3×15',g:'Chest'},
-    {n:'Skull Crushers (EZ Bar)',s:'3×10',g:'Triceps'},
-    {n:'Overhead Tricep Extension',s:'3×12',g:'Triceps'},
-    {n:'Tricep Kickback',s:'3×12',g:'Triceps'},
-    {n:'Hanging Leg Raises',s:'3×15',g:'Abs'},
-    {n:'Cable Crunches',s:'3×20',g:'Abs'},
-  ]},
-  {label:'Pull B',title:'PULL DAY B',sub:'Back Width + Biceps Peak',goal:'Lat Width + Bicep Peak',exercises:[
-    {n:'Lat Pulldown',s:'4×10-12',g:'Back'},
-    {n:'Chest-Supported DB Row',s:'3×10-12',g:'Back'},
-    {n:'Barbell Row',s:'3×8-10',g:'Back'},
-    {n:'Seated Cable Row',s:'3×12',g:'Back'},
-    {n:'Face Pulls',s:'3×15',g:'Rear Delts'},
-    {n:'Barbell Shrugs',s:'3×12',g:'Traps'},
-    {n:'EZ Bar Curls',s:'3×10-12',g:'Biceps'},
-    {n:'Hammer Curls',s:'3×12',g:'Biceps'},
-    {n:'Incline DB Curls',s:'3×12',g:'Biceps'},
-  ]},
-  {label:'Arms & Abs',title:'ARMS & ABS DAY',sub:'Biceps · Triceps · Core',goal:'Arm Size + Ab Definition',exercises:[
-    {n:'EZ Bar Curls',s:'4×10-12',g:'Biceps'},
-    {n:'Preacher Curl',s:'3×12',g:'Biceps'},
-    {n:'Hammer Curls',s:'3×12',g:'Biceps'},
-    {n:'Cable Curls',s:'3×12',g:'Biceps'},
-    {n:'Skull Crushers (EZ Bar)',s:'4×10',g:'Triceps'},
-    {n:'Overhead Tricep Extension',s:'3×12',g:'Triceps'},
-    {n:'Tricep Kickback',s:'3×12',g:'Triceps'},
-    {n:'Cable Pushdown',s:'3×15',g:'Triceps'},
-    {n:'Hanging Leg Raises',s:'4×15',g:'Abs'},
-    {n:'Cable Crunches',s:'4×20',g:'Abs'},
-  ]},
+'Flat Dumbbell Press':{pos:['Lie flat on bench — dumbbells at chest level, elbows at 75°','Greater range of motion than barbell — use this advantage','Lower until elbows go slightly BELOW bench level — full stretch','Press up and slightly together — squeeze chest hard at top'],alert:'More ROM than barbell bench. Feel the full pec stretch at bottom every rep.',primary:['Chest (Pectoralis Major)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:88,secondary:42,stabilizer:28}},
+'Low-to-High Cable Flyes':{pos:['Set cables LOW at floor/ankle level','Stand in middle — slight forward lean, arms start low','Pull handles UP and together in arc — hands meet at chest height','Squeeze inner/upper chest hard at top — hold 1 second'],alert:'Low cable = inner and upper chest isolation. Different angle from high-to-low — both needed for complete chest.',primary:['Inner Chest (Sternal Head)'],secondary:['Front Delts'],stabilizers:['Core'],intensity:{primary:84,secondary:32,stabilizer:14}},
+'Overhead Cable Extension':{pos:['Set cable HIGH — use rope attachment','Face away from cable, rope behind head — step forward slightly','Elbows close to head — only forearms move throughout','Extend arms fully forward and down — squeeze triceps at lockout'],alert:'Rope grip = split at bottom for extra long head contraction. Best stretch for tricep long head.',primary:['Triceps (Long Head — Full Stretch)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],intensity:{primary:90,secondary:45,stabilizer:15}},
+'Skull Crushers (Dumbbell)':{pos:['Lie flat — hold dumbbells directly over chest, arms vertical','Lower dumbbells toward TEMPLES — 3-4 second slow eccentric','Elbows stay pointing at ceiling — do not let them flare','Extend back to start — squeeze triceps at full lockout'],alert:'Dumbbell version allows independent arm movement — better for joint health. Slow negative is everything.',primary:['Triceps (Long + Medial Head)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],intensity:{primary:88,secondary:55,stabilizer:10}},
+'Tricep Dips':{pos:['Grip parallel bars — arms straight, body upright (NOT leaning forward)','Lower until upper arms are PARALLEL to floor — full range','Elbows point straight back — not flared out to the sides','Drive up to full extension — squeeze triceps hard at top'],alert:'Stay UPRIGHT for tricep focus. Leaning forward turns this into a chest exercise.',primary:['Triceps (All 3 Heads)'],secondary:['Chest','Front Delts'],stabilizers:['Core'],intensity:{primary:92,secondary:38,stabilizer:20}}
+
+};
+
+// ═══ 6-DAY PPL SPLIT ═══
+// Coach Note: Chest→Triceps→Shoulders | Back→Biceps→Traps
+// Compound first, isolation after. Same pattern CBum, Ronnie, Jay all followed.
+var DAYS=[
+  {
+    label:'Push A',title:'PUSH A',
+    sub:'CHEST → TRICEPS → SHOULDERS',
+    goal:'Barbell Strength + Mass',
+    note:'Heavy compound day. Barbell bench first while CNS is freshest. Triceps pre-fatigued from chest pressing — hit isolation next. Shoulders last when already warm.',
+    exercises:[
+      {n:'Flat Barbell Bench Press', s:'4 × 5-6',  g:'CHEST',    alt:'Flat Dumbbell Press'},
+      {n:'Decline Barbell Press',    s:'3 × 8-10', g:'CHEST',    alt:'Decline Dumbbell Press'},
+      {n:'Low-to-High Cable Flyes',  s:'3 × 12-15',g:'CHEST',    alt:'Cable High-to-Low Flyes'},
+      {n:'Pec Dec Machine',          s:'3 × 15',   g:'CHEST',    alt:'Cable Crossovers'},
+      {n:'Overhead Cable Extension', s:'3 × 12',   g:'TRICEPS',  alt:'Overhead Tricep Extension'},
+      {n:'Tricep Kickback',          s:'3 × 15',   g:'TRICEPS',  alt:'Cable Pushdown'},
+      {n:'Overhead Press',           s:'3 × 10-12',g:'SHOULDERS',alt:'Arnold Press'},
+      {n:'Dumbbell Front Raise',     s:'3 × 12',   g:'SHOULDERS',alt:'Plate Front Raise'},
+      {n:'Lateral Raises',           s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    ]
+  },
+  {
+    label:'Pull A',title:'PULL A',
+    sub:'BACK → BICEPS → TRAPS',
+    goal:'Back Thickness + Arm Mass',
+    note:'Back rows pre-fatigue biceps — curls hit harder because biceps are already pumped. Heaviest row first, then pull variations, finish with bicep isolation.',
+    exercises:[
+      {n:'Barbell Row',       s:'4 × 6-8',   g:'BACK',    alt:'T-Bar Row'},
+      {n:'Lat Pulldown',      s:'3 × 8-10',  g:'BACK',    alt:'Pull-Ups'},
+      {n:'Seated Cable Row',  s:'3 × 10-12', g:'BACK',    alt:'Chest-Supported DB Row'},
+      {n:'Face Pulls',        s:'3 × 15-20', g:'BACK',    alt:'Reverse Pec Deck'},
+      {n:'EZ Bar Curls',      s:'4 × 10-12', g:'BICEPS',  alt:'Barbell Curls'},
+      {n:'Preacher Curl',     s:'3 × 12',    g:'BICEPS',  alt:'Incline DB Curls'},
+      {n:'Hammer Curls',      s:'3 × 12',    g:'BICEPS',  alt:'Cross-Body Hammer Curl'},
+      {n:'Shrugs',            s:'4 × 12',    g:'TRAPS',   alt:'Barbell Shrugs'},
+    ]
+  },
+  {
+    label:'Legs A',title:'LEGS A',
+    sub:'QUADS → HAMSTRINGS → GLUTES → CALVES',
+    goal:'Quad Mass + Lower Body Power',
+    note:'Squats first while legs are fresh. Quads first since they are largest muscle group. Posterior chain after. Calves last — they recover fast and need high volume.',
+    exercises:[
+      {n:'Back Squats',          s:'4 × 5-6',   g:'QUADS',     alt:'Hack Squat Machine'},
+      {n:'Leg Press',            s:'3 × 10-12', g:'QUADS',     alt:'Bulgarian Split Squats'},
+      {n:'Bulgarian Split Squats',s:'3 × 10 each',g:'QUADS',   alt:'Walking Lunges'},
+      {n:'Romanian Deadlifts',   s:'4 × 8-10',  g:'HAMSTRINGS',alt:'Stiff Leg Deadlift'},
+      {n:'Lying Leg Curls',      s:'3 × 12-15', g:'HAMSTRINGS',alt:'Seated Leg Curls'},
+      {n:'Hip Thrusts',          s:'3 × 10-12', g:'GLUTES',    alt:'Glute Bridge'},
+      {n:'Standing Calf Raises', s:'4 × 20',    g:'CALVES',    alt:'Seated Calf Raises'},
+      {n:'Hanging Leg Raises',   s:'4 × 15',    g:'ABS',       alt:'Cable Crunches'},
+    ]
+  },
+  {
+    label:'Push B',title:'PUSH B',
+    sub:'CHEST → TRICEPS → SHOULDERS',
+    goal:'Dumbbell Hypertrophy + Volume',
+    note:'Dumbbell day — greater range of motion than barbell. More stabiliser activation. Skull crushers hit long head mass. Dips as a finisher burns the triceps completely.',
+    exercises:[
+      {n:'Flat Dumbbell Press',     s:'4 × 8-10', g:'CHEST',    alt:'Flat Barbell Bench Press'},
+      {n:'Incline Dumbbell Press',  s:'3 × 10-12',g:'CHEST',    alt:'Incline Barbell Press'},
+      {n:'Cable High-to-Low Flyes', s:'3 × 12-15',g:'CHEST',    alt:'Low-to-High Cable Flyes'},
+      {n:'Pec Dec Machine',         s:'3 × 15',   g:'CHEST',    alt:'Dumbbell Flyes'},
+      {n:'Skull Crushers (Dumbbell)',s:'3 × 10-12',g:'TRICEPS', alt:'Skull Crushers (EZ Bar)'},
+      {n:'Cable Pushdown',          s:'3 × 12-15',g:'TRICEPS',  alt:'Rope Pushdown'},
+      {n:'Tricep Dips',             s:'3 × Failure',g:'TRICEPS',alt:'Overhead Cable Extension'},
+      {n:'Overhead Press',          s:'3 × 10-12',g:'SHOULDERS',alt:'Seated DB Shoulder Press'},
+      {n:'Dumbbell Front Raise',    s:'3 × 12',   g:'SHOULDERS',alt:'Cable Front Raise'},
+      {n:'Lateral Raises',          s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    ]
+  },
+  {
+    label:'Pull B',title:'PULL B',
+    sub:'BACK → BICEPS → REAR DELTS',
+    goal:'Lat Width + V-Taper + Bicep Peak',
+    note:'Width focus. Lat pulldown higher priority here. Incline curls stretch the bicep at the bottom — best exercise for developing the bicep peak. Rear delts last.',
+    exercises:[
+      {n:'Barbell Row',            s:'4 × 6-8',   g:'BACK',      alt:'Pendlay Row'},
+      {n:'Lat Pulldown',           s:'4 × 8-10',  g:'BACK',      alt:'Pull-Ups'},
+      {n:'Chest-Supported DB Row', s:'3 × 10-12', g:'BACK',      alt:'Incline DB Row'},
+      {n:'Seated Cable Row',       s:'3 × 12',    g:'BACK',      alt:'Machine Row'},
+      {n:'EZ Bar Curls',           s:'3 × 10-12', g:'BICEPS',    alt:'Barbell Curls'},
+      {n:'Incline DB Curls',       s:'3 × 12',    g:'BICEPS',    alt:'Preacher Curl'},
+      {n:'Hammer Curls',           s:'3 × 12',    g:'BICEPS',    alt:'Cable Curls'},
+      {n:'Face Pulls',             s:'4 × 15-20', g:'REAR DELTS',alt:'Reverse Pec Deck'},
+      {n:'Barbell Shrugs',         s:'3 × 12',    g:'TRAPS',     alt:'Dumbbell Shrugs'},
+    ]
+  },
+  {
+    label:'Legs B',title:'LEGS B — SATURDAY',
+    sub:'GLUTES → HAMSTRINGS → QUADS → CALVES',
+    goal:'Glute Power + Posterior Chain',
+    note:'Saturday is glute and hamstring dominant. Hip thrusts FIRST — glutes need to be hit when energy is highest. This is the session that builds the posterior chain cbum is famous for.',
+    exercises:[
+      {n:'Hip Thrusts',            s:'4 × 8-10',  g:'GLUTES',    alt:'Glute Bridge (Barbell)'},
+      {n:'Romanian Deadlifts',     s:'4 × 8-10',  g:'HAMSTRINGS',alt:'Stiff Leg Deadlift'},
+      {n:'Back Squats',            s:'3 × 8-10',  g:'QUADS',     alt:'Goblet Squat'},
+      {n:'Leg Press',              s:'3 × 12-15', g:'QUADS',     alt:'Hack Squat Machine'},
+      {n:'Bulgarian Split Squats', s:'3 × 12 each',g:'GLUTES',   alt:'Reverse Lunges'},
+      {n:'Lying Leg Curls',        s:'4 × 12-15', g:'HAMSTRINGS',alt:'Seated Leg Curls'},
+      {n:'Standing Calf Raises',   s:'4 × 20',    g:'CALVES',    alt:'Donkey Calf Raises'},
+      {n:'Hanging Leg Raises',     s:'4 × 15',    g:'ABS',       alt:'Cable Crunches'},
+    ]
+  },
 ];
 
-let CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
-function dk(d,e){return 'd'+d+'_e'+e}
+// ═══ WORKOUT ENGINE ═══
+var CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
+function dKey(d,e){return 'd'+d+'e'+e}
 
 function renderTabs(){
-  $('dayTabs').innerHTML=DAYS.map((d,i)=>
-    '<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'
-  ).join('');
+  var h='';
+  DAYS.forEach(function(d,i){h+='<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'});
+  $('dayTabs').innerHTML=h;
 }
-function selectDay(i){CUR=i;document.querySelectorAll('.dtab').forEach((b,j)=>b.classList.toggle('on',j===i));renderDay();}
+function selectDay(i){
+  CUR=i;
+  document.querySelectorAll('.dtab').forEach(function(b,j){b.classList.toggle('on',j===i)});
+  renderDay();
+}
+
 function renderDay(){
-  const day=DAYS[CUR],exs=day.exercises;
-  const done=exs.filter((_,i)=>DONE[dk(CUR,i)]).length;
-  const pct=Math.round((done/exs.length)*100);
-  let h='<div class="day-hdr">';
-  h+='<div class="badge-row"><span class="badge br">'+day.title+'</span><span class="badge bg">'+day.goal+'</span></div>';
-  h+='<h3>'+day.title+'</h3><p>'+day.sub+'</p>';
+  var day=DAYS[CUR],exs=day.exercises;
+  var done=exs.filter(function(_,i){return !!DONE[dKey(CUR,i)]}).length;
+  var pct=Math.round((done/exs.length)*100);
+
+  var h='<div class="day-hdr">';
+  h+='<div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:6px">'+day.sub+'</div>';
+  h+='<h3>'+day.title+'</h3>';
+  h+='<div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.14);border-radius:7px;padding:7px 10px;font-size:11px;color:var(--green);margin:8px 0;line-height:1.5">🧠 '+day.note+'</div>';
   h+='<div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>';
-  h+='<div class="plbl"><span>'+done+'</span> / '+exs.length+' exercises &nbsp;·&nbsp; <span style="color:var(--gold)">'+pct+'%</span></div>';
+  h+='<div class="plbl"><span>'+done+'</span> / '+exs.length+' &nbsp;·&nbsp; <span style="color:var(--gold)">'+pct+'%</span></div>';
   h+='</div><div class="ex-list">';
-  exs.forEach((ex,i)=>{
-    const k=dk(CUR,i),isDone=!!DONE[k],data=EX_DATA[ex.n]||null,id='ex'+CUR+'_'+i;
-    let mh='';
+
+  var lastGroup='';
+  exs.forEach(function(ex,i){
+    var k=dKey(CUR,i),isDone=!!DONE[k],data=EX_DATA[ex.n]||null;
+
+    // Group divider
+    if(ex.g!==lastGroup){
+      h+='<div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px;padding:0 2px">';
+      h+='<div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2)">'+ex.g+'</div>';
+      h+='<div style="flex:1;height:1px;background:var(--b)"></div>';
+      h+='</div>';
+      lastGroup=ex.g;
+    }
+
+    var mh='';
     if(data){
-      if(data.primary&&data.primary.length)
-        mh+='<div style="margin-bottom:8px"><div class="mus-cat-lbl" style="color:#ff6b81">PRIMARY ('+data.intensity.primary+'%)</div><div class="mus-pills">'+data.primary.map(m=>'<span class="mp mp-r">'+m+'</span>').join('')+'</div></div>';
-      if(data.secondary&&data.secondary.length)
-        mh+='<div style="margin-bottom:8px"><div class="mus-cat-lbl" style="color:#ffab76">SECONDARY ('+data.intensity.secondary+'%)</div><div class="mus-pills">'+data.secondary.map(m=>'<span class="mp mp-o">'+m+'</span>').join('')+'</div></div>';
-      if(data.stabilizers&&data.stabilizers.length)
-        mh+='<div><div class="mus-cat-lbl" style="color:#90b8ff">STABILIZERS ('+data.intensity.stabilizer+'%)</div><div class="mus-pills">'+data.stabilizers.map(m=>'<span class="mp mp-b">'+m+'</span>').join('')+'</div></div>';
+      if(data.primary&&data.primary.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ff6b81">🔴 PRIMARY ('+data.intensity.primary+'%)</div><div class="mus-pills">';data.primary.forEach(function(m){mh+='<span class="mp mp-r">'+m+'</span>'});mh+='</div></div>';}
+      if(data.secondary&&data.secondary.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ffab76">🟠 SECONDARY ('+data.intensity.secondary+'%)</div><div class="mus-pills">';data.secondary.forEach(function(m){mh+='<span class="mp mp-o">'+m+'</span>'});mh+='</div></div>';}
+      if(data.stabilizers&&data.stabilizers.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#90b8ff">🔵 STABILIZERS</div><div class="mus-pills">';data.stabilizers.forEach(function(m){mh+='<span class="mp mp-b">'+m+'</span>'});mh+='</div></div>';}
       if(data.intensity){
         mh+='<div class="ibar-wrap">';
-        if(data.primary&&data.primary.length) mh+='<div class="ibar"><span class="ibar-l">Primary</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.primary+'%;background:#ff1744"></div></div><span class="ibar-p" style="color:var(--red)">'+data.intensity.primary+'%</span></div>';
-        if(data.secondary&&data.secondary.length&&data.intensity.secondary) mh+='<div class="ibar"><span class="ibar-l">Secondary</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.secondary+'%;background:#ff6d00"></div></div><span class="ibar-p" style="color:var(--or)">'+data.intensity.secondary+'%</span></div>';
-        if(data.stabilizers&&data.stabilizers.length&&data.intensity.stabilizer) mh+='<div class="ibar"><span class="ibar-l">Stabilizer</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.stabilizer+'%;background:#2979ff"></div></div><span class="ibar-p" style="color:var(--blue)">'+data.intensity.stabilizer+'%</span></div>';
+        if(data.primary&&data.primary.length)mh+='<div class="ibar"><span class="ibar-l">Primary</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.primary+'%;background:#ff1744"></div></div><span class="ibar-p" style="color:var(--red)">'+data.intensity.primary+'%</span></div>';
+        if(data.secondary&&data.secondary.length&&data.intensity.secondary)mh+='<div class="ibar"><span class="ibar-l">Secondary</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.secondary+'%;background:#ff6d00"></div></div><span class="ibar-p" style="color:var(--or)">'+data.intensity.secondary+'%</span></div>';
         mh+='</div>';
       }
     }
-    h+='<div class="ex-card'+(isDone?' done':'')+'" id="c'+id+'">';
-    h+='<div class="ex-row" onclick="toggleEx(\''+id+'\')">';
-    h+='<div class="ex-ck'+(isDone?' t':'')+'" onclick="event.stopPropagation();markDone(\''+k+'\',\''+id+'\')"></div>';
+
+    h+='<div class="ex-card'+(isDone?' done':'')+'">';
+    h+='<div class="ex-row" data-eid="'+CUR+'_'+i+'" onclick="toggleEx(this)">';
+    h+='<div class="ex-ck'+(isDone?' t':'')+'" data-key="'+k+'" data-eid="'+CUR+'_'+i+'" onclick="event.stopPropagation();markDone(this)"></div>';
     h+='<div class="ex-num'+(isDone?' t':'')+'">'+( i+1)+'</div>';
-    h+='<div class="ex-info"><div class="ex-n">'+ex.n+(isDone?' <span style="color:var(--green);font-size:10px">✓</span>':'')+'</div>';
-    h+='<div class="ex-s">'+ex.s+'</div><span class="ex-g">'+ex.g+'</span></div>';
-    h+='<div class="ex-arr" id="a'+id+'">+</div></div>';
-    h+='<div class="ex-body" id="b'+id+'">';
+    h+='<div class="ex-info">';
+    h+='<div class="ex-n">'+ex.n+(isDone?' <span style="color:var(--green);font-size:10px;font-weight:700">✓</span>':'')+'</div>';
+    h+='<div class="ex-s">'+ex.s+'</div>';
+    if(ex.alt)h+='<div style="font-size:10px;color:var(--t2);margin-top:2px">↳ Or: <span style="color:var(--blue)">'+ex.alt+'</span></div>';
+    h+='</div>';
+    h+='<div class="ex-arr" id="arr'+CUR+'_'+i+'">+</div></div>';
+
+    h+='<div class="ex-body" id="body'+CUR+'_'+i+'">';
     if(data){
       h+='<div class="ex-sec"><div class="ex-sec-hd"><span class="ei">📐</span><strong style="color:#64b5f6">CORRECT POSITION</strong></div>';
-      h+='<ol class="pos-list">'+data.pos.map((s,si)=>'<li class="pos-item"><span class="step-n">'+(si+1)+'</span><span>'+s+'</span></li>').join('')+'</ol>';
-      if(data.alert) h+='<div class="pos-alert"><span>⚡</span><span>'+data.alert+'</span></div>';
+      h+='<ol class="pos-list">';
+      data.pos.forEach(function(s,si){h+='<li class="pos-item"><span class="step-n">'+(si+1)+'</span><span>'+s+'</span></li>'});
+      h+='</ol>';
+      if(data.alert)h+='<div class="pos-alert"><span>⚡</span><span>'+data.alert+'</span></div>';
       h+='</div>';
-      h+='<div class="ex-sec"><div class="ex-sec-hd"><span class="ei">💪</span><strong style="color:#ff6b6b">MUSCLES WORKED</strong></div>';
-      h+=mh+'</div>';
+      h+='<div class="ex-sec"><div class="ex-sec-hd"><span class="ei">💪</span><strong style="color:#ff6b6b">MUSCLES WORKED</strong></div>'+mh+'</div>';
     }
     h+='</div></div>';
   });
-  h+='</div><button class="finish-btn" onclick="finishWorkout()">'+(done===exs.length?'🏁':'💪')+' FINISH '+day.label+' WORKOUT</button>';
+
+  h+='</div><button class="finish-btn" onclick="finishWorkout()">'+(done===exs.length?'🏁':'💪')+' FINISH '+day.label+'</button>';
   $('dayContent').innerHTML=h;
 }
-function toggleEx(id){
-  const b=$('b'+id),a=$('a'+id);
-  if(!b) return;
-  b.classList.toggle('open',!b.classList.contains('open'));
-  a.classList.toggle('open',!a.classList.contains('open'));
+
+function toggleEx(el){
+  var eid=el.getAttribute('data-eid');
+  var body=$('body'+eid),arr=$('arr'+eid);
+  if(!body)return;
+  var o=body.classList.contains('open');
+  body.classList.toggle('open',!o);arr.classList.toggle('open',!o);
 }
-function markDone(k,id){DONE[k]=!DONE[k];sv('done',DONE);renderDay();if(DONE[k])toast('Done! 💪','success');}
+function markDone(el){
+  var k=el.getAttribute('data-key');DONE[k]=!DONE[k];sv('done',DONE);renderDay();
+  if(DONE[k])toast('Done! 💪','success');
+}
 function finishWorkout(){
-  const day=DAYS[CUR],done=day.exercises.filter((_,i)=>DONE[dk(CUR,i)]).length;
-  SESS.unshift({date:today(),dayIdx:CUR,label:day.label,done,total:day.exercises.length});
-  if(SESS.length>200) SESS=SESS.slice(0,200);
-  sv('sess',SESS);
-  day.exercises.forEach((_,i)=>delete DONE[dk(CUR,i)]);
-  sv('done',DONE);
-  markToday('trained');
-  renderDay();updateDash();
-  toast(done===day.exercises.length?'🔥 Perfect! '+day.label+' done!':'Session saved: '+done+'/'+day.exercises.length,'success');
+  var day=DAYS[CUR],done=day.exercises.filter(function(_,i){return !!DONE[dKey(CUR,i)]}).length;
+  SESS.unshift({date:today(),dayIdx:CUR,label:day.label,done:done,total:day.exercises.length});
+  if(SESS.length>300)SESS=SESS.slice(0,300);sv('sess',SESS);
+  day.exercises.forEach(function(_,i){delete DONE[dKey(CUR,i)]});sv('done',DONE);
+  markToday('trained');renderDay();updateDash();
+  toast(done===day.exercises.length?'🔥 Perfect! '+day.label+' done!':'Session saved — '+done+'/'+day.exercises.length,'success');
 }
 
 // ═══ STEPS ═══
-let stData=lv('stData',[]);
+var stData=lv('stData',[]);
 function logSteps(){
-  const v=parseInt($('stepsInp').value);
-  if(!v||v<0) return toast('Enter valid steps','warn');
-  const ex=stData.find(d=>d.date===today());
-  if(ex) ex.steps=v; else stData.unshift({date:today(),steps:v});
-  if(stData.length>60) stData=stData.slice(0,60);
-  sv('stData',stData);$('stepsInp').value='';
-  renderSteps();updateDash();toast('👟 '+v.toLocaleString()+' steps!','success');
+  var v=parseInt($('stepsInp').value);if(!v||v<0){toast('Enter valid steps','warn');return;}
+  var ex=stData.find(function(d){return d.date===today()});
+  if(ex)ex.steps=v;else stData.unshift({date:today(),steps:v});
+  if(stData.length>60)stData=stData.slice(0,60);
+  sv('stData',stData);$('stepsInp').value='';renderSteps();updateDash();
+  toast('👟 '+v.toLocaleString()+' steps!','success');
 }
-function clearSteps(){stData=[];sv('stData',stData);renderSteps();updateDash();toast('Cleared','info');}
+function clearSteps(){stData=[];sv('stData',stData);renderSteps();updateDash();toast('Cleared','info')}
 function renderSteps(){
-  const ts=stData.find(d=>d.date===today());
-  const tv=ts?ts.steps:0;
-  const deg=Math.min(tv/10000,1)*360;
-  const ring=$('sring');
-  if(ring){
-    const c=tv>=10000?'var(--green)':'var(--blue)';
-    ring.style.setProperty('--prog',deg+'deg');
-    ring.style.background='conic-gradient('+c+' '+deg+'deg, var(--s3) '+deg+'deg)';
-  }
+  var ts=stData.find(function(d){return d.date===today()});var tv=ts?ts.steps:0;
+  var deg=Math.min(tv/10000,1)*360;var ring=$('sring');
+  if(ring){var c=tv>=10000?'var(--green)':'var(--blue)';ring.style.background='conic-gradient('+c+' '+deg+'deg, var(--s3) '+deg+'deg)';}
   $('sringVal').textContent=tv.toLocaleString();
-  const l7=stData.slice(0,7);
-  $('stAvg').textContent=l7.length?Math.round(l7.reduce((a,b)=>a+b.steps,0)/l7.length).toLocaleString():'–';
-  $('stBest').textContent=stData.length?Math.max(...stData.map(d=>d.steps)).toLocaleString():'–';
-  const ch=stData.slice(0,7).reverse();
-  renderChart('stepsChart',{labels:ch.map(d=>d.date.slice(5)),values:ch.map(d=>d.steps)},ch.map(d=>d.steps>=10000?'#00e676':'#2979ff'),12000,10000);
-  const log=$('stepsLog');
+  var l7=stData.slice(0,7);
+  $('stAvg').textContent=l7.length?Math.round(l7.reduce(function(a,b){return a+b.steps},0)/l7.length).toLocaleString():'–';
+  $('stBest').textContent=stData.length?Math.max.apply(null,stData.map(function(d){return d.steps})).toLocaleString():'–';
+  var ch=stData.slice(0,7).reverse();
+  renderChart('stepsChart',{labels:ch.map(function(d){return d.date.slice(5)}),values:ch.map(function(d){return d.steps})},ch.map(function(d){return d.steps>=10000?'#00e676':'#2979ff'}),12000,10000);
+  var log=$('stepsLog');
   if(!stData.length){log.innerHTML='<div class="empty-state"><span class="ei">👟</span>No steps logged yet</div>';return;}
-  log.innerHTML='<div class="log-entries">'+stData.slice(0,8).map(d=>{
-    const c=d.steps>=10000?'var(--green)':'var(--blue)';
-    return '<div class="log-entry"><span class="log-icon">👟</span><div class="log-info"><strong>'+d.date+' — '+d.steps.toLocaleString()+' steps</strong><span>'+(d.steps>=10000?'Goal reached! 🎯':'Keep moving!')+'</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+(d.steps>=10000?'10K+':'Logged')+'</span></div>';
-  }).join('')+'</div>';
+  var lh='<div class="log-entries">';
+  stData.slice(0,8).forEach(function(d){var c=d.steps>=10000?'var(--green)':'var(--blue)';lh+='<div class="log-entry"><span class="log-icon">👟</span><div class="log-info"><strong>'+d.date+' — '+d.steps.toLocaleString()+'</strong><span>'+(d.steps>=10000?'Goal reached! 🎯':'Keep moving')+'</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+(d.steps>=10000?'10K+':'Logged')+'</span></div>'});
+  log.innerHTML=lh+'</div>';
 }
 
 // ═══ SLEEP ═══
-let slData=lv('slData',[]);
+var slData=lv('slData',[]);
 function logSleep(){
-  const bed=$('sBed').value,wake=$('sWake').value;
-  if(!bed||!wake) return toast('Enter times','warn');
-  const [bh,bm]=bed.split(':').map(Number),[wh,wm]=wake.split(':').map(Number);
-  let hrs=(wh+wm/60)-(bh+bm/60);if(hrs<0)hrs+=24;
-  hrs=Math.round(hrs*10)/10;
-  const entry={date:today(),hrs,bed,wake,q:+$('sQual').value};
-  const ex=slData.find(d=>d.date===today());
-  if(ex) Object.assign(ex,entry); else slData.unshift(entry);
-  if(slData.length>60) slData=slData.slice(0,60);
-  sv('slData',slData);renderSleep();updateDash();toast(hrs+'h sleep logged ✨','success');
+  var bed=$('sBed').value,wake=$('sWake').value;if(!bed||!wake){toast('Enter times','warn');return;}
+  var b=bed.split(':'),w=wake.split(':');var hrs=(parseInt(w[0])+parseInt(w[1])/60)-(parseInt(b[0])+parseInt(b[1])/60);if(hrs<0)hrs+=24;hrs=Math.round(hrs*10)/10;
+  var entry={date:today(),hrs:hrs,bed:bed,wake:wake,q:parseInt($('sQual').value)};
+  var ex=slData.find(function(d){return d.date===today()});if(ex)Object.assign(ex,entry);else slData.unshift(entry);
+  if(slData.length>60)slData=slData.slice(0,60);sv('slData',slData);renderSleep();updateDash();
+  toast(hrs+'h sleep logged ✨','success');
 }
-function clearSleep(){slData=[];sv('slData',slData);renderSleep();updateDash();toast('Cleared','info');}
+function clearSleep(){slData=[];sv('slData',slData);renderSleep();updateDash();toast('Cleared','info')}
 function renderSleep(){
-  const l7=slData.slice(0,7);
-  if(!slData.length){
-    ['slAvg','slBest','slScore'].forEach(id=>$(id).textContent='–');
-    renderChart('sleepChart',{labels:['–','–','–','–','–','–','–'],values:[0,0,0,0,0,0,0]},'#2979ff',9,8);
-    $('sleepLog').innerHTML='<div class="empty-state"><span class="ei">😴</span>No sleep data yet</div>';return;
-  }
-  const avg=Math.round((l7.reduce((a,b)=>a+b.hrs,0)/l7.length)*10)/10;
-  $('slAvg').textContent=avg+'h';
-  $('slBest').textContent=Math.max(...slData.map(d=>d.hrs))+'h';
-  $('slScore').textContent=Math.round((avg/8)*100)+'%';
-  const ch=slData.slice(0,7).reverse();
-  renderChart('sleepChart',{labels:ch.map(d=>d.date.slice(5)),values:ch.map(d=>d.hrs)},ch.map(d=>d.hrs>=8?'#00e676':d.hrs>=6?'#2979ff':'#ff1744'),9,8);
-  $('sleepLog').innerHTML='<div class="log-entries">'+slData.slice(0,8).map(d=>{
-    const c=d.hrs>=8?'var(--green)':d.hrs>=6?'var(--blue)':'var(--red)';
-    const lb=d.hrs>=8?'Optimal':d.hrs>=6?'Good':'Low';
-    return '<div class="log-entry"><span class="log-icon">😴</span><div class="log-info"><strong>'+d.date+' — '+d.hrs+'h</strong><span>'+d.bed+' → '+d.wake+' · Quality '+d.q+'/10</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+lb+'</span></div>';
-  }).join('')+'</div>';
+  if(!slData.length){['slAvg','slBest','slScore'].forEach(function(id){$(id).textContent='–'});renderChart('sleepChart',{labels:['–','–','–','–','–','–','–'],values:[0,0,0,0,0,0,0]},'#2979ff',9,8);$('sleepLog').innerHTML='<div class="empty-state"><span class="ei">😴</span>No sleep data yet</div>';return;}
+  var l7=slData.slice(0,7),avg=Math.round((l7.reduce(function(a,b){return a+b.hrs},0)/l7.length)*10)/10;
+  $('slAvg').textContent=avg+'h';$('slBest').textContent=Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h';$('slScore').textContent=Math.round((avg/8)*100)+'%';
+  var ch=slData.slice(0,7).reverse();
+  renderChart('sleepChart',{labels:ch.map(function(d){return d.date.slice(5)}),values:ch.map(function(d){return d.hrs})},ch.map(function(d){return d.hrs>=8?'#00e676':d.hrs>=6?'#2979ff':'#ff1744'}),9,8);
+  var lh='<div class="log-entries">';
+  slData.slice(0,8).forEach(function(d){var c=d.hrs>=8?'var(--green)':d.hrs>=6?'var(--blue)':'var(--red)';var lb=d.hrs>=8?'Optimal':d.hrs>=6?'Good':'Low';lh+='<div class="log-entry"><span class="log-icon">😴</span><div class="log-info"><strong>'+d.date+' — '+d.hrs+'h</strong><span>'+d.bed+' → '+d.wake+' · Q:'+d.q+'/10</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+lb+'</span></div>'});
+  $('sleepLog').innerHTML=lh+'</div>';
 }
 
 // ═══ STREAK ═══
-let tDays=lv('tDays',{});
-function markToday(type){
-  tDays[today()]=type;sv('tDays',tDays);
-  renderStreak();renderCal();updateDash();
-  if(type==='trained') toast('Training day logged! 🔥','success');
-  else toast('Rest day marked 😴','info');
-}
+var tDays=lv('tDays',{});
+function markToday(type){tDays[today()]=type;sv('tDays',tDays);renderStreak();renderCal();updateDash();if(type==='trained')toast('Training logged! 🔥','success');else toast('Rest day 😴','info')}
 function renderStreak(){
-  const dates=Object.keys(tDays).sort();
-  const trained=Object.values(tDays).filter(v=>v==='trained').length;
-  let cur=0,d=new Date();
-  for(let i=0;i<365;i++){
-    const ds=d.toISOString().split('T')[0];
-    if(tDays[ds]==='trained'){cur++;d.setDate(d.getDate()-1);}
-    else if(i===0){d.setDate(d.getDate()-1);}
-    else break;
-  }
-  let max=0,cs=0,prev=null;
-  dates.forEach(dt=>{
-    if(tDays[dt]!=='trained'){cs=0;prev=null;return;}
-    if(prev){const diff=Math.round((new Date(dt)-new Date(prev))/86400000);if(diff===1)cs++;else cs=1;}
-    else cs=1;
-    if(cs>max)max=cs;prev=dt;
-  });
-  $('curStr').textContent=cur;$('bestStr').textContent=max;$('totDays').textContent=trained;
-  $('dStreak').textContent=cur;
+  var dates=Object.keys(tDays).sort(),trained=Object.values(tDays).filter(function(v){return v==='trained'}).length;
+  var cur=0,d=new Date();
+  for(var i=0;i<365;i++){var ds=d.toISOString().split('T')[0];if(tDays[ds]==='trained'){cur++;d.setDate(d.getDate()-1);}else if(i===0){d.setDate(d.getDate()-1);}else break;}
+  var max=0,cs=0,prev=null;
+  dates.forEach(function(dt){if(tDays[dt]!=='trained'){cs=0;prev=null;return;}if(prev){var diff=Math.round((new Date(dt)-new Date(prev))/86400000);if(diff===1)cs++;else cs=1;}else cs=1;if(cs>max)max=cs;prev=dt;});
+  $('curStr').textContent=cur;$('bestStr').textContent=max;$('totDays').textContent=trained;$('dStreak').textContent=cur;
 }
 function renderCal(){
-  const cal=$('calGrid'),lbs=$('calLabels');
-  if(!cal) return;
-  const todayD=new Date(),cells=[];
-  const start=new Date(todayD);start.setDate(todayD.getDate()-89);
+  var cal=$('calGrid'),lbs=$('calLabels');if(!cal)return;
+  var todayD=new Date(),cells=[],start=new Date(todayD);start.setDate(todayD.getDate()-89);
   while(start.getDay()!==1)start.setDate(start.getDate()-1);
-  const d=new Date(start);
+  var d=new Date(start);
   while(d<=todayD||cells.length%7!==0){
-    const ds=d.toISOString().split('T')[0];
-    const isFuture=d>todayD,isToday=ds===today(),status=tDays[ds];
-    let cls='cc ';
-    if(isFuture)cls+='c-empty';
-    else if(status==='trained')cls+='c-trained';
-    else if(status==='rest')cls+='c-rest';
-    else cls+='c-none';
-    if(isToday)cls+=' c-today';
+    var ds=d.toISOString().split('T')[0],isFuture=d>todayD,isToday=ds===today(),status=tDays[ds];
+    var cls='cc '+(isFuture?'c-empty':status==='trained'?'c-trained':status==='rest'?'c-rest':'c-none')+(isToday?' c-today':'');
     cells.push('<div class="'+cls+'" title="'+ds+(status?' · '+status:'')+'"></div>');
-    d.setDate(d.getDate()+1);
-    if(cells.length>400)break;
+    d.setDate(d.getDate()+1);if(cells.length>400)break;
   }
-  const weeks=Math.ceil(cells.length/7),trans=[];
-  for(let r=0;r<7;r++)for(let c=0;c<weeks;c++){const idx=c*7+r;trans.push(idx<cells.length?cells[idx]:'<div class="cc c-empty"></div>');}
-  cal.style.gridTemplateColumns='repeat('+weeks+',minmax(0,1fr))';
-  cal.style.gridTemplateRows='repeat(7,1fr)';
-  cal.innerHTML=trans.join('');
-  if(lbs)lbs.innerHTML=['M','T','W','T','F','S','S'].map(l=>'<div class="crl">'+l+'</div>').join('');
+  var weeks=Math.ceil(cells.length/7),trans=[];
+  for(var r=0;r<7;r++)for(var c=0;c<weeks;c++){var idx=c*7+r;trans.push(idx<cells.length?cells[idx]:'<div class="cc c-empty"></div>');}
+  cal.style.gridTemplateColumns='repeat('+weeks+',minmax(0,1fr))';cal.style.gridTemplateRows='repeat(7,1fr)';cal.innerHTML=trans.join('');
+  if(lbs)lbs.innerHTML=['M','T','W','T','F','S','S'].map(function(l){return '<div class="crl">'+l+'</div>'}).join('');
 }
 
 // ═══ MONTHLY ═══
 function updateMonthly(){
-  const tm=thisMonth();
-  const mSess=SESS.filter(s=>s.date.startsWith(tm));
+  var tm=thisMonth(),mSess=SESS.filter(function(s){return s.date.startsWith(tm)});
   $('mW').textContent=mSess.length;
-  const mSl=slData.filter(d=>d.date.startsWith(tm));
-  $('mS').textContent=mSl.length?(Math.round((mSl.reduce((a,b)=>a+b.hrs,0)/mSl.length)*10)/10)+'h':'–';
-  const mSt=stData.filter(d=>d.date.startsWith(tm));
-  $('mSt').textContent=mSt.length?Math.round(mSt.reduce((a,b)=>a+b.steps,0)/mSt.length).toLocaleString():'–';
-  $('mBs').textContent=slData.length?Math.max(...slData.map(d=>d.hrs))+'h':'–';
-  renderChart('dayChart',{labels:DAYS.map(d=>d.label),values:DAYS.map((_,di)=>mSess.filter(s=>s.dayIdx===di).length)},
-    ['#ff1744','#ff6d00','#2979ff','#00e676','#ffc200']);
+  var mSl=slData.filter(function(d){return d.date.startsWith(tm)});$('mS').textContent=mSl.length?(Math.round((mSl.reduce(function(a,b){return a+b.hrs},0)/mSl.length)*10)/10)+'h':'–';
+  var mSt=stData.filter(function(d){return d.date.startsWith(tm)});$('mSt').textContent=mSt.length?Math.round(mSt.reduce(function(a,b){return a+b.steps},0)/mSt.length).toLocaleString():'–';
+  $('mBs').textContent=slData.length?Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h':'–';
+  renderChart('dayChart',{labels:DAYS.map(function(d){return d.label}),values:DAYS.map(function(_,di){return mSess.filter(function(s){return s.dayIdx===di}).length})},['#ff1744','#ff6d00','#2979ff','#00e676','#ffc200','#9c27b0']);
 }
 
 // ═══ DASHBOARD ═══
 function updateDash(){
-  const sl=slData[0];$('dSleep').textContent=sl?sl.hrs+'h':'–';
-  const ts=stData.find(d=>d.date===today());$('dSteps').textContent=ts?ts.steps.toLocaleString():'–';
-  $('dMonth').textContent=SESS.filter(s=>s.date.startsWith(thisMonth())).length;
-  const h=new Date().getHours();
-  const g=h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
-  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  $('greet').textContent=g+' 💪';
-  $('greetSub').textContent=days[new Date().getDay()]+' — stay consistent.';
-  const suggest=DAYS[SESS.length%5];
-  $('tcName').textContent=suggest.title;$('tcSub').textContent=suggest.sub;
+  var sl=slData[0];$('dSleep').textContent=sl?sl.hrs+'h':'–';
+  var ts=stData.find(function(d){return d.date===today()});$('dSteps').textContent=ts?ts.steps.toLocaleString():'–';
+  $('dMonth').textContent=SESS.filter(function(s){return s.date.startsWith(thisMonth())}).length;
+  var h=new Date().getHours(),g=h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  $('greet').textContent=g+' 💪';$('greetSub').textContent=days[new Date().getDay()]+' — stay consistent.';
+  var idx=SESS.length%6;$('tcName').textContent=DAYS[idx].title;$('tcSub').textContent=DAYS[idx].sub;
   $('appDate').textContent=new Date().toLocaleDateString('en',{month:'short',day:'numeric'});
 }
 
 // ═══ CHART ═══
 function renderChart(id,data,colors,maxVal,targetLine){
-  const el=$(id);if(!el)return;
-  const max=maxVal||Math.max(...data.values,1);
-  let h='<div class="chart-bar-row">';
-  data.labels.forEach((lbl,i)=>{
-    const v=data.values[i]||0;
-    const ht=Math.max((v/max)*78,v>0?4:2);
-    const c=Array.isArray(colors)?colors[i%colors.length]:colors;
+  var el=$(id);if(!el)return;var max=maxVal||Math.max.apply(null,data.values.concat([1]));
+  var h='<div class="chart-bar-row">';
+  data.labels.forEach(function(lbl,i){
+    var v=data.values[i]||0,ht=Math.max((v/max)*78,v>0?4:2),c=Array.isArray(colors)?colors[i%colors.length]:colors;
     h+='<div class="chart-col"><div class="chart-val" style="color:'+c+'">'+(v>0?v:'')+'</div><div class="chart-bar" style="height:'+ht+'px;background:'+c+'33;border-top:2px solid '+c+'"></div><div class="chart-lbl">'+lbl+'</div></div>';
   });
   h+='</div>';
-  if(targetLine!=null){const p=(targetLine/max)*78;h+='<div class="chart-target" style="bottom:'+(p+4)+'px"></div>';}
+  if(targetLine!=null){var p=(targetLine/max)*78;h+='<div class="chart-target" style="bottom:'+(p+4)+'px"></div>';}
   el.innerHTML=h;
 }
 
 // ═══ INIT ═══
-document.addEventListener('DOMContentLoaded',()=>{
-  renderTabs();renderDay();
-  renderSteps();renderSleep();
-  renderStreak();renderCal();
-  updateDash();
+document.addEventListener('DOMContentLoaded',function(){
+  renderTabs();renderDay();renderSteps();renderSleep();renderStreak();renderCal();updateDash();
 });
 
 </script>
