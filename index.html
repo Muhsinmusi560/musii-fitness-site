@@ -573,333 +573,478 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
 <div class="toast" id="toast"></div>
 
 
-<script>
 
-// ═══ UTILS ═══
+<script>
+const EX_DATA = {
+
+'Flat Barbell Bench Press':{
+  why:'Primary chest mass builder. Muhsin chest scores 6.5/10 — this is the compound that fixes it. Barbell allows heaviest load for maximum mechanical tension on pec major.',
+  tempo:'3-1-1-0',rir:2,rest:180,
+  pos:['Lie flat. Shoulder blades pinched back and DOWN into bench — they stay there the whole set','Grip bar at 81cm marks — just outside shoulder width','Lower in controlled arc to MID-CHEST — 3 seconds down, 1 second pause','Drive up explosively — squeeze chest at top — do not lock elbows out completely'],
+  alert:'Front delts and triceps tend to dominate your pressing. THINK CHEST. Elbows at 75 degrees not 90.',
+  primary:['Pectoralis Major (Sternal Head)'],secondary:['Front Delts','Triceps'],stabilizers:['Upper Back','Core'],intensity:{primary:92,secondary:44,stabilizer:28}},
+
+'Incline Barbell Press':{
+  why:'Upper chest is the area that creates chest projection and fullness from the side. Muhsin lacks upper chest development. This directly targets the clavicular head.',
+  tempo:'3-1-1-0',rir:2,rest:150,
+  pos:['Set bench to EXACTLY 30 degrees — not 45. 30 is upper chest. 45 becomes shoulder press','Grip slightly wider than flat bench — unrack over upper chest','Lower to UPPER chest — just below collarbone — 3 second controlled descent','Press up and very slightly back toward rack — feel upper chest contracting'],
+  alert:'30 degrees is the scientific sweet spot. Higher = front delt takes over. Lower = same as flat. Never compromise on the angle.',
+  primary:['Upper Chest (Clavicular Head)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:90,secondary:50,stabilizer:25}},
+
+'Decline Dumbbell Press':{
+  why:'Lower chest is underdeveloped in Muhsin. Decline targets the sternal/lower pec head that gives the chest its defined lower border. Without this the chest looks flat from the front.',
+  tempo:'3-1-1-0',rir:2,rest:120,
+  pos:['Lock feet under pads — 15-20 degree decline — not extreme','Dumbbells at lower chest level — elbows at 75 degrees from body','Lower until elbows drop slightly below chest level — feel lower pec stretch','Press up — squeeze lower and inner chest hard at the top of each rep'],
+  alert:'Most athletes skip decline and then wonder why their lower chest looks unfinished. This is a non-negotiable for Muhsin.',
+  primary:['Lower Chest (Sternal Head)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:90,secondary:40,stabilizer:22}},
+
+'Plate Loaded Incline Chest Press Machine':{
+  why:'After barbell incline, the machine removes stabiliser fatigue. Muhsin can now overload the upper chest with full focus on the muscle — no balance required.',
+  tempo:'2-1-2-0',rir:1,rest:120,
+  pos:['Adjust seat — handles must align with UPPER chest not mid chest','Chest up and back — shoulder blades pinched on the pad throughout','Press forward — full extension but do not lock out — squeeze upper chest','3 second return — control the negative — this is where growth happens'],
+  alert:'Seat height changes everything. Too low and it becomes a flat press. Too high and it becomes a shoulder press. Find the position where you feel upper chest working.',
+  primary:['Upper Chest (Clavicular Head)'],secondary:['Front Delts','Triceps'],stabilizers:[],intensity:{primary:90,secondary:38,stabilizer:0}},
+
+'Pec Dec / Chest Fly Machine':{
+  why:'Muhsin chest loses tension during presses — the fly pattern fixes this. Machine keeps constant tension through the full range. Pure chest isolation for shape and fullness.',
+  tempo:'2-1-2-1',rir:1,rest:90,
+  pos:['Adjust seat so elbows are exactly at shoulder height when on pads','Forearms on pads throughout — do not let it become a straight arm movement','Squeeze pads together — feel the chest SQUEEZING at peak — hold 1 second','3-4 second slow return — feel the chest stretching fully at the open position'],
+  alert:'The stretch at the open position is as important as the squeeze. Both ends of the movement build the muscle.',
+  primary:['Chest (Sternal + Inner)'],secondary:['Front Delts'],stabilizers:[],intensity:{primary:92,secondary:28,stabilizer:0}},
+
+'Pec Dec Rear Delt Setting':{
+  why:'Rear delts balance the shoulder — prevents the round-shouldered look and creates 3D shoulder depth from the rear. Muhsin already has good rear delt foundation — this is maintenance.',
+  tempo:'2-1-2-1',rir:2,rest:90,
+  pos:['Reverse position — face the machine — arms bent at 90 degrees','Grip the handles so arms are at shoulder height on each side','Open arms wide and BACK — drive elbows backward — squeeze rear delts at full range','Controlled return — do not let the weight pull arms forward'],
+  alert:'Light weight. Rear delts are small. Feel the muscle — do not just move the handles.',
+  primary:['Rear Delts'],secondary:['Rhomboids','Mid Traps'],stabilizers:[],intensity:{primary:92,secondary:55,stabilizer:0}},
+
+'Low-to-High Cable Fly':{
+  why:'Lower chest needs extra attention in Muhsin. The upward arc of the low cable fly directly targets the sternal head and creates the defined lower chest border that separates good chests from great ones.',
+  tempo:'2-1-2-1',rir:1,rest:90,
+  pos:['Set cable at the LOWEST position — ankle or floor level','Stand between stations — slight forward lean — arms start low at sides','Pull handles UP and together in smooth arc — hands meet at chest or eye level','Squeeze inner and lower chest at top — slow 3 second return down and out'],
+  alert:'This is the exercise that builds the lower chest definition. Do not skip this for any reason.',
+  primary:['Lower Chest (Sternal Head)','Inner Chest'],secondary:['Front Delts'],stabilizers:['Core'],intensity:{primary:86,secondary:32,stabilizer:14}},
+
+'Chest Supported T-Bar Row':{
+  why:'Mid-back is 5.5/10 — the biggest structural weakness. Rhomboids and mid traps need density. Chest support eliminates lower back fatigue — Muhsin can go heavy and FEEL the mid back working.',
+  tempo:'3-0-1-1',rir:2,rest:150,
+  pos:['Chest flat on angled pad and stays there throughout the entire set','Arms fully extended at the bottom — feel the mid back stretching','Drive elbows UP and BACK — squeeze shoulder blades HARD together at peak','Hold the contracted position 1 second — feel the rhomboids squeezing'],
+  alert:'The peak contraction squeeze is what builds mid-back density. Ronnie Coleman paused every rep on rows. There is a reason his back looked the way it did.',
+  primary:['Rhomboids','Mid Traps'],secondary:['Lats','Rear Delts','Biceps'],stabilizers:[],intensity:{primary:92,secondary:55,stabilizer:0}},
+
+'Isolateral High Row Machine':{
+  why:'Each arm works independently. Eliminates the stronger side compensating for the weaker side. Directly targets lat width — which is the key to Muhsin V-taper.',
+  tempo:'3-0-1-0',rir:2,rest:120,
+  pos:['Sit facing machine — chest on pad — grip one handle at a time or both','Full arm extension at the top — lat fully stretched before each rep','Pull handle DOWN toward hip — elbow drives low and back','Slow 3 second return to full stretch every rep'],
+  alert:'Focus on the stretch at the top. Most people shortcut the range and lose the lat activation entirely.',
+  primary:['Lats (Latissimus Dorsi)'],secondary:['Mid Back','Biceps'],stabilizers:['Core'],intensity:{primary:90,secondary:52,stabilizer:20}},
+
+'Seated Cable Row (Wide Ergonomic Handle)':{
+  why:'Wide grip activates more upper back and rear delt fibres. Mid-back priority — wide handle targets rhomboids and upper traps better than close grip.',
+  tempo:'3-0-1-1',rir:2,rest:120,
+  pos:['Sit tall — chest up — do not lean back to initiate the pull','Full stretch at the front — scapula protracts completely forward','Pull to lower chest — elbows drive wide and back — squeeze at peak','Hold 1 second — feel upper back — slow 3 second return to full stretch'],
+  alert:'The full stretch at the front is where mid-back gains are won or lost. Never shortchange the range of motion.',
+  primary:['Upper Back (Rhomboids + Mid Traps)'],secondary:['Rear Delts','Biceps','Lats'],stabilizers:['Core'],intensity:{primary:88,secondary:50,stabilizer:25}},
+
+'Seated Cable Row (Narrow Handle)':{
+  why:'Narrow grip shifts emphasis to lats and lower mid-back. Different angle from wide grip — together they cover the entire back. Lat width needs consistent work.',
+  tempo:'3-0-1-1',rir:2,rest:120,
+  pos:['Sit tall — V-bar or narrow attachment — elbows stay close to torso throughout','Full stretch at the front — lats lengthening','Pull to belly button — elbows drive straight back — squeeze mid back at peak','Slow 3 second return — full stretch every rep'],
+  alert:'Elbows must stay close to the body. Wide elbows turns this into a rear delt exercise.',
+  primary:['Lats','Mid Back'],secondary:['Biceps'],stabilizers:['Core'],intensity:{primary:88,secondary:48,stabilizer:22}},
+
+'Seated Cable Row (Chrome U Handle)':{
+  why:'Neutral grip provides balanced mid-back activation. Used for volume accumulation — completing the weekly mid-back work needed for thickness development.',
+  tempo:'3-0-1-1',rir:2,rest:90,
+  pos:['Neutral grip — palms facing each other throughout','Sit tall — pull to lower chest — elbows at 45 degrees from body','Feel both lat and mid-back contracting simultaneously at peak','Full stretch every rep — do not short the range for heavier weight'],
+  alert:'This is the third row variation of the week. Focus on feel — not weight. The mid-back responds to quality not just load.',
+  primary:['Lats','Upper Back'],secondary:['Biceps','Rear Delts'],stabilizers:['Core'],intensity:{primary:88,secondary:52,stabilizer:22}},
+
+'Cable Bicep Curl (W Bar)':{
+  why:'Biceps are already 7.5/10 — maintenance volume only. W-bar reduces wrist strain. Cable keeps constant tension unlike barbell. Efficient maintenance exercise.',
+  tempo:'2-1-2-0',rir:2,rest:90,
+  pos:['Attach W-bar to low cable — stand facing the machine','Upper arms pinned to sides — they do not move — at all','Curl to shoulder level — squeeze and hold 1 second at peak','2 second controlled descent — full stretch at the bottom'],
+  alert:'Biceps do not need more volume — they need maintained. 3 sets here is enough. Do not add sets.',
+  primary:['Biceps (Brachii)'],secondary:['Brachialis'],stabilizers:['Core'],intensity:{primary:92,secondary:42,stabilizer:14}},
+
+'Cable Bicep Curl (Straight Bar)':{
+  why:'Straight bar forces maximum supination which activates the bicep peak harder than any other grip. Maintenance with peak contraction focus.',
+  tempo:'2-1-2-1',rir:2,rest:90,
+  pos:['Attach straight bar to low cable — underhand grip — shoulder width','Upper arms completely fixed to sides — elbow hinge only','Curl fully — fully supinate at the top — squeeze peak hard','2 second controlled descent to full arm extension'],
+  alert:'If wrists hurt switch to W-bar. Maintenance exercise — 2-3 sets maximum.',
+  primary:['Biceps (Peak)'],secondary:['Brachialis'],stabilizers:['Core'],intensity:{primary:92,secondary:38,stabilizer:14}},
+
+'Hammer Curls':{
+  why:'Brachialis sits under the bicep and pushes it upward when developed — creating arm thickness. Maintenance for Muhsin who already has good arm genetics.',
+  tempo:'2-1-2-0',rir:2,rest:90,
+  pos:['Neutral grip — thumbs pointing UP — never rotate to palms up','Upper arms pinned to sides throughout — only forearm moves','Curl to shoulder level — feel brachialis on the outer arm contracting','2-3 second descent — full extension at the bottom'],
+  alert:'Maintenance only. 2 sets. Arms are already ahead — do not over-invest here.',
+  primary:['Brachialis','Biceps (Short Head)'],secondary:[],stabilizers:['Core'],intensity:{primary:90,secondary:40,stabilizer:12}},
+
+'Face Pulls':{
+  why:'Rear delt health and posture correction. Keeps shoulder joint healthy for continued heavy pressing. Creates 3D shoulder appearance from the rear. Non-negotiable for longevity.',
+  tempo:'2-1-2-1',rir:2,rest:90,
+  pos:['Cable at exactly face level — attach rope — split the rope at both ends','Pull rope to FACE — hands finish near ears — elbows HIGH and WIDE','At the end: externally rotate — thumbs point fully backwards','Light weight only — feel the rear delts and rotator cuff — not the traps'],
+  alert:'The most important exercise for shoulder health and posture. Light weight. Every week. Forever.',
+  primary:['Rear Delts'],secondary:['Mid Traps','Rotator Cuff'],stabilizers:['Upper Back'],intensity:{primary:88,secondary:58,stabilizer:40}},
+
+'Seated Dumbbell Shoulder Press':{
+  why:'Shoulder press provides the deltoid mass that creates the wide-shoulder look Muhsin is training toward. Seated forces strict form — no leg drive.',
+  tempo:'3-0-1-0',rir:2,rest:150,
+  pos:['Sit upright — back straight — core BRACED throughout every rep','Dumbbells at ear level — palms facing forward','Press directly overhead — do not let back arch — brace prevents this','Lower to ear level — 3 second controlled descent each rep'],
+  alert:'Core bracing every rep is non-negotiable. Prevents lower back extension and keeps the load on the delts.',
+  primary:['Front Delts','Side Delts'],secondary:['Triceps'],stabilizers:['Core','Traps'],intensity:{primary:88,secondary:48,stabilizer:40}},
+
+'Lateral Raises':{
+  why:'HIGHEST PRIORITY for visual improvement. Side delts are the biggest contributor to the wide-shoulder V-taper look. Muhsin is 6/10 here — improving this changes the entire physique proportion.',
+  tempo:'2-0-3-0',rir:2,rest:90,
+  pos:['Stand tall — dumbbells at sides — slight elbow bend maintained throughout','Lead with ELBOWS — not wrists — elbow stays slightly higher than hand','Raise to shoulder height ONLY — no higher — pause briefly at the top','3 second SLOW descent — this is where side delt grows — do not rush it'],
+  alert:'The 3-second negative is the entire point of lateral raises. Dropping fast is wasted sets. Light weight. Slow. Feel every rep.',
+  primary:['Side Delts (Lateral Head)'],secondary:['Upper Traps'],stabilizers:['Core'],intensity:{primary:92,secondary:28,stabilizer:14}},
+
+'Cable Lateral Raises':{
+  why:'Cable maintains tension at the bottom of the movement unlike dumbbells. Combined with dumbbell laterals it gives complete side delt stimulus through the entire range.',
+  tempo:'2-0-3-0',rir:1,rest:90,
+  pos:['Single arm — cable at lowest position — cross body setup','Lead with the elbow — raise to shoulder height — same form as dumbbell version','Cable keeps tension at the bottom — feel it even at the start of the raise','3 second slow descent — constant tension is the advantage here'],
+  alert:'Do not go heavy. Side delts are small muscles. The pump tells you it is working.',
+  primary:['Side Delts'],secondary:['Upper Traps'],stabilizers:['Core'],intensity:{primary:92,secondary:25,stabilizer:12}},
+
+'Cable Overhead Tricep Extension':{
+  why:'Triceps are 7.5/10 — maintenance. Overhead position stretches the long head maximally — most effective position for the long head which is 2/3 of the tricep.',
+  tempo:'3-0-1-0',rir:2,rest:90,
+  pos:['Attach rope to high cable — face away from cable — step forward','Rope behind head — elbows close to ears — only forearms move','Extend arms fully forward — squeeze triceps hard at full lockout','3 second return — feel the long head stretch behind the elbow'],
+  alert:'Maintenance only — 2-3 sets. Triceps do not need extra volume.',
+  primary:['Triceps (Long Head)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],intensity:{primary:90,secondary:48,stabilizer:15}},
+
+'Cable Tricep Pushdown (V-Bar)':{
+  why:'Maintenance for triceps. V-bar neutral grip reduces wrist stress. All three heads hit efficiently. Quick maintenance after chest work.',
+  tempo:'2-0-1-1',rir:2,rest:90,
+  pos:['V-bar on high cable — elbows pinned to sides — they do not move','Extend arms downward — full lockout every rep — squeeze at bottom','Slow 2 second return — elbows stay fixed throughout the entire set'],
+  alert:'Elbows drifting forward turns this into a front delt exercise. Pin them to your sides.',
+  primary:['Triceps (All Heads)'],secondary:[],stabilizers:['Core'],intensity:{primary:90,secondary:0,stabilizer:14}},
+
+'Cable Tricep Pushdown (Straight Bar)':{
+  why:'Maximum tricep contraction due to wrist position. Maintenance at end of push sessions.',
+  tempo:'2-0-1-1',rir:2,rest:90,
+  pos:['Straight bar on high cable — overhand grip — shoulder width apart','Elbows pinned to sides — only forearms move downward','Push bar to hip level — full extension — squeeze and hold 1 second','2 second controlled return — stay strict throughout'],
+  alert:'2-3 sets only. Triceps are a maintenance muscle for Muhsin.',
+  primary:['Triceps (All Heads)'],secondary:[],stabilizers:['Core'],intensity:{primary:90,secondary:0,stabilizer:14}},
+
+'Smith Machine Squat':{
+  why:'Controlled quad-focused squat. Smith removes balance demand — Muhsin can focus entirely on the quad contraction. Foot position forward shifts load to outer quad sweep.',
+  tempo:'3-0-1-0',rir:2,rest:150,
+  pos:['Feet slightly in front of the bar — this shifts load forward onto quads','Shoulder-width stance — toes slightly out — 15-20 degrees','Descend to parallel — controlled 3 second descent — do not drop','Drive through heels — squeeze quads at lockout — do not bounce at bottom'],
+  alert:'Feet slightly forward of bar is the Smith machine technique that maximises quad involvement. This is intentional — not a mistake.',
+  primary:['Quads (Outer Sweep)'],secondary:['Glutes','Hamstrings'],stabilizers:['Core'],intensity:{primary:90,secondary:50,stabilizer:35}},
+
+'Smith Machine Romanian Deadlift':{
+  why:'Hamstrings are 5/10 — biggest leg weakness. Smith machine RDL allows complete focus on the hip hinge and hamstring stretch without balance concerns. Primary hamstring mass builder.',
+  tempo:'4-1-1-0',rir:2,rest:150,
+  pos:['Bar at hip height — set safety hooks appropriately','Push hips BACK as you descend — bar stays close to legs throughout','Feel the hamstring STRETCH building in the back of the thighs — this is the goal','Drive hips FORWARD powerfully — squeeze glutes lightly at the top to stand'],
+  alert:'The 4-second eccentric is not optional. The hamstring stretch under load is what builds posterior chain mass. Rushing this defeats the purpose.',
+  primary:['Hamstrings (Biceps Femoris)'],secondary:['Glutes','Lower Back'],stabilizers:['Core'],intensity:{primary:92,secondary:52,stabilizer:38}},
+
+'Leg Extension Machine':{
+  why:'Quad sweep isolation. Leg extension specifically targets rectus femoris and vastus lateralis — the muscles that create the outer sweep Muhsin needs. Full lockout creates VMO and sweep activation.',
+  tempo:'2-0-1-2',rir:1,rest:90,
+  pos:['Knee joint aligned with the machine pivot point — adjust the seat','Pad just above the ankle — not on the foot or too high on the shin','Extend legs fully — HOLD the lockout for 2 full seconds — feel the sweep','2 second slow descent — do not let the weight drop'],
+  alert:'The 2-second hold at full lockout is mandatory. This is what activates the outer sweep specifically. Most people miss this completely.',
+  primary:['Quads (Outer Sweep — Vastus Lateralis + Rectus Femoris)'],secondary:[],stabilizers:[],intensity:{primary:95,secondary:0,stabilizer:0}},
+
+'Leg Press Machine':{
+  why:'High-volume quad compound. After squats this accumulates the remaining quad volume needed. Foot position changes the emphasis — narrow and low for outer sweep development.',
+  tempo:'3-0-1-0',rir:2,rest:120,
+  pos:['Narrow foot position — lower on the platform — this targets outer quad sweep','Lower platform until knees reach 90 degrees — controlled 3 seconds','Do not lock out knees at the top — keep tension on the muscle','Drive through the middle of the foot — feel the quads burning'],
+  alert:'Foot position is everything on leg press. Narrow and low = outer quad sweep. Wide and high = glutes. For Muhsin — narrow and low.',
+  primary:['Quads (Outer Sweep)'],secondary:['Glutes','Hamstrings'],stabilizers:['Core'],intensity:{primary:88,secondary:45,stabilizer:25}},
+
+'Leg Back Curl Machine':{
+  why:'Hamstrings are the biggest leg weakness. Lying leg curl isolates the hamstring completely — no other muscle can compensate. Essential for posterior chain development.',
+  tempo:'3-0-1-2',rir:1,rest:90,
+  pos:['Lie face down — knee joint aligned with the machine pivot','Pad sits just above the heel — not on the heel itself','Curl heels toward glutes — SQUEEZE hamstrings maximally at peak','2 second slow controlled descent — do not let the weight drop at all'],
+  alert:'The slow descent (negative) builds more hamstring mass than the curl itself. This is not optional. Control every rep down.',
+  primary:['Hamstrings (Biceps Femoris + Semitendinosus)'],secondary:['Glutes'],stabilizers:[],intensity:{primary:94,secondary:32,stabilizer:0}},
+
+'Hip Adductor Machine':{
+  why:'Inner thigh creates the visual border that frames the quad sweep. Light maintenance work — glutes and legs are already strong for Muhsin. Functional stability benefit.',
+  tempo:'2-0-2-0',rir:3,rest:60,
+  pos:['Sit with legs spread on the pads — pads on inner thighs','Squeeze legs together in smooth controlled motion','Slow return — do not let the weight slam legs open','Sit upright throughout — do not lean forward'],
+  alert:'Maintenance volume only — 2 sets. Glutes and legs are a strength for Muhsin. Do not over-invest here.',
+  primary:['Hip Adductors (Inner Thigh)'],secondary:['Glute Medius'],stabilizers:['Core'],intensity:{primary:92,secondary:28,stabilizer:18}},
+
+'Standing Calf Raises':{
+  why:'Calves are 9/10 — maintenance only. Full range is the only requirement.',
+  tempo:'2-1-2-1',rir:2,rest:60,
+  pos:['Balls of feet on step edge — heels completely off the edge','Full stretch at the bottom — heels drop completely below step level','Rise to absolute tiptoe — pause 1 full second at the top','1 second pause at the bottom too'],
+  alert:'Maintenance only — 3 sets. Muhsin already has excellent calves.',
+  primary:['Gastrocnemius (Calves)'],secondary:[],stabilizers:['Core'],intensity:{primary:96,secondary:0,stabilizer:10}},
+
+'Hanging Leg Raises':{
+  why:'Core is hidden by body fat but needs to be strengthened. Leg raises build the lower abs and hip flexor control that will be visible after recomposition.',
+  tempo:'2-0-2-0',rir:1,rest:90,
+  pos:['Dead hang from bar — grip secure — body completely still before starting','Brace core hard — raise legs together to 90 degrees minimum','TUCK pelvis at the top — this activates lower abs not just hip flexors','2 second slow descent — do not swing or use momentum'],
+  alert:'No swinging. If you cannot do this strict — bend the knees. Strict 10 beats sloppy 20 every time.',
+  primary:['Lower Abs','Hip Flexors'],secondary:['Upper Abs'],stabilizers:['Lats','Grip'],intensity:{primary:88,secondary:40,stabilizer:35}},
+
+'Seated Ab Crunch Machine':{
+  why:'Direct upper ab development. Machine allows progressive overload on abs — treat them like any other muscle. Add weight when reps become easy.',
+  tempo:'2-0-2-1',rir:1,rest:75,
+  pos:['Adjust seat and pad to your torso length','Hold handles — feet on footrest — sit upright to start','Crunch DOWN — round spine — bring ribcage toward hips — not head toward knees','1 second hold at peak — 3 second slow return — feel the abs stretching'],
+  alert:'Think ribcage to hips — not head to knees. Add a plate progressively when 20 reps feels easy.',
+  primary:['Rectus Abdominis (Upper)'],secondary:['Obliques'],stabilizers:[],intensity:{primary:92,secondary:40,stabilizer:0}},
+
+'Ab Coaster':{
+  why:'Arc motion specifically activates lower abs in a way crunches cannot. Lower ab region overlaps with where Muhsin stores fat — strengthening underneath supports the eventual definition.',
+  tempo:'2-0-2-0',rir:1,rest:75,
+  pos:['Kneel on the pad — forearms on armrests — body upright','Pull knees toward chest in an ARC motion — not straight up','Feel lower abs contracting at the peak of the arc','Slow controlled return — do not let gravity do the work'],
+  alert:'Slow and controlled every rep. Speed defeats the purpose entirely.',
+  primary:['Lower Abs'],secondary:['Upper Abs','Hip Flexors'],stabilizers:['Core'],intensity:{primary:90,secondary:44,stabilizer:20}},
+
+'Rotary Torso Machine':{
+  why:'Obliques frame the abs and create waist definition. Muhsin has fat storage on love handles — oblique training firms the underlying muscle and improves waist appearance over time.',
+  tempo:'2-0-2-1',rir:2,rest:75,
+  pos:['Sit upright — grip handles across chest — lock hips in place','Rotate from the CORE only — hips should not move at all','Go through full range each direction slowly — feel the oblique contracting','Equal sets each side — do not neglect one direction'],
+  alert:'Hips must stay still. If hips rotate the obliques are not doing the work.',
+  primary:['Obliques (Internal + External)'],secondary:['Transverse Abdominis'],stabilizers:['Core'],intensity:{primary:92,secondary:48,stabilizer:22}},
+
+'Decline Sit-Up Bench':{
+  why:'Upper ab compound movement. Allows progressive loading — hold a plate on chest for overload. Trains the rectus abdominis through a longer range than machine crunches.',
+  tempo:'3-0-1-1',rir:1,rest:75,
+  pos:['Hook feet securely — moderate decline — not extreme angle','Arms crossed on chest or hands lightly behind head — not pulling','Curl up fully — chin toward chest — feel upper abs contracting','3 second slow return — do not drop back — lower with control'],
+  alert:'Moderate decline only. Extreme decline turns this into a hip flexor exercise. You can add a plate when 15 reps feels easy.',
+  primary:['Upper Abs (Rectus Abdominis)'],secondary:['Hip Flexors'],stabilizers:['Core'],intensity:{primary:88,secondary:45,stabilizer:20}},
+
+'Bicycle Crunches':{
+  why:'Oblique activation with simultaneous ab work. Most EMG-researched ab exercise. Addresses the oblique and love handle area which is a problem zone for Muhsin.',
+  tempo:'2-0-2-0',rir:1,rest:75,
+  pos:['Lie on back — hands lightly behind head — never pull the neck','Bring right knee to chest — rotate LEFT shoulder toward it — not just elbow','Extend left leg fully and keep it off the ground throughout','2 seconds each side — feel the oblique twist — not a neck crunch'],
+  alert:'Slow rotation beats fast sloppy reps by 3x in EMG studies. If neck hurts — hands across chest instead.',
+  primary:['Obliques'],secondary:['Rectus Abdominis'],stabilizers:['Hip Flexors'],intensity:{primary:92,secondary:55,stabilizer:30}},
+
+'Hip Thrusts':{
+  why:'Glutes are already 8.5/10 — this is maintenance only on Legs B. Included for posterior chain completeness and hamstring co-activation in the hip hinge pattern.',
+  tempo:'2-1-1-1',rir:2,rest:120,
+  pos:['Upper back on bench — bar heavily padded across hips','Drive hips UP and FORWARD — fully extend at the very top','Glute squeeze at top — 1 second hold — pelvis neutral not hyperextended','Controlled 2 second descent'],
+  alert:'Glutes are a strength — maintenance volume only. Do not add sets here.',
+  primary:['Glutes (Gluteus Maximus)'],secondary:['Hamstrings'],stabilizers:['Core'],intensity:{primary:96,secondary:50,stabilizer:35}},
+
+'Romanian Deadlifts':{
+  why:'Hamstring and posterior chain mass builder. The hip hinge pattern under load builds the biceps femoris that is currently underdeveloped for Muhsin.',
+  tempo:'4-1-1-0',rir:2,rest:150,
+  pos:['Stand with bar or dumbbells — hip hinge — NOT a squat movement','Push hips BACK as you descend — bar stays close to legs','Feel the hamstring stretch — go as deep as flexibility allows — stop if rounding','Drive hips FORWARD powerfully to return — light glute squeeze at the top'],
+  alert:'4-second eccentric is mandatory. The hamstring stretch under load is the entire point of this exercise.',
+  primary:['Hamstrings','Glutes'],secondary:['Lower Back'],stabilizers:['Core'],intensity:{primary:90,secondary:52,stabilizer:38}},
+
+'Back Squats':{
+  why:'When included — overall leg compound. Quad and glute involvement. Currently replaced by Smith machine squat for controlled quad focus.',
+  tempo:'3-0-1-0',rir:2,rest:180,
+  pos:['Bar on upper traps — feet shoulder width — toes slightly out','Break at hips and knees simultaneously — controlled descent','Go to parallel minimum — no shorter','Drive through heels — squeeze at the top'],
+  alert:'Form is non-negotiable. Never sacrifice depth for weight.',
+  primary:['Quads','Glutes'],secondary:['Hamstrings'],stabilizers:['Core','Lower Back'],intensity:{primary:90,secondary:54,stabilizer:60}},
+
+'Bulgarian Split Squats':{
+  why:'Unilateral quad and glute work. Eliminates side-to-side compensation. Builds the quad sweep through full unilateral range of motion.',
+  tempo:'3-0-1-0',rir:2,rest:120,
+  pos:['Rear foot elevated on bench — front foot far enough forward','Lower straight down — front shin stays close to vertical','Feel the quad and hip flexor stretch at the bottom','Drive through front heel — squeeze quad at lockout at top'],
+  alert:'Most athletes hate this exercise. That is exactly why it works.',
+  primary:['Quads','Glutes'],secondary:['Hamstrings'],stabilizers:['Core'],intensity:{primary:90,secondary:50,stabilizer:40}},
+
+'Incline Dumbbell Press':{
+  why:'Upper chest development with greater ROM than barbell. Dumbbells allow independent arm movement — better for chest activation than barbell for many athletes.',
+  tempo:'3-1-1-0',rir:2,rest:120,
+  pos:['30 degree bench — not 45 — upper chest not shoulder focus','Dumbbells at upper chest level — elbows at 75 degrees','Lower until elbows drop slightly below bench level — full stretch','Press up and slightly inward — squeeze upper chest at the top'],
+  alert:'30 degrees. Not 45. The angle determines which muscle gets the work.',
+  primary:['Upper Chest'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:88,secondary:48,stabilizer:25}},
+
+'Flat Dumbbell Press':{
+  why:'Greater ROM than barbell flat press. More chest stretch at the bottom. Good for chest hypertrophy on Push B as a variation.',
+  tempo:'3-1-1-0',rir:2,rest:120,
+  pos:['Lie flat — dumbbells at chest sides — elbows at 75 degrees','Lower until elbows drop slightly below bench level','Press up and slightly together — squeeze chest hard at top'],
+  alert:'Feel the chest — not the shoulders or triceps. If you cannot feel it — lighten the weight and slow down.',
+  primary:['Chest (Pectoralis Major)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:88,secondary:42,stabilizer:28}},
+
+'Hip Abductor Machine':{
+  why:'Minimal use only. Glutes are already 8.5/10. Hip abductor included ONLY for hip stability — not for glute growth.',
+  tempo:'2-0-2-0',rir:3,rest:60,
+  pos:['Sit with pads on outer thighs','Push legs apart against the pads','Controlled return — do not slam'],
+  alert:'MAINTENANCE ONLY — 2 sets maximum. Glutes are already Muhsin strongest body part. Do not over-train.',
+  primary:['Glute Medius'],secondary:[],stabilizers:['Core'],intensity:{primary:88,secondary:0,stabilizer:15}}
+
+};
+
 var $=function(id){return document.getElementById(id)};
 function toast(m,t){var el=$('toast');el.textContent=m;el.className='toast show '+(t||'success');setTimeout(function(){el.className='toast'},2600)}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function lv(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function today(){return new Date().toISOString().split('T')[0]}
 function thisMonth(){return today().slice(0,7)}
-
-// ═══ NAV ═══
 function navigate(page,btn){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
   document.querySelectorAll('.bni').forEach(function(b){b.classList.remove('on')});
   $('page-'+page).classList.add('on');
-  if(btn){btn.classList.add('on')}else{
-    var ps=['home','train','vitals','progress'];
-    document.querySelectorAll('.bni').forEach(function(b,i){if(ps[i]===page)b.classList.add('on')});
-  }
-  $('pageTitle').textContent=page==='home'?'':page.toUpperCase();
+  if(btn){btn.classList.add('on')}else{var ps=['home','train','vitals','progress'];document.querySelectorAll('.bni').forEach(function(b,i){if(ps[i]===page)b.classList.add('on')})}
+  $('appBarTitle').textContent=page==='home'?'':page.toUpperCase();
   if(page==='progress'){updateMonthly();renderStreak();renderCal();}
   window.scrollTo(0,0);
 }
-function switchV(i,btn){
+function switchVTab(i,btn){
   document.querySelectorAll('.vtab').forEach(function(b){b.classList.remove('on')});
-  document.querySelectorAll('.vpane').forEach(function(p){p.classList.remove('on')});
-  btn.classList.add('on');$('vp-'+i).classList.add('on');
+  document.querySelectorAll('.vitals-pane').forEach(function(p){p.classList.remove('on')});
+  if(btn)btn.classList.add('on');
+  var pane=$('vpane-'+i);if(pane)pane.classList.add('on');
 }
 
-// ═══ EX DATA ═══
-
-const EX_DATA = {
-
-'Flat Barbell Bench Press':{
-    pos:['Lie flat on bench, feet planted firmly on floor','Grip bar slightly wider than shoulder-width (81cm rings)','Unrack bar, hold directly over chest with arms locked','Lower bar in controlled arc to mid-chest (touch lightly)','Drive bar back up explosively — repeat'],
-    alert:'Keep shoulder blades PINCHED and retracted throughout entire set',
-    primary:['Chest (Pectoralis Major)'],secondary:['Front Delts','Triceps'],stabilizers:['Upper Back','Core'],
-    intensity:{primary:90,secondary:45,stabilizer:25}
-  },
-'Lateral Raises':{
-    pos:['Stand upright — slight 10° forward lean from hips','Lead with ELBOWS — elbow always slightly higher than wrist','Raise until arms are parallel to floor — shoulder height','Pause 1 second at top — feel the side delt contract','Slow 3-second descent — this is where the muscle actually grows'],
-    alert:'Do NOT shrug. Keep traps out of it. Light weight with strict form > heavy with swing.',
-    primary:['Side Delts (Lateral Head)'],secondary:['Traps'],stabilizers:['Core'],
-    intensity:{primary:90,secondary:30,stabilizer:15}
-  },
-'Overhead Tricep Extension':{
-    pos:['Dumbbell or EZ bar — both hands overhead, elbows close to head','Lower weight BEHIND head — full long head stretch at bottom','Elbows stay close to head — don\'t let them flare out','Extend fully overhead — squeeze triceps at top','Seated or standing — core must be braced throughout'],
-    alert:'Long head stretch makes this uniquely effective for tricep size.',
-    primary:['Triceps (Long Head)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],
-    intensity:{primary:85,secondary:50,stabilizer:15}
-  },
-'Cable Crunches':{
-    pos:['Kneel facing cable machine — rope attachment held behind neck','ROUND spine — chin to chest — this is spinal flexion not a sit-up','Pull with ABS — not arms, not shoulders — abs only','Hold the peak contraction 1 second — squeeze hard','Control the return — don\'t let cable snap you back'],
-    alert:'This is spinal flexion. Think "crunch" not "bend". Pull with abs.',
-    primary:['Core (Rectus Abdominis)'],secondary:[],stabilizers:[],
-    intensity:{primary:92,secondary:0,stabilizer:0}
-  },
-'Barbell Row':{
-    pos:['Hinge at hips to 45° — back FLAT, chest up throughout','Pull bar to LOWER chest or upper abs — not belly button','Squeeze shoulder blades together hard at peak contraction','Keep bar close to body on the way up AND down','Control the descent — 2 seconds lowering'],
-    alert:'Standing too upright shifts the load to traps not back. Hinge matters.',
-    primary:['Upper Back','Lats'],secondary:['Biceps','Rear Delts'],stabilizers:['Core','Lower Back'],
-    intensity:{primary:88,secondary:55,stabilizer:45}
-  },
-'Face Pulls':{
-    pos:['Set cable at EXACT face/eye level — not higher or lower','Pull rope to face — hands end near ears, elbows high and wide','At the peak: externally rotate so thumbs point BACKWARD','This is a posture-fixing exercise — do it with intention','Light weight, high reps, perfect form every time'],
-    alert:'This exercise corrects rounded shoulders AND supports pelvic posture. Non-negotiable.',
-    primary:['Rear Delts'],secondary:['Traps','Upper Back'],stabilizers:['Core'],
-    intensity:{primary:88,secondary:60,stabilizer:20}
-  },
-'Hammer Curls':{
-    pos:['Neutral grip — thumbs pointing UP throughout the entire movement','Upper arms pinned to sides — only forearms move during curl','Curl to shoulder level — squeeze brachialis at top','Slow controlled descent — 2-3 seconds on the way down','Can alternate arms or do both simultaneously'],
-    alert:'Brachialis growth pushes bicep up, creating arm thickness and width.',
-    primary:['Brachialis','Biceps (Short Head)'],secondary:[],stabilizers:['Core'],
-    intensity:{primary:88,secondary:40,stabilizer:10}
-  },
-'Cable Curls':{
-    pos:['Stand facing low cable — underhand grip on the handle','Upper arms pinned to sides — constant tension advantage','Curl fully to shoulder — squeeze hard at top contraction','Control the return — constant tension the whole way','Don\'t let hands drift past shoulder height'],
-    alert:'Cable keeps constant tension unlike free weights. Better for peak contraction.',
-    primary:['Biceps (Brachii)'],secondary:[],stabilizers:['Core'],
-    intensity:{primary:90,secondary:0,stabilizer:12}
-  },
-'Back Squats':{
-    pos:['Bar on upper traps (not neck) — brace hard before unracking','Feet shoulder-width, toes slightly out (15-30°) — find YOUR stance','Break hips and knees simultaneously on the descent','Go to PARALLEL minimum — thighs parallel to floor','SQUEEZE GLUTES HARD at the top of every single rep'],
-    alert:'Squeezing glutes at top DIRECTLY corrects anterior pelvic tilt. Do it every rep.',
-    primary:['Quads (Rectus Femoris)','Glutes'],secondary:['Hamstrings'],stabilizers:['Core','Lower Back'],
-    intensity:{primary:90,secondary:55,stabilizer:60}
-  },
-'Romanian Deadlifts':{
-    pos:['Start standing — HINGE at hips, not squat down','Push hips BACK — feel hamstrings stretch as you go forward','Bar or dumbbells stay close to body the entire way','Neutral spine — flat back must be maintained throughout','Drive hips FORWARD with glute squeeze to return to standing'],
-    alert:'The hip drive forward IS the pelvic tilt correction movement. Feel it.',
-    primary:['Hamstrings','Glutes'],secondary:['Lower Back'],stabilizers:['Core'],
-    intensity:{primary:90,secondary:55,stabilizer:40}
-  },
-'Leg Press':{
-    pos:['Feet shoulder-width on mid-platform — not too high or low','Lower platform until hips just start to tuck — stop there','Push through HEELS not toes for more glute engagement','Don\'t lock knees at the top — keep slight bend','Wide feet = more glutes/hams, narrow feet = more quads'],
-    alert:'Don\'t let lower back peel off seat at the bottom. More important than depth.',
-    primary:['Quads'],secondary:['Glutes'],stabilizers:['Core'],
-    intensity:{primary:88,secondary:40,stabilizer:25}
-  },
-'Bulgarian Split Squats':{
-    pos:['Rear foot elevated on bench — front foot about 2 feet forward','Lower straight DOWN — front shin stays vertical if possible','Deep stretch at bottom = automatic hip flexor stretch every rep','Push through FRONT HEEL to stand — squeeze glute at top','Keep torso upright — don\'t lean forward excessively'],
-    alert:'Builds muscle AND stretches hip flexors simultaneously. Double benefit for pelvic tilt.',
-    primary:['Quads','Glutes'],secondary:['Hamstrings'],stabilizers:['Core'],
-    intensity:{primary:88,secondary:50,stabilizer:40}
-  },
-'Lying Leg Curls':{
-    pos:['Lie face down — adjust pad so it sits just above heels','Curl heels toward glutes — full range of motion','Squeeze hamstrings HARD at full contraction at top','3-second slow eccentric (lowering) — this builds the size','Hips stay on pad throughout — don\'t let them rise up'],
-    alert:'Point toes slightly inward for complete hamstring activation.',
-    primary:['Hamstrings (Biceps Femoris)'],secondary:['Glutes'],stabilizers:[],
-    intensity:{primary:92,secondary:35,stabilizer:0}
-  },
-'Standing Calf Raises':{
-    pos:['Stand on step edge — balls of feet on step, heels hanging off','Lower heels ALL the way — full gastrocnemius stretch at bottom','Rise to FULL tiptoes — maximum gastrocnemius contraction at top','PAUSE 1 second at both top and bottom positions every rep','Add weight when 20 reps becomes easy — calves need loading'],
-    alert:'Partial reps will NEVER build calf size. Full range is absolutely mandatory.',
-    primary:['Gastrocnemius (Calf)'],secondary:[],stabilizers:['Core'],
-    intensity:{primary:95,secondary:0,stabilizer:10}
-  },
-'Hanging Leg Raises':{
-    pos:['Dead hang from bar — full extension, no swinging at any point','Brace core — then raise legs controlled to 90° or higher','TUCK PELVIS at the top of each rep for full ab contraction','Slow controlled descent — don\'t drop legs down','Exhale fully on the raise, inhale on the controlled descent'],
-    alert:'No kipping or swinging. If you swing, you\'re using momentum, not abs.',
-    primary:['Core (Rectus Abdominis)','Hip Flexors'],secondary:[],stabilizers:['Lats'],
-    intensity:{primary:88,secondary:0,stabilizer:40}
-  },
-'Skull Crushers (EZ Bar)':{
-    pos:['Lie flat — hold EZ bar directly over chest with arms vertical','Lower bar toward FOREHEAD — 3-4 second eccentric phase','Elbows stay pointing at ceiling — don\'t let them flare out','Extend back to start — squeeze triceps at full lockout','Keep upper arms stationary — only forearms move'],
-    alert:'The slow negative is what builds tricep size. Heavy and sloppy = injury.',
-    primary:['Triceps (Long Head)'],secondary:['Triceps (Medial Head)'],stabilizers:['Core'],
-    intensity:{primary:88,secondary:60,stabilizer:10}
-  },
-'Incline Dumbbell Press':{
-    pos:['Set bench to 30-45° incline — higher = more shoulder emphasis','Sit back with dumbbells at shoulder level, elbows at 75°','Press up and slightly inward — squeeze upper chest at top','Lower until elbows slightly BELOW the bench line for full stretch','Keep lower back against bench — don\'t arch excessively'],
-    alert:'This angle directly targets upper chest for complete pec development',
-    primary:['Upper Chest (Clavicular Head)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],
-    intensity:{primary:85,secondary:50,stabilizer:20}
-  },
-'Incline DB Curls':{
-    pos:['Lie on 45° incline bench — arms hang STRAIGHT down (key advantage)','This stretch position is the entire point of the exercise','Curl to shoulder level — supinate wrist at top','Don\'t swing from shoulder — upper arm stays still','Slow 3-second descent — feel the stretch each time'],
-    alert:'The stretched position at bottom is what makes incline curls build bicep peak.',
-    primary:['Biceps (Long Head — Peak)'],secondary:[],stabilizers:[],
-    intensity:{primary:90,secondary:0,stabilizer:0}
-  },
-'Chest-Supported DB Row':{
-    pos:['Chest on incline bench — lower back completely removed from equation','Arms hang straight down — full lat stretch at the bottom','Pull elbows high past your body for full back contraction','Slight torso rotation for extra range of motion is okay','Full control on the way down every rep'],
-    alert:'Best variation for back isolation — no lower back fatigue means you can go heavier.',
-    primary:['Upper Back','Lats'],secondary:['Biceps','Rear Delts'],stabilizers:[],
-    intensity:{primary:90,secondary:52,stabilizer:0}
-  },
-'Barbell Shrugs':{
-    pos:['Bar in front — wider grip than dumbbells allows','Full shoulder drop at bottom — stretch the traps','Shrug straight UP — hold 1-2 seconds at absolute top','Can go heavier than dumbbell version','Core braced — don\'t let bar pull you forward'],
-    alert:'Barbell allows heavier load for trap mass. Progress this seriously.',
-    primary:['Traps (Upper)'],secondary:[],stabilizers:['Core','Lower Back'],
-    intensity:{primary:95,secondary:0,stabilizer:15}
-  },
-'Decline Barbell Press':{pos:['Set bench 15-30 degree decline','Grip slightly wider than shoulder-width','Lower bar to LOWER chest — full stretch at bottom','Drive up explosively — squeeze lower pecs hard'],alert:'Lower chest emphasis. Reduces shoulder stress vs flat bench.',primary:['Lower Chest'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:90,secondary:45,stabilizer:20}},
-'Cable High-to-Low Flyes':{pos:['Set cables HIGH above shoulder level','Stand in middle — slight forward lean','Pull handles DOWN in arc — hands meet at hip level','Squeeze lower chest HARD at bottom — 1 second hold'],alert:'High cable = lower chest isolation. Constant tension throughout.',primary:['Lower Chest'],secondary:['Front Delts'],stabilizers:['Core'],intensity:{primary:85,secondary:35,stabilizer:15}},
-'Pec Dec Machine':{pos:['Adjust seat — elbows at shoulder height','Forearms on pads — not wrists','Squeeze pads together — chest hard at peak','Slow 3-second return — full stretch at open'],alert:'Pure chest isolation. No momentum. Controlled tempo only.',primary:['Chest (Full)'],secondary:['Front Delts'],stabilizers:[],intensity:{primary:90,secondary:30,stabilizer:0}},
-'Overhead Press':{pos:['Stand or sit — BRACE CORE before every rep','Grip slightly wider than shoulders — bar at chin level','Press straight overhead — fully extend at top','Lower to chin — 2-second controlled descent'],alert:'Core bracing every rep is non-negotiable. Prevents lower back arch.',primary:['Front Delts','Side Delts'],secondary:['Triceps'],stabilizers:['Core','Traps'],intensity:{primary:88,secondary:50,stabilizer:40}},
-'Dumbbell Front Raise':{pos:['Stand tall — dumbbells in front of thighs, palms down','Raise arms forward to eye level — slight bend in arms','Slow 3-second descent — do not let gravity take over','Keep torso upright — do NOT lean back to raise'],alert:'Stop at eye level. Going higher shifts load to traps.',primary:['Front Delts'],secondary:['Side Delts','Traps'],stabilizers:['Core'],intensity:{primary:90,secondary:30,stabilizer:20}},
-'Tricep Kickback':{pos:['Hinge forward — torso close to parallel with floor','Upper arm PINNED parallel to floor','Extend arm fully back — SQUEEZE tricep at lockout','Slow return — upper arm stays completely fixed'],alert:'Upper arm must stay parallel to floor the entire set.',primary:['Triceps (Long + Lateral)'],secondary:[],stabilizers:['Core'],intensity:{primary:88,secondary:0,stabilizer:30}},
-'Cable Pushdown':{pos:['Face cable — elbows PINNED to sides','Extend arms to full lockout each rep','Slow return — elbows glued to body','Stand tall — do NOT lean forward'],alert:'Elbows drifting forward means front delts are doing the work.',primary:['Triceps (All Heads)'],secondary:[],stabilizers:['Core'],intensity:{primary:90,secondary:0,stabilizer:15}},
-'Lat Pulldown':{pos:['Grip wider than shoulders — thighs under pads','Slight lean back as you initiate pull','Pull bar to UPPER CHEST — elbows to hip pockets','Full stretch at top — arms fully extended'],alert:'Think: pull your ELBOWS to hips, not hands to chest.',primary:['Lats'],secondary:['Upper Back','Biceps'],stabilizers:['Core'],intensity:{primary:90,secondary:52,stabilizer:25}},
-'Seated Cable Row':{pos:['Sit tall — chest up throughout','Full stretch at extended position — scapula protracts','Drive elbows BACK past body for full contraction','Squeeze shoulder blades at peak contraction'],alert:'Do not lean back to pull — momentum defeats the purpose.',primary:['Upper Back','Lats'],secondary:['Biceps'],stabilizers:['Core'],intensity:{primary:86,secondary:50,stabilizer:30}},
-'Shrugs':{pos:['Dumbbells at sides — arms straight down','Let shoulders DROP fully at bottom first','Shrug straight UP — not rolling forward','Hold 1-2 full seconds at top — squeeze traps'],alert:'Rolling shoulders adds zero benefit and risks injury.',primary:['Traps (Upper)'],secondary:[],stabilizers:['Core'],intensity:{primary:95,secondary:0,stabilizer:10}},
-'Preacher Curl':{pos:['Armpits rest on top of preacher pad','Arms FULLY extended at bottom — the stretch is the point','Do NOT let elbows lift off pad','3-second slow negative — this builds the peak'],alert:'Best for bicep peak. Partial reps lose the entire benefit.',primary:['Biceps (Peak)'],secondary:[],stabilizers:[],intensity:{primary:92,secondary:0,stabilizer:0}},
-'EZ Bar Curls':{pos:['Grip EZ bar at angled sections — natural wrist position','Upper arms PINNED to sides throughout','Curl to shoulder — squeeze bicep at top','2-second descent — full stretch at bottom'],alert:'EZ bar reduces wrist stress. Same strict form as barbell.',primary:['Biceps'],secondary:['Brachialis'],stabilizers:['Core'],intensity:{primary:90,secondary:40,stabilizer:15}},
-'Hip Thrusts':{pos:['Upper back on bench — bar padded across hips','Drive hips UP AND FORWARD — full extension at top','MAXIMUM GLUTE SQUEEZE at top — hold 1 second','Chin tucked throughout — do not look at ceiling'],alert:'Most important glute exercise. Load heavy. Pelvis neutral at top.',primary:['Glutes'],secondary:['Hamstrings'],stabilizers:['Core','Quads'],intensity:{primary:95,secondary:50,stabilizer:35}},
-
-'Flat Dumbbell Press':{pos:['Lie flat on bench — dumbbells at chest level, elbows at 75°','Greater range of motion than barbell — use this advantage','Lower until elbows go slightly BELOW bench level — full stretch','Press up and slightly together — squeeze chest hard at top'],alert:'More ROM than barbell bench. Feel the full pec stretch at bottom every rep.',primary:['Chest (Pectoralis Major)'],secondary:['Front Delts','Triceps'],stabilizers:['Core'],intensity:{primary:88,secondary:42,stabilizer:28}},
-'Low-to-High Cable Flyes':{pos:['Set cables LOW at floor/ankle level','Stand in middle — slight forward lean, arms start low','Pull handles UP and together in arc — hands meet at chest height','Squeeze inner/upper chest hard at top — hold 1 second'],alert:'Low cable = inner and upper chest isolation. Different angle from high-to-low — both needed for complete chest.',primary:['Inner Chest (Sternal Head)'],secondary:['Front Delts'],stabilizers:['Core'],intensity:{primary:84,secondary:32,stabilizer:14}},
-'Overhead Cable Extension':{pos:['Set cable HIGH — use rope attachment','Face away from cable, rope behind head — step forward slightly','Elbows close to head — only forearms move throughout','Extend arms fully forward and down — squeeze triceps at lockout'],alert:'Rope grip = split at bottom for extra long head contraction. Best stretch for tricep long head.',primary:['Triceps (Long Head — Full Stretch)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],intensity:{primary:90,secondary:45,stabilizer:15}},
-'Skull Crushers (Dumbbell)':{pos:['Lie flat — hold dumbbells directly over chest, arms vertical','Lower dumbbells toward TEMPLES — 3-4 second slow eccentric','Elbows stay pointing at ceiling — do not let them flare','Extend back to start — squeeze triceps at full lockout'],alert:'Dumbbell version allows independent arm movement — better for joint health. Slow negative is everything.',primary:['Triceps (Long + Medial Head)'],secondary:['Triceps (Lateral Head)'],stabilizers:['Core'],intensity:{primary:88,secondary:55,stabilizer:10}},
-'Tricep Dips':{pos:['Grip parallel bars — arms straight, body upright (NOT leaning forward)','Lower until upper arms are PARALLEL to floor — full range','Elbows point straight back — not flared out to the sides','Drive up to full extension — squeeze triceps hard at top'],alert:'Stay UPRIGHT for tricep focus. Leaning forward turns this into a chest exercise.',primary:['Triceps (All 3 Heads)'],secondary:['Chest','Front Delts'],stabilizers:['Core'],intensity:{primary:92,secondary:38,stabilizer:20}}
-
-};
-
-// ═══ 6-DAY PPL SPLIT ═══
-// Coach Note: Chest→Triceps→Shoulders | Back→Biceps→Traps
-// Compound first, isolation after. Same pattern CBum, Ronnie, Jay all followed.
 var DAYS=[
-  {
-    label:'Push A',title:'PUSH A',
-    sub:'CHEST → TRICEPS → SHOULDERS',
-    goal:'Barbell Strength + Mass',
-    note:'Heavy compound day. Barbell bench first while CNS is freshest. Triceps pre-fatigued from chest pressing — hit isolation next. Shoulders last when already warm.',
-    exercises:[
-      {n:'Flat Barbell Bench Press', s:'4 × 5-6',  g:'CHEST',    alt:'Flat Dumbbell Press'},
-      {n:'Decline Barbell Press',    s:'3 × 8-10', g:'CHEST',    alt:'Decline Dumbbell Press'},
-      {n:'Low-to-High Cable Flyes',  s:'3 × 12-15',g:'CHEST',    alt:'Cable High-to-Low Flyes'},
-      {n:'Pec Dec Machine',          s:'3 × 15',   g:'CHEST',    alt:'Cable Crossovers'},
-      {n:'Overhead Cable Extension', s:'3 × 12',   g:'TRICEPS',  alt:'Overhead Tricep Extension'},
-      {n:'Tricep Kickback',          s:'3 × 15',   g:'TRICEPS',  alt:'Cable Pushdown'},
-      {n:'Overhead Press',           s:'3 × 10-12',g:'SHOULDERS',alt:'Arnold Press'},
-      {n:'Dumbbell Front Raise',     s:'3 × 12',   g:'SHOULDERS',alt:'Plate Front Raise'},
-      {n:'Lateral Raises',           s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    ]
-  },
-  {
-    label:'Pull A',title:'PULL A',
-    sub:'BACK → BICEPS → TRAPS',
-    goal:'Back Thickness + Arm Mass',
-    note:'Back rows pre-fatigue biceps — curls hit harder because biceps are already pumped. Heaviest row first, then pull variations, finish with bicep isolation.',
-    exercises:[
-      {n:'Barbell Row',       s:'4 × 6-8',   g:'BACK',    alt:'T-Bar Row'},
-      {n:'Lat Pulldown',      s:'3 × 8-10',  g:'BACK',    alt:'Pull-Ups'},
-      {n:'Seated Cable Row',  s:'3 × 10-12', g:'BACK',    alt:'Chest-Supported DB Row'},
-      {n:'Face Pulls',        s:'3 × 15-20', g:'BACK',    alt:'Reverse Pec Deck'},
-      {n:'EZ Bar Curls',      s:'4 × 10-12', g:'BICEPS',  alt:'Barbell Curls'},
-      {n:'Preacher Curl',     s:'3 × 12',    g:'BICEPS',  alt:'Incline DB Curls'},
-      {n:'Hammer Curls',      s:'3 × 12',    g:'BICEPS',  alt:'Cross-Body Hammer Curl'},
-      {n:'Shrugs',            s:'4 × 12',    g:'TRAPS',   alt:'Barbell Shrugs'},
-    ]
-  },
-  {
-    label:'Legs A',title:'LEGS A',
-    sub:'QUADS → HAMSTRINGS → GLUTES → CALVES',
-    goal:'Quad Mass + Lower Body Power',
-    note:'Squats first while legs are fresh. Quads first since they are largest muscle group. Posterior chain after. Calves last — they recover fast and need high volume.',
-    exercises:[
-      {n:'Back Squats',          s:'4 × 5-6',   g:'QUADS',     alt:'Hack Squat Machine'},
-      {n:'Leg Press',            s:'3 × 10-12', g:'QUADS',     alt:'Bulgarian Split Squats'},
-      {n:'Bulgarian Split Squats',s:'3 × 10 each',g:'QUADS',   alt:'Walking Lunges'},
-      {n:'Romanian Deadlifts',   s:'4 × 8-10',  g:'HAMSTRINGS',alt:'Stiff Leg Deadlift'},
-      {n:'Lying Leg Curls',      s:'3 × 12-15', g:'HAMSTRINGS',alt:'Seated Leg Curls'},
-      {n:'Hip Thrusts',          s:'3 × 10-12', g:'GLUTES',    alt:'Glute Bridge'},
-      {n:'Standing Calf Raises', s:'4 × 20',    g:'CALVES',    alt:'Seated Calf Raises'},
-      {n:'Hanging Leg Raises',   s:'4 × 15',    g:'ABS',       alt:'Cable Crunches'},
-    ]
-  },
-  {
-    label:'Push B',title:'PUSH B',
-    sub:'CHEST → TRICEPS → SHOULDERS',
-    goal:'Dumbbell Hypertrophy + Volume',
-    note:'Dumbbell day — greater range of motion than barbell. More stabiliser activation. Skull crushers hit long head mass. Dips as a finisher burns the triceps completely.',
-    exercises:[
-      {n:'Flat Dumbbell Press',     s:'4 × 8-10', g:'CHEST',    alt:'Flat Barbell Bench Press'},
-      {n:'Incline Dumbbell Press',  s:'3 × 10-12',g:'CHEST',    alt:'Incline Barbell Press'},
-      {n:'Cable High-to-Low Flyes', s:'3 × 12-15',g:'CHEST',    alt:'Low-to-High Cable Flyes'},
-      {n:'Pec Dec Machine',         s:'3 × 15',   g:'CHEST',    alt:'Dumbbell Flyes'},
-      {n:'Skull Crushers (Dumbbell)',s:'3 × 10-12',g:'TRICEPS', alt:'Skull Crushers (EZ Bar)'},
-      {n:'Cable Pushdown',          s:'3 × 12-15',g:'TRICEPS',  alt:'Rope Pushdown'},
-      {n:'Tricep Dips',             s:'3 × Failure',g:'TRICEPS',alt:'Overhead Cable Extension'},
-      {n:'Overhead Press',          s:'3 × 10-12',g:'SHOULDERS',alt:'Seated DB Shoulder Press'},
-      {n:'Dumbbell Front Raise',    s:'3 × 12',   g:'SHOULDERS',alt:'Cable Front Raise'},
-      {n:'Lateral Raises',          s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    ]
-  },
-  {
-    label:'Pull B',title:'PULL B',
-    sub:'BACK → BICEPS → REAR DELTS',
-    goal:'Lat Width + V-Taper + Bicep Peak',
-    note:'Width focus. Lat pulldown higher priority here. Incline curls stretch the bicep at the bottom — best exercise for developing the bicep peak. Rear delts last.',
-    exercises:[
-      {n:'Barbell Row',            s:'4 × 6-8',   g:'BACK',      alt:'Pendlay Row'},
-      {n:'Lat Pulldown',           s:'4 × 8-10',  g:'BACK',      alt:'Pull-Ups'},
-      {n:'Chest-Supported DB Row', s:'3 × 10-12', g:'BACK',      alt:'Incline DB Row'},
-      {n:'Seated Cable Row',       s:'3 × 12',    g:'BACK',      alt:'Machine Row'},
-      {n:'EZ Bar Curls',           s:'3 × 10-12', g:'BICEPS',    alt:'Barbell Curls'},
-      {n:'Incline DB Curls',       s:'3 × 12',    g:'BICEPS',    alt:'Preacher Curl'},
-      {n:'Hammer Curls',           s:'3 × 12',    g:'BICEPS',    alt:'Cable Curls'},
-      {n:'Face Pulls',             s:'4 × 15-20', g:'REAR DELTS',alt:'Reverse Pec Deck'},
-      {n:'Barbell Shrugs',         s:'3 × 12',    g:'TRAPS',     alt:'Dumbbell Shrugs'},
-    ]
-  },
-  {
-    label:'Legs B',title:'LEGS B — SATURDAY',
-    sub:'GLUTES → HAMSTRINGS → QUADS → CALVES',
-    goal:'Glute Power + Posterior Chain',
-    note:'Saturday is glute and hamstring dominant. Hip thrusts FIRST — glutes need to be hit when energy is highest. This is the session that builds the posterior chain cbum is famous for.',
-    exercises:[
-      {n:'Hip Thrusts',            s:'4 × 8-10',  g:'GLUTES',    alt:'Glute Bridge (Barbell)'},
-      {n:'Romanian Deadlifts',     s:'4 × 8-10',  g:'HAMSTRINGS',alt:'Stiff Leg Deadlift'},
-      {n:'Back Squats',            s:'3 × 8-10',  g:'QUADS',     alt:'Goblet Squat'},
-      {n:'Leg Press',              s:'3 × 12-15', g:'QUADS',     alt:'Hack Squat Machine'},
-      {n:'Bulgarian Split Squats', s:'3 × 12 each',g:'GLUTES',   alt:'Reverse Lunges'},
-      {n:'Lying Leg Curls',        s:'4 × 12-15', g:'HAMSTRINGS',alt:'Seated Leg Curls'},
-      {n:'Standing Calf Raises',   s:'4 × 20',    g:'CALVES',    alt:'Donkey Calf Raises'},
-      {n:'Hanging Leg Raises',     s:'4 × 15',    g:'ABS',       alt:'Cable Crunches'},
-    ]
-  },
+  {label:'Push A',title:'PUSH A — MON',sub:'CHEST → TRICEPS → SHOULDERS',
+   mission:'BUILD CHEST MASS',
+   missionDetail:'Chest is 6.5/10 — your biggest upper body weakness. Today chest gets the highest quality work when energy is at its peak. Front delts and triceps tend to dominate your pressing — consciously think CHEST every rep. 16 sets total on chest this session.',
+   exercises:[
+    {n:'Flat Barbell Bench Press',  s:'4 × 6-8',    g:'CHEST',    alt:'Flat Dumbbell Press'},
+    {n:'Incline Barbell Press',     s:'4 × 8-10',   g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
+    {n:'Decline Dumbbell Press',    s:'3 × 10-12',  g:'CHEST',    alt:'Low-to-High Cable Fly'},
+    {n:'Pec Dec / Chest Fly Machine',s:'3 × 12-15', g:'CHEST',    alt:'Low-to-High Cable Fly'},
+    {n:'Low-to-High Cable Fly',     s:'3 × 15',     g:'CHEST',    alt:'Pec Dec / Chest Fly Machine'},
+    {n:'Cable Overhead Tricep Extension',s:'2 × 12', g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
+    {n:'Cable Tricep Pushdown (V-Bar)',s:'2 × 12',   g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
+    {n:'Seated Dumbbell Shoulder Press',s:'3 × 10-12',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Lateral Raises',            s:'3 × 15',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Hanging Leg Raises',        s:'4 × 15',     g:'ABS',      alt:'Ab Coaster'},
+    {n:'Seated Ab Crunch Machine',  s:'3 × 20',     g:'ABS',      alt:'Decline Sit-Up Bench'},
+    {n:'Rotary Torso Machine',      s:'3 × 20 each',g:'ABS',      alt:'Bicycle Crunches'},
+  ]},
+  {label:'Pull A',title:'PULL A — TUE',sub:'BACK → BICEPS → REAR DELTS',
+   mission:'INCREASE LAT WIDTH',
+   missionDetail:'Today the priority is lat width — creating the V-taper that makes the waist look smaller. Isolateral row first for unilateral lat isolation. Every row variation today targets a different lat angle. Biceps get maintenance volume only — they are already 7.5/10.',
+   exercises:[
+    {n:'Isolateral High Row Machine',s:'4 × 8-10',  g:'BACK',     alt:'Chest Supported T-Bar Row'},
+    {n:'Chest Supported T-Bar Row', s:'3 × 8-10',   g:'BACK',     alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 10-12',g:'BACK',alt:'Seated Cable Row (Narrow Handle)'},
+    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12',g:'BACK',    alt:'Seated Cable Row (Chrome U Handle)'},
+    {n:'Face Pulls',                s:'3 × 15-20',  g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Cable Bicep Curl (W Bar)',   s:'3 × 10-12', g:'BICEPS',   alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Hammer Curls',              s:'2 × 12',     g:'BICEPS',   alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Hanging Leg Raises',        s:'4 × 15',     g:'ABS',      alt:'Decline Sit-Up Bench'},
+    {n:'Seated Ab Crunch Machine',  s:'3 × 20',     g:'ABS',      alt:'Ab Coaster'},
+    {n:'Bicycle Crunches',          s:'3 × 20 each',g:'ABS',      alt:'Rotary Torso Machine'},
+  ]},
+  {label:'Legs A',title:'LEGS A — WED',sub:'QUADS → HAMSTRINGS → ADDUCTORS → CALVES',
+   mission:'IMPROVE QUAD SWEEP',
+   missionDetail:'Quads have size but need outer sweep development. Narrow foot position on all quad work today. Leg extension with 2-second lockout hold is mandatory — this specifically activates the vastus lateralis that creates the sweep. Hamstrings get secondary work. Glutes are already strong — minimal glute-specific work.',
+   exercises:[
+    {n:'Leg Press Machine',         s:'4 × 8-10',   g:'QUADS',    alt:'Smith Machine Squat'},
+    {n:'Smith Machine Squat',       s:'3 × 8-10',   g:'QUADS',    alt:'Back Squats'},
+    {n:'Leg Extension Machine',     s:'4 × 12-15',  g:'QUADS',    alt:'Bulgarian Split Squats'},
+    {n:'Romanian Deadlifts',        s:'3 × 8-10',   g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Leg Back Curl Machine',     s:'3 × 12-15',  g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Hip Adductor Machine',      s:'2 × 15',     g:'INNER THIGH',alt:'Sumo Squat'},
+    {n:'Standing Calf Raises',      s:'3 × 20',     g:'CALVES',   alt:'Seated Calf Raises'},
+    {n:'Hanging Leg Raises',        s:'4 × 15',     g:'ABS',      alt:'Ab Coaster'},
+    {n:'Decline Sit-Up Bench',      s:'3 × 15',     g:'ABS',      alt:'Seated Ab Crunch Machine'},
+    {n:'Rotary Torso Machine',      s:'3 × 20 each',g:'ABS',      alt:'Bicycle Crunches'},
+  ]},
+  {label:'Push B',title:'PUSH B — THU',sub:'SHOULDERS → CHEST → TRICEPS',
+   mission:'BUILD SIDE DELTS + CHEST DETAIL',
+   missionDetail:'Side delts are the single biggest opportunity for visual improvement. They are 6/10 — developing them creates wider shoulders, a smaller-looking waist and a complete V-taper. Shoulder press first. Then lateral raises get the highest quality work of the week. Chest work focuses on shape and detail not mass. Triceps maintenance only.',
+   exercises:[
+    {n:'Seated Dumbbell Shoulder Press',s:'4 × 8-10',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Lateral Raises',            s:'4 × 15',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Cable Lateral Raises',      s:'3 × 15',     g:'SHOULDERS',alt:'Lateral Raises'},
+    {n:'Pec Dec Rear Delt Setting', s:'3 × 15',     g:'SHOULDERS',alt:'Face Pulls'},
+    {n:'Incline Dumbbell Press',    s:'3 × 10-12',  g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
+    {n:'Flat Dumbbell Press',       s:'3 × 10-12',  g:'CHEST',    alt:'Flat Barbell Bench Press'},
+    {n:'Pec Dec / Chest Fly Machine',s:'3 × 15',    g:'CHEST',    alt:'Low-to-High Cable Fly'},
+    {n:'Cable Tricep Pushdown (V-Bar)',s:'2 × 12',   g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
+    {n:'Cable Overhead Tricep Extension',s:'2 × 12', g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
+    {n:'Ab Coaster',                s:'4 × 15',     g:'ABS',      alt:'Hanging Leg Raises'},
+    {n:'Seated Ab Crunch Machine',  s:'3 × 20',     g:'ABS',      alt:'Decline Sit-Up Bench'},
+    {n:'Bicycle Crunches',          s:'3 × 20 each',g:'ABS',      alt:'Rotary Torso Machine'},
+  ]},
+  {label:'Pull B',title:'PULL B — FRI',sub:'BACK → REAR DELTS → BICEPS',
+   mission:'BUILD MID BACK THICKNESS',
+   missionDetail:'Mid-back is the weakest area — 5.5/10. Rhomboids and mid traps need density. T-Bar row gets top priority today. Every row variation focuses on the SQUEEZE at peak contraction — this is what builds mid-back density. Think about pulling your shoulder blades together every single rep. 18-20 total back sets this session.',
+   exercises:[
+    {n:'Chest Supported T-Bar Row', s:'4 × 6-8',    g:'BACK',     alt:'Isolateral High Row Machine'},
+    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'4 × 10-12',g:'BACK',alt:'Seated Cable Row (Chrome U Handle)'},
+    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12', g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Isolateral High Row Machine',s:'3 × 10-12', g:'BACK',     alt:'Chest Supported T-Bar Row'},
+    {n:'Pec Dec Rear Delt Setting', s:'4 × 15',     g:'REAR DELTS',alt:'Face Pulls'},
+    {n:'Face Pulls',                s:'3 × 15-20',  g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Cable Bicep Curl (W Bar)',   s:'2 × 12',    g:'BICEPS',   alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Hammer Curls',              s:'2 × 12',     g:'BICEPS',   alt:'Cable Bicep Curl (W Bar)'},
+    {n:'Hanging Leg Raises',        s:'4 × 15',     g:'ABS',      alt:'Ab Coaster'},
+    {n:'Decline Sit-Up Bench',      s:'3 × 15',     g:'ABS',      alt:'Seated Ab Crunch Machine'},
+    {n:'Rotary Torso Machine',      s:'3 × 20 each',g:'ABS',      alt:'Bicycle Crunches'},
+  ]},
+  {label:'Legs B',title:'LEGS B — SAT',sub:'HAMSTRINGS → QUADS → GLUTES → CALVES',
+   mission:'BUILD HAMSTRINGS',
+   missionDetail:'Hamstrings are 5/10 — the biggest leg weakness. Posterior chain lacks size. Today hamstrings get the highest priority. Smith machine RDL with a 4-second eccentric is the primary mass builder. Leg curl for isolation. Quads get maintenance volume. Glutes are already 8.5/10 — do not over-train them. Hip abductor is minimal today.',
+   exercises:[
+    {n:'Smith Machine Romanian Deadlift',s:'4 × 8-10',g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Leg Back Curl Machine',     s:'4 × 12-15',  g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Romanian Deadlifts',        s:'3 × 8-10',   g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Leg Press Machine',         s:'3 × 10-12',  g:'QUADS',    alt:'Smith Machine Squat'},
+    {n:'Leg Extension Machine',     s:'3 × 15',     g:'QUADS',    alt:'Bulgarian Split Squats'},
+    {n:'Hip Thrusts',               s:'2 × 10',     g:'GLUTES',   alt:'Bulgarian Split Squats'},
+    {n:'Hip Adductor Machine',      s:'2 × 15',     g:'INNER THIGH',alt:'Sumo Squat'},
+    {n:'Standing Calf Raises',      s:'3 × 20',     g:'CALVES',   alt:'Seated Calf Raises'},
+    {n:'Ab Coaster',                s:'4 × 15',     g:'ABS',      alt:'Hanging Leg Raises'},
+    {n:'Seated Ab Crunch Machine',  s:'3 × 20',     g:'ABS',      alt:'Cable Crunches'},
+    {n:'Rotary Torso Machine',      s:'3 × 20 each',g:'ABS',      alt:'Bicycle Crunches'},
+  ]},
 ];
 
-// ═══ WORKOUT ENGINE ═══
 var CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
 function dKey(d,e){return 'd'+d+'e'+e}
-
 function renderTabs(){
-  var h='';
-  DAYS.forEach(function(d,i){h+='<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'});
+  var h='';DAYS.forEach(function(d,i){h+='<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'});
   $('dayTabs').innerHTML=h;
 }
-function selectDay(i){
-  CUR=i;
-  document.querySelectorAll('.dtab').forEach(function(b,j){b.classList.toggle('on',j===i)});
-  renderDay();
-}
+function selectDay(i){CUR=i;document.querySelectorAll('.dtab').forEach(function(b,j){b.classList.toggle('on',j===i)});renderDay();}
 
 function renderDay(){
   var day=DAYS[CUR],exs=day.exercises;
   var done=exs.filter(function(_,i){return !!DONE[dKey(CUR,i)]}).length;
   var pct=Math.round((done/exs.length)*100);
-
   var h='<div class="day-hdr">';
-  h+='<div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:6px">'+day.sub+'</div>';
+  h+='<div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:4px">'+day.sub+'</div>';
   h+='<h3>'+day.title+'</h3>';
-  h+='<div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.14);border-radius:7px;padding:7px 10px;font-size:11px;color:var(--green);margin:8px 0;line-height:1.5">🧠 '+day.note+'</div>';
+  h+='<div style="background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.2);border-radius:8px;padding:8px 11px;margin:8px 0">';
+  h+='<div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:4px">🎯 TODAY\'S MISSION</div>';
+  h+='<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px">'+day.mission+'</div>';
+  h+='<div style="font-size:11px;color:var(--t2);line-height:1.65">'+day.missionDetail+'</div>';
+  h+='</div>';
   h+='<div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>';
   h+='<div class="plbl"><span>'+done+'</span> / '+exs.length+' &nbsp;·&nbsp; <span style="color:var(--gold)">'+pct+'%</span></div>';
   h+='</div><div class="ex-list">';
 
-  var lastGroup='';
+  var lastG='';
   exs.forEach(function(ex,i){
     var k=dKey(CUR,i),isDone=!!DONE[k],data=EX_DATA[ex.n]||null;
-
-    // Group divider
-    if(ex.g!==lastGroup){
-      h+='<div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px;padding:0 2px">';
-      h+='<div style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2)">'+ex.g+'</div>';
-      h+='<div style="flex:1;height:1px;background:var(--b)"></div>';
-      h+='</div>';
-      lastGroup=ex.g;
+    if(ex.g!==lastG){
+      h+='<div style="display:flex;align-items:center;gap:8px;margin:10px 0 5px">';
+      h+='<span style="font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2)">'+ex.g+'</span>';
+      h+='<div style="flex:1;height:1px;background:var(--b)"></div></div>';
+      lastG=ex.g;
     }
 
     var mh='';
     if(data){
-      if(data.primary&&data.primary.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ff6b81">🔴 PRIMARY ('+data.intensity.primary+'%)</div><div class="mus-pills">';data.primary.forEach(function(m){mh+='<span class="mp mp-r">'+m+'</span>'});mh+='</div></div>';}
-      if(data.secondary&&data.secondary.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ffab76">🟠 SECONDARY ('+data.intensity.secondary+'%)</div><div class="mus-pills">';data.secondary.forEach(function(m){mh+='<span class="mp mp-o">'+m+'</span>'});mh+='</div></div>';}
-      if(data.stabilizers&&data.stabilizers.length){mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#90b8ff">🔵 STABILIZERS</div><div class="mus-pills">';data.stabilizers.forEach(function(m){mh+='<span class="mp mp-b">'+m+'</span>'});mh+='</div></div>';}
+      if(data.primary&&data.primary.length){
+        mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ff6b81">🔴 PRIMARY ('+data.intensity.primary+'%)</div><div class="mus-pills">';
+        data.primary.forEach(function(m){mh+='<span class="mp mp-r">'+m+'</span>'});
+        mh+='</div></div>';
+      }
+      if(data.secondary&&data.secondary.length){
+        mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#ffab76">🟠 SECONDARY ('+data.intensity.secondary+'%)</div><div class="mus-pills">';
+        data.secondary.forEach(function(m){mh+='<span class="mp mp-o">'+m+'</span>'});
+        mh+='</div></div>';
+      }
+      if(data.stabilizers&&data.stabilizers.length){
+        mh+='<div style="margin-bottom:7px"><div class="mus-cat-lbl" style="color:#90b8ff">🔵 STABILIZERS</div><div class="mus-pills">';
+        data.stabilizers.forEach(function(m){mh+='<span class="mp mp-b">'+m+'</span>'});
+        mh+='</div></div>';
+      }
       if(data.intensity){
         mh+='<div class="ibar-wrap">';
         if(data.primary&&data.primary.length)mh+='<div class="ibar"><span class="ibar-l">Primary</span><div class="ibar-t"><div class="ibar-f" style="width:'+data.intensity.primary+'%;background:#ff1744"></div></div><span class="ibar-p" style="color:var(--red)">'+data.intensity.primary+'%</span></div>';
@@ -915,19 +1060,39 @@ function renderDay(){
     h+='<div class="ex-info">';
     h+='<div class="ex-n">'+ex.n+(isDone?' <span style="color:var(--green);font-size:10px;font-weight:700">✓</span>':'')+'</div>';
     h+='<div class="ex-s">'+ex.s+'</div>';
-    if(ex.alt)h+='<div style="font-size:10px;color:var(--t2);margin-top:2px">↳ Or: <span style="color:var(--blue)">'+ex.alt+'</span></div>';
+    if(data&&data.tempo)h+='<div style="font-size:9px;color:var(--t2);margin-top:1px">Tempo '+data.tempo+' &nbsp;·&nbsp; RIR '+data.rir+' &nbsp;·&nbsp; Rest '+data.rest+'s</div>';
+    if(ex.alt)h+='<div style="font-size:10px;color:var(--t2);margin-top:1px">↳ Or: <span style="color:var(--blue)">'+ex.alt+'</span></div>';
     h+='</div>';
     h+='<div class="ex-arr" id="arr'+CUR+'_'+i+'">+</div></div>';
 
     h+='<div class="ex-body" id="body'+CUR+'_'+i+'">';
     if(data){
-      h+='<div class="ex-sec"><div class="ex-sec-hd"><span class="ei">📐</span><strong style="color:#64b5f6">CORRECT POSITION</strong></div>';
+      if(data.why){
+        h+='<div class="ex-sec">';
+        h+='<div class="ex-sec-hd"><span class="ei">🧠</span><strong style="color:var(--gold)">WHY THIS EXERCISE</strong></div>';
+        h+='<div style="font-size:12px;color:#c8b870;line-height:1.6;background:rgba(255,214,0,.05);border:1px solid rgba(255,214,0,.12);border-radius:7px;padding:9px 11px">'+data.why+'</div>';
+        h+='</div>';
+      }
+      h+='<div class="ex-sec">';
+      h+='<div class="ex-sec-hd"><span class="ei">📐</span><strong style="color:#64b5f6">CORRECT POSITION</strong></div>';
       h+='<ol class="pos-list">';
       data.pos.forEach(function(s,si){h+='<li class="pos-item"><span class="step-n">'+(si+1)+'</span><span>'+s+'</span></li>'});
       h+='</ol>';
       if(data.alert)h+='<div class="pos-alert"><span>⚡</span><span>'+data.alert+'</span></div>';
       h+='</div>';
-      h+='<div class="ex-sec"><div class="ex-sec-hd"><span class="ei">💪</span><strong style="color:#ff6b6b">MUSCLES WORKED</strong></div>'+mh+'</div>';
+      h+='<div class="ex-sec">';
+      h+='<div class="ex-sec-hd"><span class="ei">💪</span><strong style="color:#ff6b6b">MUSCLES WORKED</strong></div>';
+      h+=mh;
+      h+='</div>';
+      if(data.tempo){
+        h+='<div class="ex-sec">';
+        h+='<div class="ex-sec-hd"><span class="ei">⏱️</span><strong style="color:var(--green)">COACH PRESCRIPTION</strong></div>';
+        h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+        h+='<div style="flex:1;min-width:90px;background:var(--s3);border-radius:8px;padding:9px 10px;text-align:center;border:1px solid var(--b)"><div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--blue)">'+data.tempo+'</div><div style="font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-top:2px">Tempo</div></div>';
+        h+='<div style="flex:1;min-width:90px;background:var(--s3);border-radius:8px;padding:9px 10px;text-align:center;border:1px solid var(--b)"><div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--gold)">'+data.rir+' RIR</div><div style="font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-top:2px">Reps In Reserve</div></div>';
+        h+='<div style="flex:1;min-width:90px;background:var(--s3);border-radius:8px;padding:9px 10px;text-align:center;border:1px solid var(--b)"><div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--green)">'+data.rest+'s</div><div style="font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-top:2px">Rest Time</div></div>';
+        h+='</div></div>';
+      }
     }
     h+='</div></div>';
   });
@@ -937,58 +1102,53 @@ function renderDay(){
 }
 
 function toggleEx(el){
-  var eid=el.getAttribute('data-eid');
-  var body=$('body'+eid),arr=$('arr'+eid);
-  if(!body)return;
-  var o=body.classList.contains('open');
+  var eid=el.getAttribute('data-eid'),body=$('body'+eid),arr=$('arr'+eid);
+  if(!body)return;var o=body.classList.contains('open');
   body.classList.toggle('open',!o);arr.classList.toggle('open',!o);
 }
-function markDone(el){
-  var k=el.getAttribute('data-key');DONE[k]=!DONE[k];sv('done',DONE);renderDay();
-  if(DONE[k])toast('Done! 💪','success');
-}
+function markDone(el){var k=el.getAttribute('data-key');DONE[k]=!DONE[k];sv('done',DONE);renderDay();if(DONE[k])toast('Done! 💪','success')}
 function finishWorkout(){
   var day=DAYS[CUR],done=day.exercises.filter(function(_,i){return !!DONE[dKey(CUR,i)]}).length;
   SESS.unshift({date:today(),dayIdx:CUR,label:day.label,done:done,total:day.exercises.length});
   if(SESS.length>300)SESS=SESS.slice(0,300);sv('sess',SESS);
   day.exercises.forEach(function(_,i){delete DONE[dKey(CUR,i)]});sv('done',DONE);
   markToday('trained');renderDay();updateDash();
-  toast(done===day.exercises.length?'🔥 Perfect! '+day.label+' done!':'Session saved — '+done+'/'+day.exercises.length,'success');
+  toast(done===day.exercises.length?'🔥 Perfect! '+day.label+' done!':'Saved — '+done+'/'+day.exercises.length,'success');
 }
 
-// ═══ STEPS ═══
 var stData=lv('stData',[]);
 function logSteps(){
-  var v=parseInt($('stepsInp').value);if(!v||v<0){toast('Enter valid steps','warn');return;}
+  var v=parseInt($('stepsInput').value);if(!v||v<0){toast('Enter steps','warn');return;}
   var ex=stData.find(function(d){return d.date===today()});
   if(ex)ex.steps=v;else stData.unshift({date:today(),steps:v});
   if(stData.length>60)stData=stData.slice(0,60);
-  sv('stData',stData);$('stepsInp').value='';renderSteps();updateDash();
+  sv('stData',stData);$('stepsInput').value='';renderSteps();updateDash();
   toast('👟 '+v.toLocaleString()+' steps!','success');
 }
 function clearSteps(){stData=[];sv('stData',stData);renderSteps();updateDash();toast('Cleared','info')}
 function renderSteps(){
   var ts=stData.find(function(d){return d.date===today()});var tv=ts?ts.steps:0;
-  var deg=Math.min(tv/10000,1)*360;var ring=$('sring');
-  if(ring){var c=tv>=10000?'var(--green)':'var(--blue)';ring.style.background='conic-gradient('+c+' '+deg+'deg, var(--s3) '+deg+'deg)';}
-  $('sringVal').textContent=tv.toLocaleString();
+  var deg=Math.min(tv/10000,1)*360;var ring=$('stepsRing');
+  if(ring)ring.style.background='conic-gradient('+(tv>=10000?'var(--green)':'var(--blue)')+' '+deg+'deg,var(--s3) '+deg+'deg)';
+  var rv=$('stepsRingVal');if(rv)rv.textContent=tv.toLocaleString();
   var l7=stData.slice(0,7);
-  $('stAvg').textContent=l7.length?Math.round(l7.reduce(function(a,b){return a+b.steps},0)/l7.length).toLocaleString():'–';
-  $('stBest').textContent=stData.length?Math.max.apply(null,stData.map(function(d){return d.steps})).toLocaleString():'–';
+  var sa=$('stepsAvg');if(sa)sa.textContent=l7.length?Math.round(l7.reduce(function(a,b){return a+b.steps},0)/l7.length).toLocaleString():'–';
+  var sb=$('stepsBest');if(sb)sb.textContent=stData.length?Math.max.apply(null,stData.map(function(d){return d.steps})).toLocaleString():'–';
   var ch=stData.slice(0,7).reverse();
   renderChart('stepsChart',{labels:ch.map(function(d){return d.date.slice(5)}),values:ch.map(function(d){return d.steps})},ch.map(function(d){return d.steps>=10000?'#00e676':'#2979ff'}),12000,10000);
-  var log=$('stepsLog');
-  if(!stData.length){log.innerHTML='<div class="empty-state"><span class="ei">👟</span>No steps logged yet</div>';return;}
+  var log=$('stepsLog');if(!log)return;
+  if(!stData.length){log.innerHTML='<div class="empty-state"><span class="ei">👟</span>No steps yet</div>';return;}
   var lh='<div class="log-entries">';
-  stData.slice(0,8).forEach(function(d){var c=d.steps>=10000?'var(--green)':'var(--blue)';lh+='<div class="log-entry"><span class="log-icon">👟</span><div class="log-info"><strong>'+d.date+' — '+d.steps.toLocaleString()+'</strong><span>'+(d.steps>=10000?'Goal reached! 🎯':'Keep moving')+'</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+(d.steps>=10000?'10K+':'Logged')+'</span></div>'});
+  stData.slice(0,8).forEach(function(d){var c=d.steps>=10000?'var(--green)':'var(--blue)';lh+='<div class="log-entry"><span class="log-icon">👟</span><div class="log-info"><strong>'+d.date+' — '+d.steps.toLocaleString()+'</strong><span>'+(d.steps>=10000?'Goal reached 🎯':'Keep moving')+'</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+(d.steps>=10000?'10K+':'Logged')+'</span></div>'});
   log.innerHTML=lh+'</div>';
 }
 
-// ═══ SLEEP ═══
 var slData=lv('slData',[]);
 function logSleep(){
   var bed=$('sBed').value,wake=$('sWake').value;if(!bed||!wake){toast('Enter times','warn');return;}
-  var b=bed.split(':'),w=wake.split(':');var hrs=(parseInt(w[0])+parseInt(w[1])/60)-(parseInt(b[0])+parseInt(b[1])/60);if(hrs<0)hrs+=24;hrs=Math.round(hrs*10)/10;
+  var b=bed.split(':'),w=wake.split(':');
+  var hrs=(parseInt(w[0])+parseInt(w[1])/60)-(parseInt(b[0])+parseInt(b[1])/60);
+  if(hrs<0)hrs+=24;hrs=Math.round(hrs*10)/10;
   var entry={date:today(),hrs:hrs,bed:bed,wake:wake,q:parseInt($('sQual').value)};
   var ex=slData.find(function(d){return d.date===today()});if(ex)Object.assign(ex,entry);else slData.unshift(entry);
   if(slData.length>60)slData=slData.slice(0,60);sv('slData',slData);renderSleep();updateDash();
@@ -996,17 +1156,22 @@ function logSleep(){
 }
 function clearSleep(){slData=[];sv('slData',slData);renderSleep();updateDash();toast('Cleared','info')}
 function renderSleep(){
-  if(!slData.length){['slAvg','slBest','slScore'].forEach(function(id){$(id).textContent='–'});renderChart('sleepChart',{labels:['–','–','–','–','–','–','–'],values:[0,0,0,0,0,0,0]},'#2979ff',9,8);$('sleepLog').innerHTML='<div class="empty-state"><span class="ei">😴</span>No sleep data yet</div>';return;}
+  if(!slData.length){
+    ['avgSleep','bestSleep','sleepScore'].forEach(function(id){var el=$(id);if(el)el.textContent='–'});
+    renderChart('sleepChart',{labels:['–','–','–','–','–','–','–'],values:[0,0,0,0,0,0,0]},'#2979ff',9,8);
+    var sl=$('sleepLog');if(sl)sl.innerHTML='<div class="empty-state"><span class="ei">😴</span>No sleep data yet</div>';return;
+  }
   var l7=slData.slice(0,7),avg=Math.round((l7.reduce(function(a,b){return a+b.hrs},0)/l7.length)*10)/10;
-  $('slAvg').textContent=avg+'h';$('slBest').textContent=Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h';$('slScore').textContent=Math.round((avg/8)*100)+'%';
+  var av=$('avgSleep');if(av)av.textContent=avg+'h';
+  var bv=$('bestSleep');if(bv)bv.textContent=Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h';
+  var sc=$('sleepScore');if(sc)sc.textContent=Math.round((avg/8)*100)+'%';
   var ch=slData.slice(0,7).reverse();
   renderChart('sleepChart',{labels:ch.map(function(d){return d.date.slice(5)}),values:ch.map(function(d){return d.hrs})},ch.map(function(d){return d.hrs>=8?'#00e676':d.hrs>=6?'#2979ff':'#ff1744'}),9,8);
   var lh='<div class="log-entries">';
-  slData.slice(0,8).forEach(function(d){var c=d.hrs>=8?'var(--green)':d.hrs>=6?'var(--blue)':'var(--red)';var lb=d.hrs>=8?'Optimal':d.hrs>=6?'Good':'Low';lh+='<div class="log-entry"><span class="log-icon">😴</span><div class="log-info"><strong>'+d.date+' — '+d.hrs+'h</strong><span>'+d.bed+' → '+d.wake+' · Q:'+d.q+'/10</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+lb+'</span></div>'});
-  $('sleepLog').innerHTML=lh+'</div>';
+  slData.slice(0,8).forEach(function(d){var c=d.hrs>=8?'var(--green)':d.hrs>=6?'var(--blue)':'var(--red)';var lb=d.hrs>=8?'Optimal':d.hrs>=6?'Good':'Low';lh+='<div class="log-entry"><span class="log-icon">😴</span><div class="log-info"><strong>'+d.date+' — '+d.hrs+'h</strong><span>'+d.bed+' → '+d.wake+' · Quality '+d.q+'/10</span></div><span class="log-tag" style="background:'+c+'20;color:'+c+';border:1px solid '+c+'40">'+lb+'</span></div>'});
+  var sl=$('sleepLog');if(sl)sl.innerHTML=lh+'</div>';
 }
 
-// ═══ STREAK ═══
 var tDays=lv('tDays',{});
 function markToday(type){tDays[today()]=type;sv('tDays',tDays);renderStreak();renderCal();updateDash();if(type==='trained')toast('Training logged! 🔥','success');else toast('Rest day 😴','info')}
 function renderStreak(){
@@ -1015,10 +1180,11 @@ function renderStreak(){
   for(var i=0;i<365;i++){var ds=d.toISOString().split('T')[0];if(tDays[ds]==='trained'){cur++;d.setDate(d.getDate()-1);}else if(i===0){d.setDate(d.getDate()-1);}else break;}
   var max=0,cs=0,prev=null;
   dates.forEach(function(dt){if(tDays[dt]!=='trained'){cs=0;prev=null;return;}if(prev){var diff=Math.round((new Date(dt)-new Date(prev))/86400000);if(diff===1)cs++;else cs=1;}else cs=1;if(cs>max)max=cs;prev=dt;});
-  $('curStr').textContent=cur;$('bestStr').textContent=max;$('totDays').textContent=trained;$('dStreak').textContent=cur;
+  var e1=$('curStreak'),e2=$('bestStreak'),e3=$('totalD'),e4=$('dStreak');
+  if(e1)e1.textContent=cur;if(e2)e2.textContent=max;if(e3)e3.textContent=trained;if(e4)e4.textContent=cur;
 }
 function renderCal(){
-  var cal=$('calGrid'),lbs=$('calLabels');if(!cal)return;
+  var cal=$('calGrid'),lbs=$('calDayLabels');if(!cal)return;
   var todayD=new Date(),cells=[],start=new Date(todayD);start.setDate(todayD.getDate()-89);
   while(start.getDay()!==1)start.setDate(start.getDate()-1);
   var d=new Date(start);
@@ -1033,30 +1199,28 @@ function renderCal(){
   cal.style.gridTemplateColumns='repeat('+weeks+',minmax(0,1fr))';cal.style.gridTemplateRows='repeat(7,1fr)';cal.innerHTML=trans.join('');
   if(lbs)lbs.innerHTML=['M','T','W','T','F','S','S'].map(function(l){return '<div class="crl">'+l+'</div>'}).join('');
 }
-
-// ═══ MONTHLY ═══
 function updateMonthly(){
   var tm=thisMonth(),mSess=SESS.filter(function(s){return s.date.startsWith(tm)});
-  $('mW').textContent=mSess.length;
-  var mSl=slData.filter(function(d){return d.date.startsWith(tm)});$('mS').textContent=mSl.length?(Math.round((mSl.reduce(function(a,b){return a+b.hrs},0)/mSl.length)*10)/10)+'h':'–';
-  var mSt=stData.filter(function(d){return d.date.startsWith(tm)});$('mSt').textContent=mSt.length?Math.round(mSt.reduce(function(a,b){return a+b.steps},0)/mSt.length).toLocaleString():'–';
-  $('mBs').textContent=slData.length?Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h':'–';
+  var mW=$('mW');if(mW)mW.textContent=mSess.length;
+  var mSl=slData.filter(function(d){return d.date.startsWith(tm)});
+  var mS=$('mS');if(mS)mS.textContent=mSl.length?(Math.round((mSl.reduce(function(a,b){return a+b.hrs},0)/mSl.length)*10)/10)+'h':'–';
+  var mSt2=stData.filter(function(d){return d.date.startsWith(tm)});
+  var mSt=$('mSt');if(mSt)mSt.textContent=mSt2.length?Math.round(mSt2.reduce(function(a,b){return a+b.steps},0)/mSt2.length).toLocaleString():'–';
+  var mDs=$('mDs');if(mDs)mDs.textContent=slData.length?Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h':'–';
   renderChart('dayChart',{labels:DAYS.map(function(d){return d.label}),values:DAYS.map(function(_,di){return mSess.filter(function(s){return s.dayIdx===di}).length})},['#ff1744','#ff6d00','#2979ff','#00e676','#ffc200','#9c27b0']);
 }
-
-// ═══ DASHBOARD ═══
 function updateDash(){
-  var sl=slData[0];$('dSleep').textContent=sl?sl.hrs+'h':'–';
-  var ts=stData.find(function(d){return d.date===today()});$('dSteps').textContent=ts?ts.steps.toLocaleString():'–';
-  $('dMonth').textContent=SESS.filter(function(s){return s.date.startsWith(thisMonth())}).length;
+  var sl=slData[0];var dSl=$('dSleep');if(dSl)dSl.textContent=sl?sl.hrs+'h':'–';
+  var ts=stData.find(function(d){return d.date===today()});var dSt=$('dSteps');if(dSt)dSt.textContent=ts?ts.steps.toLocaleString():'–';
+  var dM=$('dMonthW');if(dM)dM.textContent=SESS.filter(function(s){return s.date.startsWith(thisMonth())}).length;
   var h=new Date().getHours(),g=h<12?'GOOD MORNING':h<17?'GOOD AFTERNOON':'GOOD EVENING';
   var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  $('greet').textContent=g+' 💪';$('greetSub').textContent=days[new Date().getDay()]+' — stay consistent.';
-  var idx=SESS.length%6;$('tcName').textContent=DAYS[idx].title;$('tcSub').textContent=DAYS[idx].sub;
-  $('appDate').textContent=new Date().toLocaleDateString('en',{month:'short',day:'numeric'});
+  var gr=$('homeGreeting');if(gr)gr.textContent=g+', MUHSIN 💪';
+  var gs=$('homeSub');if(gs)gs.textContent=days[new Date().getDay()]+' — stay consistent.';
+  var idx=SESS.length%6;var tn=$('suggestWorkout');if(tn)tn.textContent=DAYS[idx].title;
+  var ts2=$('suggestSub');if(ts2)ts2.textContent=DAYS[idx].mission;
+  var ad=$('appBarDate');if(ad)ad.textContent=new Date().toLocaleDateString('en',{month:'short',day:'numeric'});
 }
-
-// ═══ CHART ═══
 function renderChart(id,data,colors,maxVal,targetLine){
   var el=$(id);if(!el)return;var max=maxVal||Math.max.apply(null,data.values.concat([1]));
   var h='<div class="chart-bar-row">';
@@ -1068,8 +1232,6 @@ function renderChart(id,data,colors,maxVal,targetLine){
   if(targetLine!=null){var p=(targetLine/max)*78;h+='<div class="chart-target" style="bottom:'+(p+4)+'px"></div>';}
   el.innerHTML=h;
 }
-
-// ═══ INIT ═══
 document.addEventListener('DOMContentLoaded',function(){
   renderTabs();renderDay();renderSteps();renderSleep();renderStreak();renderCal();updateDash();
 });
