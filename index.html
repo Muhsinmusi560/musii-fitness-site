@@ -300,6 +300,26 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
 .toast.success{background:linear-gradient(135deg,#059669,#00F5B4);color:#000}
 .toast.error{background:var(--red)}.toast.info{background:var(--blue)}.toast.warn{background:var(--or)}
 @media(min-width:560px){.metrics,.m-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* ── REST TIMER ── */
+.timer-wrap{margin-top:16px}
+.timer-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t2);text-align:center;margin-bottom:12px}
+.timer-ring-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.timer-ring{width:140px;height:140px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--red) 0deg,var(--c3) 0deg)}
+.timer-ring::before{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--c1)}
+.timer-core{position:relative;z-index:1;text-align:center}
+.timer-num{font-family:Bebas Neue,sans-serif;font-size:48px;line-height:1;letter-spacing:2px;transition:color .3s}
+.timer-state{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);margin-top:3px}
+.timer-presets{display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.tpre{padding:6px 13px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:1px;
+  cursor:pointer;border:1px solid var(--b1);background:var(--c3);color:var(--t2);transition:all .18s}
+.tpre.on,.tpre:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.timer-btns{display:flex;gap:8px;justify-content:center}
+.timer-progress-log{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.tlog-item{display:flex;justify-content:space-between;align-items:center;
+  background:var(--c3);border-radius:6px;padding:5px 10px;font-size:10px}
+.tlog-dur{font-weight:700;color:var(--mint)}
+.tlog-time{color:var(--t2)}
 </style></head><body>
 
 <div class="bar">
@@ -332,6 +352,32 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
     <button class="btn btn-ghost btn-full" style="flex:1" onclick="markToday('rest')">😴 Rest Day</button>
   </div>
   <div class="save-note"><span class="save-dot"></span>Auto-saved on this device</div>
+
+  <!-- REST TIMER -->
+  <div class="timer-wrap">
+    <div class="timer-label">⏱ REST TIMER</div>
+    <div class="timer-presets">
+      <button class="tpre" onclick="setTimer(30,this)">30s</button>
+      <button class="tpre on" onclick="setTimer(60,this)">60s</button>
+      <button class="tpre" onclick="setTimer(90,this)">90s</button>
+      <button class="tpre" onclick="setTimer(120,this)">2 min</button>
+      <button class="tpre" onclick="setTimer(180,this)">3 min</button>
+    </div>
+    <div class="timer-ring-wrap">
+      <div class="timer-ring" id="timerRing">
+        <div class="timer-core">
+          <div class="timer-num" id="timerNum">60</div>
+          <div class="timer-state" id="timerState">READY</div>
+        </div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="btn btn-red" onclick="timerStart()">▶ START</button>
+      <button class="btn btn-ghost" onclick="timerPause()">⏸ PAUSE</button>
+      <button class="btn btn-ghost" onclick="timerReset()">↺ RESET</button>
+    </div>
+    <div class="timer-progress-log" id="timerLog"></div>
+  </div>
 </div></div>
 
 <!-- TRAIN -->
@@ -787,14 +833,12 @@ var DAYS=[
     {n:'Incline Barbell Press',      s:'4 × 8-10',  g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
     {n:'Decline Dumbbell Press',     s:'3 × 10-12', g:'CHEST',    alt:'Low-to-High Cable Fly'},
     {n:'Pec Dec / Chest Fly Machine',s:'3 × 12-15', g:'CHEST',    alt:'Low-to-High Cable Fly'},
-    {n:'Low-to-High Cable Fly',      s:'2 × 15',    g:'CHEST',    alt:'Pec Dec / Chest Fly Machine'},
     {n:'Cable Overhead Tricep Extension',s:'2 × 12', g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
     {n:'Cable Tricep Pushdown (V-Bar)',  s:'2 × 12', g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
     {n:'Seated Dumbbell Shoulder Press', s:'3 × 10-12',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
     {n:'Lateral Raises',             s:'3 × 15',    g:'SHOULDERS',alt:'Cable Lateral Raises'},
     {n:'Hanging Leg Raises',         s:'4 × 15',    g:'ABS',      alt:'Ab Coaster'},
     {n:'Seated Ab Crunch Machine',   s:'3 × 20',    g:'ABS',      alt:'Decline Sit-Up Bench'},
-    {n:'Rotary Torso Machine',       s:'3 × 20 each',g:'ABS',     alt:'Bicycle Crunches'},
   ]},
   {label:'Pull A',title:'PULL A',sub:'BACK → BICEPS → REAR DELTS',
    mission:'INCREASE LAT WIDTH',
@@ -832,7 +876,6 @@ var DAYS=[
    exercises:[
     {n:'Seated Dumbbell Shoulder Press',s:'4 × 8-10',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
     {n:'Lateral Raises',              s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Cable Lateral Raises',        s:'3 × 15',   g:'SHOULDERS',alt:'Lateral Raises'},
     {n:'Pec Dec Rear Delt Setting',   s:'3 × 15',   g:'REAR DELTS',alt:'Face Pulls'},
     {n:'Incline Dumbbell Press',      s:'3 × 10-12',g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
     {n:'Flat Dumbbell Press',         s:'3 × 10-12',g:'CHEST',    alt:'Flat Barbell Bench Press'},
@@ -841,7 +884,6 @@ var DAYS=[
     {n:'Cable Overhead Tricep Extension',s:'2 × 12',g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
     {n:'Ab Coaster',                  s:'4 × 15',   g:'ABS',      alt:'Hanging Leg Raises'},
     {n:'Seated Ab Crunch Machine',    s:'3 × 20',   g:'ABS',      alt:'Decline Sit-Up Bench'},
-    {n:'Bicycle Crunches',            s:'3 × 20 each',g:'ABS',    alt:'Rotary Torso Machine'},
   ]},
   {label:'Pull B',title:'PULL B',sub:'BACK → REAR DELTS → BICEPS',
    mission:'BUILD MID BACK THICKNESS',
@@ -1120,9 +1162,85 @@ function renderChart(id,data,colors,maxVal,targetLine){
   el.innerHTML=h;
 }
 
+
+// REST TIMER
+var tDur=60,tRem=60,tRunning=false,tInterval=null,tLog=lv('tLog',[]);
+function setTimer(sec,btn){
+  if(tRunning)return;
+  tDur=sec;tRem=sec;
+  document.querySelectorAll('.tpre').forEach(function(b){b.classList.remove('on')});
+  if(btn)btn.classList.add('on');
+  updateTimerDisplay();
+  var st=$('timerState');if(st)st.textContent='READY';
+  var ring=$('timerRing');if(ring)ring.style.background='conic-gradient(var(--red) 0deg,var(--c3) 0deg)';
+  var num=$('timerNum');if(num)num.style.color='var(--tx)';
+}
+function updateTimerDisplay(){
+  var m=Math.floor(tRem/60),s=tRem%60;
+  var display=m>0?m+':'+(s<10?'0':'')+s:s+'';
+  var num=$('timerNum');if(num)num.textContent=display;
+  var pct=tDur>0?(tDur-tRem)/tDur:0;
+  var deg=pct*360;
+  var col=tRem<=10?'var(--mint)':tRem<=30?'var(--gold)':'var(--red)';
+  var ring=$('timerRing');
+  if(ring)ring.style.background='conic-gradient('+col+' '+deg+'deg,var(--c3) '+deg+'deg)';
+  var num2=$('timerNum');if(num2)num2.style.color=col;
+}
+function timerStart(){
+  if(tRunning)return;
+  if(tRem<=0){tRem=tDur;}
+  tRunning=true;
+  var st=$('timerState');if(st)st.textContent='RESTING';
+  tInterval=setInterval(function(){
+    tRem--;updateTimerDisplay();
+    if(tRem<=0){
+      clearInterval(tInterval);tRunning=false;
+      var st=$('timerState');if(st)st.textContent='DONE!';
+      timerBeep();
+      var now=new Date();
+      tLog.unshift({dur:tDur,time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+      if(tLog.length>4)tLog=tLog.slice(0,4);
+      sv('tLog',tLog);renderTimerLog();
+      toast('Rest done — get back to it! 💪','success');
+    }
+  },1000);
+}
+function timerPause(){
+  if(!tRunning)return;
+  clearInterval(tInterval);tRunning=false;
+  var st=$('timerState');if(st)st.textContent='PAUSED';
+}
+function timerReset(){
+  clearInterval(tInterval);tRunning=false;tRem=tDur;
+  updateTimerDisplay();
+  var st=$('timerState');if(st)st.textContent='READY';
+}
+function timerBeep(){
+  try{
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [0,.18,.36].forEach(function(t){
+      var o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=880;g.gain.setValueAtTime(.3,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.15);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.16);
+    });
+  }catch(e){}
+}
+function renderTimerLog(){
+  var el=$('timerLog');if(!el||!tLog.length)return;
+  var h='';
+  tLog.forEach(function(l){
+    var m=Math.floor(l.dur/60),s=l.dur%60;
+    var label=m>0?m+'m '+(s?s+'s':''):s+'s';
+    h+='<div class="tlog-item"><span class="tlog-dur">'+label+' rest</span><span class="tlog-time">'+l.time+'</span></div>';
+  });
+  el.innerHTML=h;
+}
+
 // INIT
 document.addEventListener('DOMContentLoaded',function(){
-  renderTabs();renderDay();renderSteps();renderSleep();renderStreak();renderCal();updateDash();
+  renderTabs();renderDay();renderSteps();renderSleep();renderStreak();renderCal();updateDash();renderTimerLog();
 });
 
 </script>
