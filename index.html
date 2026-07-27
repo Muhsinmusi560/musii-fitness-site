@@ -320,6 +320,13 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
   background:var(--c3);border-radius:6px;padding:5px 10px;font-size:10px}
 .tlog-dur{font-weight:700;color:var(--mint)}
 .tlog-time{color:var(--t2)}
+
+.prog-switch{display:flex;background:var(--c3);border-radius:10px;border:1px solid var(--b0);overflow:hidden;margin-bottom:12px}
+.psw{flex:1;padding:10px;text-align:center;font-family:Bebas Neue,sans-serif;font-size:13px;
+  letter-spacing:2.5px;cursor:pointer;color:var(--t2);background:none;border:none;
+  border-right:1px solid var(--b0);transition:all .2s}
+.psw:last-child{border-right:none}
+.psw.on{background:var(--grad);color:#fff}
 </style></head><body>
 
 <div class="bar">
@@ -382,6 +389,7 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
 
 <!-- TRAIN -->
 <div class="page" id="page-train"><div class="wrap">
+  <div class="prog-switch"><button class="psw on" onclick="switchProg(0,this)">🅐 PROGRAM A</button><button class="psw" onclick="switchProg(1,this)">🅑 PROGRAM B</button></div>
   <div class="day-tabs" id="dayTabs"></div>
   <div id="dayContent"></div>
 </div></div>
@@ -788,7 +796,21 @@ const EX_DATA = {
   tempo:'2-0-2-0',rir:3,rest:60,
   pos:['Sit with pads on outer thighs','Push legs apart against the pads','Controlled return — do not slam'],
   alert:'MAINTENANCE ONLY — 2 sets maximum. Glutes are already Muhsin strongest body part. Do not over-train.',
-  primary:['Glute Medius'],secondary:[],stabilizers:['Core'],intensity:{primary:88,secondary:0,stabilizer:15}}
+  primary:['Glute Medius'],secondary:[],stabilizers:['Core'],intensity:{primary:88,secondary:0,stabilizer:15}},
+
+'Lat Pulldown':{
+  why:'Primary lat width builder. Vertical pulling creates the V-taper that makes the waist look smaller by comparison. Every elite physique athlete has a lat pulldown in their program.',
+  tempo:'3-0-1-1',rir:2,rest:120,
+  pos:['Grip bar wider than shoulder-width — thumbs wrapped fully around the bar','Chest up — slight lean back 10-15 degrees — this keeps lats engaged throughout','Pull bar to UPPER chest — think elbows driving DOWN into your hip pockets','Slow 3 second return — arms fully extend at top — full lat stretch every rep'],
+  alert:'Think: pull your elbows DOWN and BACK — not hands to chest. This one cue changes everything.',
+  primary:['Lats (Latissimus Dorsi)'],secondary:['Upper Back','Biceps'],stabilizers:['Core'],intensity:{primary:90,secondary:52,stabilizer:25}},
+
+'Tricep Dips':{
+  why:'Compound tricep movement hitting all 3 heads with bodyweight or added load. Best overall tricep mass builder. Stay upright to keep load on triceps not chest.',
+  tempo:'3-0-1-0',rir:2,rest:120,
+  pos:['Grip parallel bars — arms straight — body UPRIGHT — do not lean forward','Lower until upper arms parallel to floor — controlled 3 second descent','Elbows track straight back — do not let them flare out wide','Drive up to full extension — squeeze all three tricep heads hard at the top'],
+  alert:'Staying UPRIGHT keeps this a tricep exercise. Leaning forward shifts it to chest. Use a dip belt for added weight.',
+  primary:['Triceps (All 3 Heads)'],secondary:['Front Delts','Chest'],stabilizers:['Core'],intensity:{primary:92,secondary:38,stabilizer:20}}
 
 };
 
@@ -824,112 +846,170 @@ function switchV(i,btn){
 }
 
 // DAYS — Assessment-driven order
-var DAYS=[
-  {label:'Push A',title:'PUSH A',sub:'CHEST → TRICEPS → SHOULDERS',
-   mission:'BUILD CHEST MASS',
-   note:'Chest is your biggest upper body weakness (6.5/10). It gets the first 16 sets today when your energy is highest. Front delts and triceps tend to steal the work — think CHEST every rep. Triceps get 4 maintenance sets only.',
+var DAYS_A=[
+  {label:'Chest',title:'DAY 1 — CHEST',sub:'COMPOUNDS → ISOLATION → FINISHER',
+   mission:'FULL CHEST DEVELOPMENT',
+   note:'Incline first for upper chest priority — your weakest chest area. Flat DB press for overall mass with full ROM. Fly movements for shape and stretch. Dips as a compound finisher, pec deck for final isolation. Push-ups to failure at the very end to completely exhaust the muscle.',
    exercises:[
-    {n:'Flat Barbell Bench Press',   s:'4 × 6-8',   g:'CHEST',    alt:'Flat Dumbbell Press'},
-    {n:'Incline Barbell Press',      s:'4 × 8-10',  g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
-    {n:'Decline Dumbbell Press',     s:'3 × 10-12', g:'CHEST',    alt:'Low-to-High Cable Fly'},
-    {n:'Pec Dec / Chest Fly Machine',s:'3 × 12-15', g:'CHEST',    alt:'Low-to-High Cable Fly'},
-    {n:'Cable Overhead Tricep Extension',s:'2 × 12', g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
-    {n:'Cable Tricep Pushdown (V-Bar)',  s:'2 × 12', g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
-    {n:'Seated Dumbbell Shoulder Press', s:'3 × 10-12',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
-    {n:'Lateral Raises',             s:'3 × 15',    g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Hanging Leg Raises',         s:'4 × 15',    g:'ABS',      alt:'Ab Coaster'},
-    {n:'Seated Ab Crunch Machine',   s:'3 × 20',    g:'ABS',      alt:'Decline Sit-Up Bench'},
+    {n:'Incline Barbell Press',          s:'4 × 8',      g:'CHEST',   alt:'Plate Loaded Incline Chest Press Machine'},
+    {n:'Flat Dumbbell Press',            s:'3 × 10',     g:'CHEST',   alt:'Flat Barbell Bench Press'},
+    {n:'Incline Dumbbell Press',         s:'3 × 12',     g:'CHEST',   alt:'Low-to-High Cable Fly'},
+    {n:'Low-to-High Cable Fly',          s:'3 × 15',     g:'CHEST',   alt:'Pec Dec / Chest Fly Machine'},
+    {n:'Tricep Dips',                    s:'3 × 10',     g:'CHEST',   alt:'Cable Tricep Pushdown (V-Bar)'},
+    {n:'Pec Dec / Chest Fly Machine',    s:'3 × 12',     g:'CHEST',   alt:'Low-to-High Cable Fly'},
+    {n:'Push-Ups',                       s:'2 × Failure',g:'CHEST',   alt:'Pec Dec / Chest Fly Machine'},
   ]},
-  {label:'Pull A',title:'PULL A',sub:'BACK → BICEPS → REAR DELTS',
-   mission:'INCREASE LAT WIDTH',
-   note:'Lat width creates the V-taper that makes your waist look smaller. Isolateral row first — unilateral work eliminates your stronger side compensating. Biceps are 7.5/10 — they get 5 maintenance sets total.',
+  {label:'Back',title:'DAY 2 — BACK',sub:'WIDTH → THICKNESS → DETAIL',
+   mission:'V-TAPER + MID BACK DENSITY',
+   note:'Width before thickness. Pull-ups and wide lat pulldown first to maximise lat activation when you are freshest. Barbell row and single-arm row for mid-back mass. Straight-arm pulldown isolates the lat only — no bicep involvement. Face pulls close the session for rear delt health.',
    exercises:[
-    {n:'Isolateral High Row Machine', s:'4 × 8-10', g:'BACK',     alt:'Chest Supported T-Bar Row'},
-    {n:'Chest Supported T-Bar Row',   s:'3 × 8-10', g:'BACK',     alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 10-12',g:'BACK',alt:'Seated Cable Row (Narrow Handle)'},
-    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12',g:'BACK',    alt:'Seated Cable Row (Chrome U Handle)'},
-    {n:'Face Pulls',                  s:'3 × 15-20',g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
-    {n:'Cable Bicep Curl (W Bar)',    s:'3 × 10-12',g:'BICEPS',   alt:'Cable Bicep Curl (Straight Bar)'},
-    {n:'Hammer Curls',               s:'2 × 12',   g:'BICEPS',   alt:'Cable Bicep Curl (Straight Bar)'},
-    {n:'Hanging Leg Raises',         s:'4 × 15',   g:'ABS',      alt:'Decline Sit-Up Bench'},
-    {n:'Seated Ab Crunch Machine',   s:'3 × 20',   g:'ABS',      alt:'Ab Coaster'},
-    {n:'Bicycle Crunches',           s:'3 × 20 each',g:'ABS',    alt:'Rotary Torso Machine'},
+    {n:'Lat Pulldown',                   s:'4 × 8',      g:'BACK',    alt:'Pull-Ups'},
+    {n:'Lat Pulldown',                   s:'3 × 10',     g:'BACK',    alt:'Isolateral High Row Machine'},
+    {n:'Chest Supported T-Bar Row',      s:'4 × 8',      g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 10',  g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
+    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 12',  g:'BACK',    alt:'Isolatorial High Row Machine'},
+    {n:'Face Pulls',                     s:'3 × 15',     g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
   ]},
-  {label:'Legs A',title:'LEGS A',sub:'QUADS → HAMSTRINGS → ADDUCTORS → CALVES',
-   mission:'IMPROVE QUAD SWEEP',
-   note:'Quads have size but lack outer sweep. Narrow foot position on all quad work today. The 2-second hold at full extension on leg extension is mandatory — this is what builds vastus lateralis sweep. Glutes are already 8.5/10 — minimal glute-specific work.',
+  {label:'Shoulders',title:'DAY 3 — SHOULDERS',sub:'COMPOUND → SIDE DELTS → REAR DELTS',
+   mission:'SIDE DELT PRIORITY + SHOULDER WIDTH',
+   note:'Side delts are your biggest visual opportunity — they create the wide shoulder to narrow waist ratio. Press first for mass, then lateral raises get 4+3 sets — highest weekly side delt volume. Rear delts close the session. Shrugs for upper trap development and posture.',
    exercises:[
-    {n:'Leg Press Machine',          s:'4 × 8-10',  g:'QUADS',   alt:'Smith Machine Squat'},
-    {n:'Smith Machine Squat',        s:'3 × 8-10',  g:'QUADS',   alt:'Back Squats'},
-    {n:'Leg Extension Machine',      s:'4 × 12-15', g:'QUADS',   alt:'Bulgarian Split Squats'},
-    {n:'Romanian Deadlifts',         s:'3 × 8-10',  g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
-    {n:'Leg Back Curl Machine',      s:'3 × 12-15', g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
-    {n:'Hip Adductor Machine',       s:'2 × 15',    g:'INNER THIGH',alt:'Sumo Squat'},
-    {n:'Standing Calf Raises',       s:'3 × 20',    g:'CALVES',  alt:'Seated Calf Raises'},
-    {n:'Hanging Leg Raises',         s:'4 × 15',    g:'ABS',     alt:'Ab Coaster'},
-    {n:'Decline Sit-Up Bench',       s:'3 × 15',    g:'ABS',     alt:'Seated Ab Crunch Machine'},
-    {n:'Rotary Torso Machine',       s:'3 × 20 each',g:'ABS',    alt:'Bicycle Crunches'},
+    {n:'Seated Dumbbell Shoulder Press', s:'4 × 6-8',    g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Cable Lateral Raises',           s:'4 × 15',     g:'SHOULDERS',alt:'Lateral Raises'},
+    {n:'Lateral Raises',                 s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Pec Dec Rear Delt Setting',      s:'3 × 15',     g:'REAR DELTS',alt:'Face Pulls'},
+    {n:'Dumbbell Front Raise',           s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Seated Dumbbell Shoulder Press', s:'3 × 10',     g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Shrugs',                         s:'3 × 12',     g:'TRAPS',    alt:'Barbell Shrugs'},
   ]},
-  {label:'Push B',title:'PUSH B',sub:'SHOULDERS → CHEST → TRICEPS',
-   mission:'BUILD SIDE DELTS + CHEST DETAIL',
-   note:'Side delts are your single biggest visual opportunity — they are 6/10. Developing them creates a wider shoulder, smaller-looking waist and complete V-taper. Shoulders get priority today. 10 delt sets this session. Chest work is detail and shape focus only.',
+  {label:'Arms',title:'DAY 4 — ARMS',sub:'BICEPS → TRICEPS → FINISHER',
+   mission:'ARM SIZE + PEAK DEFINITION',
+   note:'Arms get a full dedicated session. Biceps lead — W-bar curl for mass, incline curl for the long-head stretch that builds the peak, preacher for isolation. Triceps second — overhead extension for long head, rope pushdown for all three heads. Concentration curl as the finisher to fully exhaust the bicep.',
    exercises:[
-    {n:'Seated Dumbbell Shoulder Press',s:'4 × 8-10',g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
-    {n:'Lateral Raises',              s:'4 × 15',   g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Pec Dec Rear Delt Setting',   s:'3 × 15',   g:'REAR DELTS',alt:'Face Pulls'},
-    {n:'Incline Dumbbell Press',      s:'3 × 10-12',g:'CHEST',    alt:'Plate Loaded Incline Chest Press Machine'},
-    {n:'Flat Dumbbell Press',         s:'3 × 10-12',g:'CHEST',    alt:'Flat Barbell Bench Press'},
-    {n:'Pec Dec / Chest Fly Machine', s:'3 × 15',   g:'CHEST',    alt:'Low-to-High Cable Fly'},
-    {n:'Cable Tricep Pushdown (V-Bar)',s:'2 × 12',  g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
-    {n:'Cable Overhead Tricep Extension',s:'2 × 12',g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
-    {n:'Ab Coaster',                  s:'4 × 15',   g:'ABS',      alt:'Hanging Leg Raises'},
-    {n:'Seated Ab Crunch Machine',    s:'3 × 20',   g:'ABS',      alt:'Decline Sit-Up Bench'},
+    {n:'Cable Bicep Curl (W Bar)',        s:'4 × 10',    g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Cable Tricep Pushdown (V-Bar)',   s:'4 × 8',     g:'TRICEPS', alt:'Cable Overhead Tricep Extension'},
+    {n:'Hammer Curls',                   s:'3 × 10',    g:'BICEPS',  alt:'Incline DB Curls'},
+    {n:'Cable Overhead Tricep Extension',s:'3 × 12',    g:'TRICEPS', alt:'Cable Tricep Pushdown (Straight Bar)'},
+    {n:'Preacher Curl',                  s:'3 × 10',    g:'BICEPS',  alt:'Cable Bicep Curl (W Bar)'},
+    {n:'Cable Tricep Pushdown (Straight Bar)',s:'3 × 15',g:'TRICEPS',alt:'Cable Tricep Pushdown (V-Bar)'},
+    {n:'Cable Bicep Curl (Straight Bar)',s:'2 × 12',    g:'BICEPS',  alt:'Hammer Curls'},
   ]},
-  {label:'Pull B',title:'PULL B',sub:'BACK → REAR DELTS → BICEPS',
-   mission:'BUILD MID BACK THICKNESS',
-   note:'Mid-back is 5.5/10 — your biggest structural weakness. Rhomboids and mid-traps need density. T-Bar row leads today. Every set focus on the SQUEEZE at peak contraction — that pause is what builds mid-back thickness. 18 total back sets.',
+  {label:'Legs',title:'DAY 5 — LEGS',sub:'QUADS → HAMSTRINGS → CALVES',
+   mission:'COMPLETE LEG DEVELOPMENT',
+   note:'Squats first — compound that works the entire leg. RDL second for hamstring priority. Leg press for quad volume. Leg curl for hamstring isolation. Walking lunges for unilateral leg balance and outer sweep. Leg extension finishes the quads with isolation. Calves close the session with high volume.',
    exercises:[
-    {n:'Chest Supported T-Bar Row',   s:'4 × 6-8',  g:'BACK',    alt:'Isolateral High Row Machine'},
-    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'4 × 10-12',g:'BACK',alt:'Seated Cable Row (Chrome U Handle)'},
-    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12', g:'BACK',   alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Isolateral High Row Machine', s:'3 × 10-12', g:'BACK',   alt:'Chest Supported T-Bar Row'},
-    {n:'Pec Dec Rear Delt Setting',   s:'4 × 15',   g:'REAR DELTS',alt:'Face Pulls'},
-    {n:'Face Pulls',                  s:'3 × 15-20',g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
-    {n:'Cable Bicep Curl (W Bar)',    s:'2 × 12',   g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
-    {n:'Hammer Curls',               s:'2 × 12',   g:'BICEPS',  alt:'Cable Bicep Curl (W Bar)'},
-    {n:'Hanging Leg Raises',         s:'4 × 15',   g:'ABS',     alt:'Ab Coaster'},
-    {n:'Decline Sit-Up Bench',       s:'3 × 15',   g:'ABS',     alt:'Seated Ab Crunch Machine'},
-    {n:'Rotary Torso Machine',       s:'3 × 20 each',g:'ABS',   alt:'Bicycle Crunches'},
+    {n:'Back Squats',                    s:'4 × 8',     g:'QUADS',   alt:'Smith Machine Squat'},
+    {n:'Romanian Deadlifts',             s:'4 × 8',     g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Leg Press Machine',              s:'3 × 10',    g:'QUADS',   alt:'Bulgarian Split Squats'},
+    {n:'Leg Back Curl Machine',          s:'3 × 12',    g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Bulgarian Split Squats',         s:'3 × 12 each',g:'QUADS',  alt:'Walking Lunges'},
+    {n:'Leg Extension Machine',          s:'3 × 15',    g:'QUADS',   alt:'Leg Press Machine'},
+    {n:'Standing Calf Raises',           s:'4 × 15',    g:'CALVES',  alt:'Seated Calf Raises'},
   ]},
-  {label:'Legs B',title:'LEGS B — SAT',sub:'HAMSTRINGS → QUADS → GLUTES → CALVES',
-   mission:'BUILD HAMSTRINGS',
-   note:'Hamstrings are 5/10 — your biggest leg weakness. The posterior chain lacks size. Smith RDL with a 4-second eccentric leads today. Leg curl for isolation. Quads and glutes get maintenance volume only — they are already ahead.',
+  {label:'Core',title:'DAY 6 — CORE + WEAK POINTS',sub:'STRENGTH → HAMSTRINGS → CORE',
+   mission:'DEADLIFT STRENGTH + CORE FINISHER',
+   note:'Deadlift at 4×5 — heaviest strength work of the week. Chest-supported row follows for mid-back density. Hamstring curl for posterior chain. Then full core circuit: hanging leg raises, cable woodchopper for obliques, ab wheel for deep core, weighted plank for stability. This session brings everything together.',
    exercises:[
-    {n:'Smith Machine Romanian Deadlift',s:'4 × 8-10',g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
-    {n:'Leg Back Curl Machine',       s:'4 × 12-15',g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
-    {n:'Romanian Deadlifts',          s:'3 × 8-10', g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
-    {n:'Leg Press Machine',           s:'3 × 10-12',g:'QUADS',   alt:'Smith Machine Squat'},
-    {n:'Leg Extension Machine',       s:'3 × 15',   g:'QUADS',   alt:'Bulgarian Split Squats'},
-    {n:'Hip Thrusts',                 s:'2 × 10',   g:'GLUTES',  alt:'Bulgarian Split Squats'},
-    {n:'Hip Adductor Machine',        s:'2 × 15',   g:'INNER THIGH',alt:'Sumo Squat'},
-    {n:'Standing Calf Raises',        s:'3 × 20',   g:'CALVES',  alt:'Seated Calf Raises'},
-    {n:'Ab Coaster',                  s:'4 × 15',   g:'ABS',     alt:'Hanging Leg Raises'},
-    {n:'Seated Ab Crunch Machine',    s:'3 × 20',   g:'ABS',     alt:'Cable Crunches'},
-    {n:'Rotary Torso Machine',        s:'3 × 20 each',g:'ABS',   alt:'Bicycle Crunches'},
+    {n:'Smith Machine Romanian Deadlift',s:'4 × 5',     g:'BACK',    alt:'Romanian Deadlifts'},
+    {n:'Chest Supported T-Bar Row',      s:'3 × 10',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Leg Back Curl Machine',          s:'3 × 12',    g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Hanging Leg Raises',             s:'4 × 15',    g:'ABS',     alt:'Ab Coaster'},
+    {n:'Rotary Torso Machine',           s:'3 × 15 each',g:'ABS',    alt:'Bicycle Crunches'},
+    {n:'Seated Ab Crunch Machine',       s:'3 × 12',    g:'ABS',     alt:'Decline Sit-Up Bench'},
+    {n:'Decline Sit-Up Bench',           s:'3 × 45sec', g:'ABS',     alt:'Ab Coaster'},
   ]},
 ];
 
-var CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
+var DAYS_B=[
+  {label:'Mon',title:'CHEST + TRICEPS',sub:'CHEST → TRICEPS',
+   mission:'UPPER CHEST FOCUS + TRICEP VOLUME',
+   note:'Incline barbell first — upper chest is your priority. Flat DB for overall chest mass with full ROM. Machine press for stable overload without stabiliser fatigue. Cable fly for constant tension isolation. Triceps get 3 exercises including dips as the finisher.',
+   exercises:[
+    {n:'Incline Barbell Press',           s:'4 × 6-8',   g:'CHEST',   alt:'Flat Barbell Bench Press'},
+    {n:'Flat Dumbbell Press',             s:'3 × 8-10',  g:'CHEST',   alt:'Incline Dumbbell Press'},
+    {n:'Plate Loaded Incline Chest Press Machine',s:'3 × 10-12',g:'CHEST',alt:'Pec Dec / Chest Fly Machine'},
+    {n:'Pec Dec / Chest Fly Machine',     s:'3 × 12-15', g:'CHEST',   alt:'Low-to-High Cable Fly'},
+    {n:'Cable Tricep Pushdown (V-Bar)',   s:'3 × 10-12', g:'TRICEPS', alt:'Cable Overhead Tricep Extension'},
+    {n:'Cable Overhead Tricep Extension', s:'3 × 10-12', g:'TRICEPS', alt:'Cable Tricep Pushdown (Straight Bar)'},
+    {n:'Tricep Dips',                     s:'2-3 × Failure',g:'TRICEPS',alt:'Cable Tricep Pushdown (V-Bar)'},
+  ]},
+  {label:'Tue',title:'BACK + BICEPS',sub:'BACK → BICEPS',
+   mission:'V-TAPER WIDTH + MID BACK THICKNESS',
+   note:'Pull-ups or lat pulldown for vertical pulling — the foundation of lat width. Chest-supported row for mid-back density with no lower back stress. Iso-lateral high row for unilateral lat isolation. Face pulls for rear delt health every week. Biceps get 2 curl variations for complete arm development.',
+   exercises:[
+    {n:'Lat Pulldown',                    s:'4 × 6-10',  g:'BACK',    alt:'Pull-Ups'},
+    {n:'Chest Supported T-Bar Row',       s:'4 × 8-10',  g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Lat Pulldown',                    s:'3 × 10-12', g:'BACK',    alt:'Isolateral High Row Machine'},
+    {n:'Isolateral High Row Machine',     s:'3 × 10-12', g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
+    {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Cable Bicep Curl (W Bar)',        s:'3 × 10-12', g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Incline DB Curls',               s:'3 × 10-12', g:'BICEPS',  alt:'Preacher Curl'},
+  ]},
+  {label:'Wed',title:'LEGS + ABS',sub:'QUADS → HAMSTRINGS → CALVES → ABS',
+   mission:'FULL LEG VOLUME + CORE WORK',
+   note:'Squat first at 6-8 reps — heaviest leg compound. RDL for hamstring priority. Leg press for quad volume. Leg curl for hamstring isolation. Extension for outer quad sweep with 2-second lockout hold. Calf raises at high volume. Hanging leg raises superset with cable crunch finishes the core.',
+   exercises:[
+    {n:'Back Squats',                     s:'4 × 6-8',   g:'QUADS',   alt:'Smith Machine Squat'},
+    {n:'Romanian Deadlifts',              s:'3 × 8-10',  g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Leg Press Machine',               s:'3 × 10-12', g:'QUADS',   alt:'Bulgarian Split Squats'},
+    {n:'Leg Back Curl Machine',           s:'3 × 10-12', g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Leg Extension Machine',           s:'3 × 12-15', g:'QUADS',   alt:'Leg Press Machine'},
+    {n:'Standing Calf Raises',            s:'4 × 12-15', g:'CALVES',  alt:'Seated Calf Raises'},
+    {n:'Hanging Leg Raises',              s:'3 × 15',    g:'ABS',     alt:'Seated Ab Crunch Machine'},
+  ]},
+  {label:'Thu',title:'SHOULDERS',sub:'COMPOUND → SIDE DELTS → REAR DELTS',
+   mission:'SHOULDER WIDTH — HIGHEST PRIORITY DAY',
+   note:'This day will change your physique more than any other. Side delts create the wide-narrow V-taper ratio. Press first for mass, then 4 sets cable laterals plus 4 sets dumbbell laterals — 7 total side delt sets today. Reverse pec deck and face pulls and rear delt fly cover all three delt heads completely.',
+   exercises:[
+    {n:'Seated Dumbbell Shoulder Press',  s:'4 × 8-10',  g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Lateral Raises',                  s:'4 × 12-15', g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Cable Lateral Raises',            s:'3 × 12-15', g:'SHOULDERS',alt:'Lateral Raises'},
+    {n:'Pec Dec Rear Delt Setting',       s:'4 × 12-15', g:'REAR DELTS',alt:'Face Pulls'},
+    {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Shrugs',                          s:'3 × 12',    g:'TRAPS',   alt:'Barbell Shrugs'},
+    {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+  ]},
+  {label:'Fri',title:'UPPER BODY — POWER & SHAPE',sub:'CHEST → BACK → SHOULDERS → ARMS',
+   mission:'UPPER BODY POWER + AESTHETIC DETAIL',
+   note:'Full upper body at moderate rep ranges. Incline DB and lat pulldown lead their respective muscle groups. Chest-supported row for back thickness. Machine press for chest shape. Machine laterals for side delt detail. Hammer curl and rope pushdown as arm maintenance.',
+   exercises:[
+    {n:'Incline Dumbbell Press',          s:'4 × 8',     g:'CHEST',   alt:'Plate Loaded Incline Chest Press Machine'},
+    {n:'Lat Pulldown',                    s:'4 × 8',     g:'BACK',    alt:'Pull-Ups'},
+    {n:'Chest Supported T-Bar Row',       s:'3 × 10',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Plate Loaded Incline Chest Press Machine',s:'3 × 10',g:'CHEST',alt:'Flat Dumbbell Press'},
+    {n:'Lateral Raises',                  s:'3 × 15',    g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Hammer Curls',                    s:'3 × 10-12', g:'BICEPS',  alt:'Cable Bicep Curl (W Bar)'},
+    {n:'Cable Tricep Pushdown (V-Bar)',   s:'3 × 10-12', g:'TRICEPS', alt:'Cable Overhead Tricep Extension'},
+  ]},
+  {label:'Sat',title:'ARMS + WEAK POINTS',sub:'BICEPS → TRICEPS → SIDE DELTS → CORE',
+   mission:'ARM SIZE + SIDE DELT DEFINITION',
+   note:'Your physique-improvement day. Biceps first — EZ curl for mass, preacher for peak isolation. Skull crushers for tricep long head mass, rope pushdown for all-head activation. Cable laterals get 4 sets — second highest side delt volume of the week. Rear delt fly for posterior balance. Cable crunch and plank close the session.',
+   exercises:[
+    {n:'Cable Bicep Curl (W Bar)',        s:'4 × 10',    g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
+    {n:'Preacher Curl',                   s:'3 × 12',    g:'BICEPS',  alt:'Incline DB Curls'},
+    {n:'Skull Crushers (EZ Bar)',         s:'4 × 10',    g:'TRICEPS', alt:'Skull Crushers (Dumbbell)'},
+    {n:'Cable Tricep Pushdown (V-Bar)',   s:'3 × 12',    g:'TRICEPS', alt:'Cable Overhead Tricep Extension'},
+    {n:'Cable Lateral Raises',            s:'4 × 15',    g:'SHOULDERS',alt:'Lateral Raises'},
+    {n:'Pec Dec Rear Delt Setting',       s:'3 × 15',    g:'REAR DELTS',alt:'Face Pulls'},
+    {n:'Seated Ab Crunch Machine',        s:'3 × 20',    g:'ABS',     alt:'Decline Sit-Up Bench'},
+  ]},
+];
+
+var PROGS=[DAYS_A,DAYS_B];
+
+var CUR_PROG=0,CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
+function switchProg(i,btn){CUR_PROG=i;CUR=0;document.querySelectorAll('.psw').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');renderTabs();renderDay();}
 function dk(d,e){return 'd'+d+'e'+e}
 
 function renderTabs(){
-  var h='';DAYS.forEach(function(d,i){h+='<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'});
+  var h='';PROGS[CUR_PROG].forEach(function(d,i){h+='<div class="dtab'+(i===CUR?' on':'')+'" onclick="selectDay('+i+')">'+d.label+'</div>'});
   $('dayTabs').innerHTML=h;
 }
 function selectDay(i){CUR=i;document.querySelectorAll('.dtab').forEach(function(b,j){b.classList.toggle('on',j===i)});renderDay();}
 
 function renderDay(){
-  var day=DAYS[CUR],exs=day.exercises;
+  var day=PROGS[CUR_PROG][CUR],exs=day.exercises;
   var done=exs.filter(function(_,i){return !!DONE[dk(CUR,i)]}).length;
   var pct=Math.round((done/exs.length)*100);
   var h='<div class="day-hdr">';
@@ -1019,7 +1099,7 @@ function markDone(el){
   if(DONE[k])toast('Done! 💪','success');
 }
 function finishWorkout(){
-  var day=DAYS[CUR],done=day.exercises.filter(function(_,i){return !!DONE[dk(CUR,i)]}).length;
+  var day=PROGS[CUR_PROG][CUR],done=day.exercises.filter(function(_,i){return !!DONE[dk(CUR,i)]}).length;
   SESS.unshift({date:today(),dayIdx:CUR,label:day.label,done:done,total:day.exercises.length});
   if(SESS.length>300)SESS=SESS.slice(0,300);sv('sess',SESS);
   day.exercises.forEach(function(_,i){delete DONE[dk(CUR,i)]});sv('done',DONE);
@@ -1129,7 +1209,7 @@ function updateMonthly(){
   var mst=stData.filter(function(d){return d.date.startsWith(tm)});
   var pst=$('pSt');if(pst)pst.textContent=mst.length?Math.round(mst.reduce(function(a,b){return a+b.steps},0)/mst.length).toLocaleString():'–';
   var pbs=$('pBs');if(pbs)pbs.textContent=slData.length?Math.max.apply(null,slData.map(function(d){return d.hrs}))+'h':'–';
-  renderChart('dayChart',{labels:DAYS.map(function(d){return d.label}),values:DAYS.map(function(_,di){return ms.filter(function(s){return s.dayIdx===di}).length})},['#E8173A','#3B82F6','#10B981','#FFD166','#8B5CF6','#06B6D4']);
+  renderChart('dayChart',{labels:PROGS[CUR_PROG].map(function(d){return d.label}),values:PROGS[CUR_PROG].map(function(_,di){return ms.filter(function(s){return s.dayIdx===di}).length})},['#E8173A','#3B82F6','#10B981','#FFD166','#8B5CF6','#06B6D4']);
 }
 
 // DASHBOARD
@@ -1142,8 +1222,8 @@ function updateDash(){
   var hg=$('homeGreet');if(hg)hg.textContent=g+', MUHSIN 💪';
   var hs=$('homeSub');if(hs)hs.textContent=days[new Date().getDay()]+' — stay consistent.';
   var idx=SESS.length%6;
-  var nt=$('nextTitle');if(nt)nt.textContent=DAYS[idx].title;
-  var nm=$('nextMission');if(nm)nm.textContent=DAYS[idx].mission;
+  var nt=$('nextTitle');if(nt)nt.textContent=PROGS[CUR_PROG][idx].title;
+  var nm=$('nextMission');if(nm)nm.textContent=PROGS[CUR_PROG][idx].mission;
   var bd=$('barDate');if(bd)bd.textContent=new Date().toLocaleDateString('en',{month:'short',day:'numeric'});
 }
 
