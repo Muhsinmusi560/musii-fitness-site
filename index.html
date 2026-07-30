@@ -327,6 +327,27 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
   border-right:1px solid var(--b0);transition:all .2s}
 .psw:last-child{border-right:none}
 .psw.on{background:var(--grad);color:#fff}
+
+.wt-chip{display:inline-flex;align-items:center;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:5px;background:var(--c3);border:1px solid var(--b0);
+  cursor:pointer;letter-spacing:.5px;vertical-align:middle;margin-left:6px;
+  transition:border-color .15s;user-select:none}
+.wt-chip:active{opacity:.7}
+.wt-panel{position:fixed;bottom:62px;left:0;right:0;z-index:800;
+  background:var(--c1);border-top:1px solid var(--b1);
+  padding:14px 16px;display:none;align-items:center;gap:10px;
+  box-shadow:0 -8px 32px rgba(0,0,0,.5)}
+.wt-panel.open{display:flex}
+.wt-panel-label{flex:1;font-size:11px;font-weight:700;color:var(--t2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wt-panel-inp{width:100px;background:var(--c3);border:1.5px solid var(--blue);
+  border-radius:8px;padding:8px 10px;color:var(--tx);font-size:16px;font-weight:700;
+  text-align:center;outline:none;cursor:text}
+.wt-panel-save{padding:8px 16px;background:var(--mint);color:#000;border:none;
+  border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:14px;
+  letter-spacing:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.wt-panel-close{padding:8px 10px;background:var(--c3);color:var(--t2);border:none;
+  border-radius:8px;font-size:16px;cursor:pointer;flex-shrink:0}
 </style></head><body>
 
 <div class="bar">
@@ -499,6 +520,13 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
   <button class="ni" onclick="navigate('vitals',this)"><span class="ni-icon">👟</span><span class="ni-lbl">Vitals</span></button>
   <button class="ni" onclick="navigate('progress',this)"><span class="ni-icon">📊</span><span class="ni-lbl">Progress</span></button>
 </nav>
+
+<div class="wt-panel" id="wtPanel">
+  <div class="wt-panel-label" id="wtPanelLabel">Exercise</div>
+  <input type="number" id="wtPanelInp" class="wt-panel-inp" placeholder="kg" step="0.5" min="0">
+  <button class="wt-panel-save" id="wtPanelSave">SAVE</button>
+  <button class="wt-panel-close" onclick="closeWtPanel()">✕</button>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -864,11 +892,11 @@ var DAYS_A=[
    note:'Width before thickness. Pull-ups and wide lat pulldown first to maximise lat activation when you are freshest. Barbell row and single-arm row for mid-back mass. Straight-arm pulldown isolates the lat only — no bicep involvement. Face pulls close the session for rear delt health.',
    exercises:[
     {n:'Lat Pulldown',                   s:'4 × 8',      g:'BACK',    alt:'Pull-Ups'},
-    {n:'Lat Pulldown',                   s:'3 × 10',     g:'BACK',    alt:'Isolateral High Row Machine'},
+    {n:'Isolateral High Row Machine',     s:'3 × 10',     g:'BACK',    alt:'Lat Pulldown'},
     {n:'Chest Supported T-Bar Row',      s:'4 × 8',      g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
     {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 10',  g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
     {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 12',  g:'BACK',    alt:'Isolatorial High Row Machine'},
+    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 12', g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
     {n:'Face Pulls',                     s:'3 × 15',     g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
   ]},
   {label:'Shoulders',title:'DAY 3 — SHOULDERS',sub:'COMPOUND → SIDE DELTS → REAR DELTS',
@@ -880,7 +908,7 @@ var DAYS_A=[
     {n:'Lateral Raises',                 s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
     {n:'Pec Dec Rear Delt Setting',      s:'3 × 15',     g:'REAR DELTS',alt:'Face Pulls'},
     {n:'Dumbbell Front Raise',           s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Seated Dumbbell Shoulder Press', s:'3 × 10',     g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Face Pulls',                     s:'3 × 12-15',  g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
     {n:'Shrugs',                         s:'3 × 12',     g:'TRAPS',    alt:'Barbell Shrugs'},
   ]},
   {label:'Arms',title:'DAY 4 — ARMS',sub:'BICEPS → TRICEPS → FINISHER',
@@ -940,7 +968,7 @@ var DAYS_B=[
    exercises:[
     {n:'Lat Pulldown',                    s:'4 × 6-10',  g:'BACK',    alt:'Pull-Ups'},
     {n:'Chest Supported T-Bar Row',       s:'4 × 8-10',  g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Lat Pulldown',                    s:'3 × 10-12', g:'BACK',    alt:'Isolateral High Row Machine'},
+    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 10-12',g:'BACK',alt:'Chest Supported T-Bar Row'},
     {n:'Isolateral High Row Machine',     s:'3 × 10-12', g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
     {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
     {n:'Cable Bicep Curl (W Bar)',        s:'3 × 10-12', g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
@@ -966,7 +994,7 @@ var DAYS_B=[
     {n:'Lateral Raises',                  s:'4 × 12-15', g:'SHOULDERS',alt:'Cable Lateral Raises'},
     {n:'Cable Lateral Raises',            s:'3 × 12-15', g:'SHOULDERS',alt:'Lateral Raises'},
     {n:'Pec Dec Rear Delt Setting',       s:'4 × 12-15', g:'REAR DELTS',alt:'Face Pulls'},
-    {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Dumbbell Front Raise',            s:'3 × 12',    g:'SHOULDERS',alt:'Cable Lateral Raises'},
     {n:'Shrugs',                          s:'3 × 12',    g:'TRAPS',   alt:'Barbell Shrugs'},
     {n:'Face Pulls',                      s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
   ]},
@@ -998,7 +1026,7 @@ var DAYS_B=[
 
 var PROGS=[DAYS_A,DAYS_B];
 
-var CUR_PROG=0,CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]);
+var CUR_PROG=0,CUR=0,DONE=lv('done',{}),SESS=lv('sess',[]),WEIGHTS=lv('exWeights',{});
 function switchProg(i,btn){CUR_PROG=i;CUR=0;document.querySelectorAll('.psw').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');renderTabs();renderDay();}
 function dk(d,e){return 'd'+d+'e'+e}
 
@@ -1007,6 +1035,38 @@ function renderTabs(){
   $('dayTabs').innerHTML=h;
 }
 function selectDay(i){CUR=i;document.querySelectorAll('.dtab').forEach(function(b,j){b.classList.toggle('on',j===i)});renderDay();}
+
+
+var _wtExName='';
+function openWtPanel(exName){
+  _wtExName=exName;
+  var panel=$('wtPanel'),lbl=$('wtPanelLabel'),inp=$('wtPanelInp');
+  if(!panel)return;
+  lbl.textContent=exName;
+  var wd=WEIGHTS[exName];
+  inp.value=wd?wd.current:'';
+  panel.classList.add('open');
+  setTimeout(function(){inp.focus();inp.select();},80);
+}
+function closeWtPanel(){
+  var panel=$('wtPanel');if(panel)panel.classList.remove('open');
+}
+function saveWtPanel(){
+  var inp=$('wtPanelInp');if(!inp)return;
+  var val=parseFloat(inp.value);
+  if(!val||val<=0){toast('Enter a valid weight','warn');return;}
+  var exName=_wtExName;
+  var prev=WEIGHTS[exName]?WEIGHTS[exName].current:null;
+  WEIGHTS[exName]={current:val,previous:prev!==null?prev:val,date:today()};
+  sv('exWeights',WEIGHTS);
+  closeWtPanel();
+  renderDay();
+  var diff=prev!==null?Math.round((val-prev)*10)/10:0;
+  var short=exName.split(' ').slice(0,3).join(' ');
+  if(diff>0)toast('💪 +'+diff+'kg — new best on '+short,'success');
+  else if(diff<0)toast(val+'kg logged on '+short,'info');
+  else toast('✅ '+val+'kg logged','info');
+}
 
 function renderDay(){
   var day=PROGS[CUR_PROG][CUR],exs=day.exercises;
@@ -1053,10 +1113,18 @@ function renderDay(){
     h+='<div class="ex-ck'+(isDone?' t':'')+'" data-key="'+k+'" data-eid="'+CUR+'_'+i+'" onclick="event.stopPropagation();markDone(this)"></div>';
     h+='<div class="ex-num'+(isDone?' t':'')+'">'+( i+1)+'</div>';
     h+='<div class="ex-info">';
-    h+='<div class="ex-name">'+ex.n+(isDone?' <span style="color:var(--mint);font-size:10px;font-weight:700">✓</span>':'')+'</div>';
+    var wtD=WEIGHTS[ex.n];
+    var wtC=wtD?(wtD.current>wtD.previous?'#00F5B4':wtD.current<wtD.previous?'#E8173A':'#8888aa'):'#555577';
+    var wtA=wtD?(wtD.current>wtD.previous?' ↑':wtD.current<wtD.previous?' ↓':''):'';
+    var wtTxt=wtD?wtD.current+'kg'+wtA:'+kg';
+    h+='<div class="ex-name">'+ex.n;
+    if(isDone)h+=' <span style="color:#00F5B4;font-size:10px;font-weight:700">✓</span>';
+    h+='</div>';
+    h+='<div class="wt-chip" style="color:'+wtC+';border-color:'+wtC+'44" data-exname="'+ex.n.replace(/"/g,"&quot;")+'">'+wtTxt+'</div>';
     h+='<div class="ex-sets" style="color:'+gc+'">'+ex.s+'</div>';
     if(data&&data.tempo)h+='<div class="ex-meta">Tempo '+data.tempo+' · RIR '+data.rir+' · Rest '+data.rest+'s</div>';
     if(ex.alt)h+='<div class="ex-alt">↳ Or: <span>'+ex.alt+'</span></div>';
+
     h+='</div>';
     h+='<div class="ex-toggle" id="tog'+CUR+'_'+i+'">+</div></div>';
     h+='<div class="ex-body" id="body'+CUR+'_'+i+'">';
@@ -1321,6 +1389,12 @@ function renderTimerLog(){
 // INIT
 document.addEventListener('DOMContentLoaded',function(){
   renderTabs();renderDay();renderSteps();renderSleep();renderStreak();renderCal();updateDash();renderTimerLog();
+  document.addEventListener('click',function(e){
+    var chip=e.target.closest('.wt-chip');
+    if(chip){e.stopPropagation();var n=chip.getAttribute('data-exname');if(n)openWtPanel(n);}
+  });
+  var ps=$('wtPanelSave');if(ps)ps.onclick=saveWtPanel;
+  var pi=$('wtPanelInp');if(pi)pi.addEventListener('keydown',function(e){if(e.key==='Enter')saveWtPanel();});
 });
 
 </script>
