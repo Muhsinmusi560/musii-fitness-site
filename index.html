@@ -348,6 +348,135 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
   letter-spacing:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .wt-panel-close{padding:8px 10px;background:var(--c3);color:var(--t2);border:none;
   border-radius:8px;font-size:16px;cursor:pointer;flex-shrink:0}
+
+/* ── STRETCH PAGE ── */
+.body-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.bp-card{border-radius:12px;padding:14px;cursor:pointer;position:relative;overflow:hidden;
+  border:1px solid var(--b0);background:var(--c1);transition:all .2s;text-align:center}
+.bp-card.active{border-color:var(--red);box-shadow:0 0 16px rgba(232,23,68,.2)}
+.bp-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.bp-icon{font-size:26px;margin-bottom:6px}
+.bp-name{font-family:Bebas Neue,sans-serif;font-size:14px;letter-spacing:2px}
+.bp-count{font-size:9px;color:var(--t2);font-weight:600;letter-spacing:1px;margin-top:2px}
+
+.stretch-section{margin-bottom:10px}
+.stretch-day-note{background:rgba(0,245,180,.06);border:1px solid rgba(0,245,180,.12);
+  border-radius:9px;padding:10px 13px;font-size:11px;color:rgba(0,245,180,.8);
+  line-height:1.6;margin-bottom:14px}
+
+.stretch-card{background:var(--c2);border:1px solid var(--b0);border-radius:12px;
+  overflow:hidden;margin-bottom:8px;transition:border-color .2s}
+.stretch-card:hover{border-color:var(--b2)}
+.stretch-top{display:flex;align-items:center;padding:13px 14px;gap:10px;cursor:pointer}
+.stretch-icon{font-size:22px;flex-shrink:0}
+.stretch-info{flex:1}
+.stretch-name{font-size:13.5px;font-weight:700;line-height:1.2;margin-bottom:2px}
+.stretch-dur{font-size:11px;font-weight:700;letter-spacing:.5px}
+.stretch-target{font-size:9px;color:var(--t2);font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;margin-top:2px}
+.stretch-tog{width:24px;height:24px;border-radius:50%;background:var(--c3);
+  border:1px solid var(--b0);color:var(--t2);display:flex;align-items:center;
+  justify-content:center;font-size:13px;flex-shrink:0;transition:all .2s;line-height:1}
+.stretch-tog.open{background:var(--mint);color:#000;border-color:var(--mint);transform:rotate(45deg)}
+
+.stretch-body{display:none;border-top:1px solid var(--b0);background:rgba(0,0,0,.25)}
+.stretch-body.open{display:block}
+.stretch-sec{padding:12px 14px;border-bottom:1px solid var(--b0)}
+.stretch-sec:last-child{border-bottom:none}
+.stretch-sh{font-family:Bebas Neue,sans-serif;font-size:12px;letter-spacing:2px;
+  margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.stretch-steps{display:flex;flex-direction:column;gap:7px}
+.stretch-step{display:flex;gap:8px;font-size:12px;color:#bbc8e8;line-height:1.5}
+.stretch-num{width:17px;height:17px;border-radius:50%;flex-shrink:0;
+  background:var(--mint);color:#000;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:700;margin-top:2px}
+.stretch-tip{margin-top:9px;padding:8px 11px;border-radius:7px;
+  background:rgba(0,245,180,.06);border:1px solid rgba(0,245,180,.14);
+  font-size:11px;color:rgba(0,245,180,.85);line-height:1.5;
+  display:flex;gap:7px;align-items:flex-start}
+.stretch-timer-chip{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);
+  border-radius:100px;padding:4px 11px;font-size:11px;font-weight:700;
+  color:var(--blue);cursor:pointer;transition:all .2s}
+.stretch-timer-chip:hover{background:rgba(59,130,246,.2)}
+
+/* SESSION SUMMARY MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.85);
+  display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)}
+.modal-overlay.open{display:flex}
+.modal-sheet{background:var(--c1);border-radius:20px 20px 0 0;border:1px solid var(--b1);
+  border-bottom:none;width:100%;max-width:680px;padding:20px 18px 36px;
+  animation:slideUp .3s ease;max-height:85vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--b2);margin:0 auto 18px}
+.modal-title{font-family:Bebas Neue,sans-serif;font-size:26px;letter-spacing:3px;text-align:center;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--t2);text-align:center;margin-bottom:18px}
+.summary-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:16px}
+.sstat{background:var(--c2);border:1px solid var(--b0);border-radius:11px;
+  padding:13px 10px;text-align:center;position:relative;overflow:hidden}
+.sstat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.sstat-val{font-family:Bebas Neue,sans-serif;font-size:28px;line-height:1}
+.sstat-lbl{font-size:8.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--t2);margin-top:3px}
+.pr-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.pr-item{display:flex;align-items:center;gap:10px;background:rgba(255,214,0,.06);
+  border:1px solid rgba(255,214,0,.15);border-radius:9px;padding:9px 12px}
+.pr-icon{font-size:18px}
+.pr-info{flex:1}
+.pr-info strong{font-size:12px;font-weight:700;display:block}
+.pr-info span{font-size:10px;color:var(--gold)}
+.coach-msg-box{background:linear-gradient(135deg,rgba(232,23,68,.1),rgba(249,115,22,.06));
+  border:1px solid rgba(232,23,68,.2);border-radius:11px;padding:14px;text-align:center;margin-bottom:16px}
+.coach-msg-text{font-size:13px;font-weight:600;line-height:1.65;color:var(--tx);margin-bottom:4px}
+.coach-msg-attr{font-size:10px;color:var(--red);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.modal-done-btn{width:100%;padding:14px;border:none;border-radius:11px;
+  background:var(--grad);color:#fff;font-family:Bebas Neue,sans-serif;
+  font-size:16px;letter-spacing:3px;cursor:pointer}
+
+/* IMPROVED EXERCISE CARDS */
+.ex-card-inner{border-left:3px solid transparent}
+
+/* HOME COACH MESSAGE */
+.daily-quote{border-radius:12px;padding:14px;margin-bottom:14px;
+  background:var(--c1);border:1px solid var(--b0);position:relative;overflow:hidden}
+.daily-quote::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad)}
+.dq-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.dq-text{font-size:13.5px;font-weight:600;line-height:1.65;color:var(--tx);margin-bottom:6px}
+.dq-author{font-size:10px;color:var(--t2);font-weight:600;letter-spacing:.5px}
+
+/* HOME WEEKLY RING */
+.home-weekly{display:flex;gap:9px;margin-bottom:14px}
+.week-stat{flex:1;background:var(--c1);border:1px solid var(--b0);border-radius:12px;padding:13px 10px;text-align:center}
+.week-val{font-family:Bebas Neue,sans-serif;font-size:26px;line-height:1}
+.week-lbl{font-size:8.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--t2);margin-top:3px}
+.week-dots{display:flex;gap:4px;justify-content:center;margin-top:6px}
+.wd{width:8px;height:8px;border-radius:50%;background:var(--c3)}
+.wd.done{background:var(--mint)}
+.wd.today{background:var(--red)}
+
+/* STRETCH TIMER */
+.stretch-start-btn{display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:11px;border:none;border-radius:9px;margin-top:10px;
+  background:rgba(0,245,180,.1);border:1px solid rgba(0,245,180,.2);
+  color:var(--mint);font-family:Bebas Neue,sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer}
+.stretch-start-btn:hover{background:rgba(0,245,180,.18)}
+.sring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:10px}
+.s-timer-ring{width:80px;height:80px;border-radius:50%;position:relative;
+  display:flex;align-items:center;justify-content:center}
+.s-timer-ring::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(var(--mint) 0deg,var(--c3) 0deg)}
+.s-timer-ring::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--c2)}
+.s-timer-num{position:relative;z-index:1;font-family:Bebas Neue,sans-serif;font-size:22px;color:var(--mint)}
+.s-timer-done{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mint)}
+
+/* PROGRESS IMPROVEMENTS */
+.pr-records{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.pr-rec{display:flex;align-items:center;gap:10px;background:var(--c2);
+  border:1px solid var(--b0);border-radius:9px;padding:9px 12px}
+.pr-rec-icon{font-size:18px}
+.pr-rec-info{flex:1;min-width:0}
+.pr-rec-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-rec-detail{font-size:10px;color:var(--t2);margin-top:1px}
+.pr-rec-val{font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--gold);line-height:1}
 </style></head><body>
 
 <div class="bar">
@@ -363,6 +492,16 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
   <div class="home-greet">
     <h2 id="homeGreet">WELCOME BACK 💪</h2>
     <p id="homeSub">Stay consistent. Trust the process.</p>
+  </div>
+  <div class="daily-quote" id="dailyQuote">
+    <div class="dq-label">🧠 Coach Message</div>
+    <div class="dq-text" id="dqText">Loading...</div>
+    <div class="dq-author" id="dqAuthor">— Your Coach</div>
+  </div>
+  <div class="home-weekly">
+    <div class="week-stat"><div class="week-val" id="weekCount" style="color:var(--mint)">0</div><div class="week-lbl">This Week</div><div class="week-dots" id="weekDots"></div></div>
+    <div class="week-stat"><div class="week-val" id="weekStreak" style="color:var(--red)">0</div><div class="week-lbl">Day Streak</div></div>
+    <div class="week-stat"><div class="week-val" id="weekPRs" style="color:var(--gold)">0</div><div class="week-lbl">Total PRs</div></div>
   </div>
   <div class="metrics">
     <div class="metric"><div class="metric-icon">🔥</div><div class="metric-val" id="mStreak" style="color:var(--red)">0</div><div class="metric-lbl">Streak</div></div>
@@ -510,17 +649,47 @@ input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
     <div class="eyebrow" style="margin-bottom:9px">Sessions by Day Type</div>
     <div class="chart" id="dayChart"></div>
   </div>
+  <div class="card" style="margin-top:11px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div><div class="eyebrow" style="margin-bottom:2px">Personal Records</div>
+      <div style="font-size:10px;color:var(--t2)">Best weights logged per exercise</div></div>
+      <div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:var(--gold)" id="prCount">0</div>
+    </div>
+    <div id="prRecords"><div class="empty"><span>🏆</span>Log weights during training to track PRs</div></div>
+  </div>
+</div></div>
+
+<!-- STRETCH -->
+<div class="page" id="page-stretch"><div class="wrap">
+  <div class="eyebrow" style="margin-bottom:4px">Post-Workout Recovery</div>
+  <div style="font-family:Bebas Neue,sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:4px">STRETCHING</div>
+  <p style="font-size:12px;color:var(--t2);margin-bottom:16px">Select a muscle group to see targeted recovery stretches</p>
+  <div class="body-grid" id="bodyGrid"></div>
+  <div id="stretchContent"></div>
 </div></div>
 
 </div>
 
 <nav class="nav">
-  <button class="ni on" onclick="navigate('home',this)"><span class="ni-icon">🏠</span><span class="ni-lbl">Home</span></button>
-  <button class="ni" onclick="navigate('train',this)"><span class="ni-icon">💪</span><span class="ni-lbl">Train</span></button>
-  <button class="ni" onclick="navigate('vitals',this)"><span class="ni-icon">👟</span><span class="ni-lbl">Vitals</span></button>
-  <button class="ni" onclick="navigate('progress',this)"><span class="ni-icon">📊</span><span class="ni-lbl">Progress</span></button>
+  <button class="ni on" onclick="navigate('home',this)"><span class="ni-icon">🏠</span><span class="ni-lbl" style="font-size:8px">Home</span></button>
+  <button class="ni" onclick="navigate('train',this)"><span class="ni-icon">💪</span><span class="ni-lbl" style="font-size:8px">Train</span></button>
+  <button class="ni" onclick="navigate('stretch',this)"><span class="ni-icon">🤸</span><span class="ni-lbl" style="font-size:8px">Stretch</span></button>
+  <button class="ni" onclick="navigate('vitals',this)"><span class="ni-icon">👟</span><span class="ni-lbl" style="font-size:8px">Vitals</span></button>
+  <button class="ni" onclick="navigate('progress',this)"><span class="ni-icon">📊</span><span class="ni-lbl" style="font-size:8px">Progress</span></button>
 </nav>
 
+
+<div class="modal-overlay" id="sessionModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">SESSION COMPLETE</div>
+    <div class="modal-sub" id="modalSub">Great work today</div>
+    <div class="summary-stats" id="modalStats"></div>
+    <div id="modalPRs"></div>
+    <div class="coach-msg-box" id="modalCoachMsg"></div>
+    <button class="modal-done-btn" onclick="closeModal()">🏁 DONE — CLOSE</button>
+  </div>
+</div>
 <div class="wt-panel" id="wtPanel">
   <div class="wt-panel-label" id="wtPanelLabel">Exercise</div>
   <input type="number" id="wtPanelInp" class="wt-panel-inp" placeholder="kg" step="0.5" min="0">
@@ -859,12 +1028,13 @@ function navigate(page,btn){
   document.querySelectorAll('.ni').forEach(function(b){b.classList.remove('on')});
   $('page-'+page).classList.add('on');
   if(btn){btn.classList.add('on')}else{
-    var ps=['home','train','vitals','progress'];
+    var ps=['home','train','stretch','vitals','progress'];
     document.querySelectorAll('.ni').forEach(function(b,i){if(ps[i]===page)b.classList.add('on')});
   }
   var titles={home:'',train:'TRAIN',vitals:'VITALS',progress:'PROGRESS'};
   $('barTitle').textContent=titles[page]||'';
   if(page==='progress'){updateMonthly();renderStreak();renderCal();}
+  if(page==='stretch'){renderBodyGrid();renderStretches(ACTIVE_PART);}
   window.scrollTo(0,0);
 }
 function switchV(i,btn){
@@ -875,77 +1045,72 @@ function switchV(i,btn){
 
 // DAYS — Assessment-driven order
 var DAYS_A=[
-  {label:'Chest',title:'DAY 1 — CHEST',sub:'COMPOUNDS → ISOLATION → FINISHER',
-   mission:'FULL CHEST DEVELOPMENT',
-   note:'Incline first for upper chest priority — your weakest chest area. Flat DB press for overall mass with full ROM. Fly movements for shape and stretch. Dips as a compound finisher, pec deck for final isolation. Push-ups to failure at the very end to completely exhaust the muscle.',
+  {label:'Push 1',title:'PUSH DAY 1',sub:'CHEST → SHOULDERS → TRICEPS → ABS',
+   mission:'CHEST MASS + SIDE DELT PRIORITY',
+   note:'Bench press first — heaviest chest compound while CNS is fresh. Incline DB for upper chest shape. Shoulder press third while pressing muscles are still warm. Side delts get 4 sets — biggest visual weak point. Cable fly for chest isolation. Rope pushdown for tricep maintenance.',
    exercises:[
-    {n:'Incline Barbell Press',          s:'4 × 8',      g:'CHEST',   alt:'Plate Loaded Incline Chest Press Machine'},
-    {n:'Flat Dumbbell Press',            s:'3 × 10',     g:'CHEST',   alt:'Flat Barbell Bench Press'},
-    {n:'Incline Dumbbell Press',         s:'3 × 12',     g:'CHEST',   alt:'Low-to-High Cable Fly'},
-    {n:'Low-to-High Cable Fly',          s:'3 × 15',     g:'CHEST',   alt:'Pec Dec / Chest Fly Machine'},
-    {n:'Tricep Dips',                    s:'3 × 10',     g:'CHEST',   alt:'Cable Tricep Pushdown (V-Bar)'},
-    {n:'Pec Dec / Chest Fly Machine',    s:'3 × 12',     g:'CHEST',   alt:'Low-to-High Cable Fly'},
-    {n:'Push-Ups',                       s:'2 × Failure',g:'CHEST',   alt:'Pec Dec / Chest Fly Machine'},
+    {n:'Flat Barbell Bench Press',         s:'4 × 6-8',   g:'CHEST',    alt:'Flat Dumbbell Press'},
+    {n:'Incline Dumbbell Press',           s:'3 × 8-10',  g:'CHEST',    alt:'Incline Barbell Press'},
+    {n:'Seated Dumbbell Shoulder Press',   s:'3 × 8-10',  g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Lateral Raises',                   s:'4 × 12-15', g:'SHOULDERS',alt:'Cable Lateral Raises'},
+    {n:'Pec Dec / Chest Fly Machine',      s:'3 × 12',    g:'CHEST',    alt:'Low-to-High Cable Fly'},
+    {n:'Cable Tricep Pushdown (V-Bar)',    s:'3 × 12',    g:'TRICEPS',  alt:'Cable Overhead Tricep Extension'},
+    {n:'Hanging Leg Raises',              s:'3 × 12',    g:'ABS',      alt:'Seated Ab Crunch Machine'},
   ]},
-  {label:'Back',title:'DAY 2 — BACK',sub:'WIDTH → THICKNESS → DETAIL',
-   mission:'V-TAPER + MID BACK DENSITY',
-   note:'Width before thickness. Pull-ups and wide lat pulldown first to maximise lat activation when you are freshest. Barbell row and single-arm row for mid-back mass. Straight-arm pulldown isolates the lat only — no bicep involvement. Face pulls close the session for rear delt health.',
+  {label:'Pull 1',title:'PULL DAY 1',sub:'BACK → BICEPS → ABS',
+   mission:'DEADLIFT STRENGTH + MID BACK PRIORITY',
+   note:'Deadlift first — heaviest compound of the week, heaviest movement, full posterior chain. Lat pulldown for width. T-bar row for mid-back density — your biggest back weakness. Face pulls for rear delt and upper back health every week. Wide cable row for mid-back volume. Curls last for maintenance.',
    exercises:[
-    {n:'Lat Pulldown',                   s:'4 × 8',      g:'BACK',    alt:'Pull-Ups'},
-    {n:'Isolateral High Row Machine',     s:'3 × 10',     g:'BACK',    alt:'Lat Pulldown'},
-    {n:'Chest Supported T-Bar Row',      s:'4 × 8',      g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 10',  g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
-    {n:'Seated Cable Row (Narrow Handle)',s:'3 × 12',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 12', g:'BACK',    alt:'Seated Cable Row (Narrow Handle)'},
-    {n:'Face Pulls',                     s:'3 × 15',     g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Smith Machine Romanian Deadlift',  s:'4 × 5',     g:'BACK',     alt:'Rack Pull'},
+    {n:'Lat Pulldown',                     s:'4 × 8-10',  g:'BACK',     alt:'Pull-Ups'},
+    {n:'Chest Supported T-Bar Row',        s:'3 × 8-10',  g:'BACK',     alt:'Barbell Row'},
+    {n:'Face Pulls',                       s:'3 × 15',    g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
+    {n:'Seated Cable Row (Wide Ergonomic Handle)',s:'3 × 12',g:'BACK',  alt:'Seated Cable Row (Chrome U Handle)'},
+    {n:'Cable Bicep Curl (W Bar)',         s:'3 × 12',    g:'BICEPS',   alt:'Hammer Curls'},
+    {n:'Seated Ab Crunch Machine',         s:'3 × 15',    g:'ABS',      alt:'Decline Sit-Up Bench'},
   ]},
-  {label:'Shoulders',title:'DAY 3 — SHOULDERS',sub:'COMPOUND → SIDE DELTS → REAR DELTS',
-   mission:'SIDE DELT PRIORITY + SHOULDER WIDTH',
-   note:'Side delts are your biggest visual opportunity — they create the wide shoulder to narrow waist ratio. Press first for mass, then lateral raises get 4+3 sets — highest weekly side delt volume. Rear delts close the session. Shrugs for upper trap development and posture.',
+  {label:'Legs 1',title:'LEG DAY 1',sub:'QUADS → HAMSTRINGS → CALVES',
+   mission:'SQUAT STRENGTH + HAMSTRING PRIORITY',
+   note:'Squat leads — heaviest quad compound. RDL second for hamstring priority (5/10 — your weakest leg muscle). Leg press for quad volume. Leg curl for hamstring isolation — 4 sets because hamstrings are a weak point. Lunges for unilateral balance. Calves at the end. Finish with 25 min incline walk.',
    exercises:[
-    {n:'Seated Dumbbell Shoulder Press', s:'4 × 6-8',    g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
-    {n:'Cable Lateral Raises',           s:'4 × 15',     g:'SHOULDERS',alt:'Lateral Raises'},
-    {n:'Lateral Raises',                 s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Pec Dec Rear Delt Setting',      s:'3 × 15',     g:'REAR DELTS',alt:'Face Pulls'},
-    {n:'Dumbbell Front Raise',           s:'3 × 12',     g:'SHOULDERS',alt:'Cable Lateral Raises'},
-    {n:'Face Pulls',                     s:'3 × 12-15',  g:'REAR DELTS',alt:'Pec Dec Rear Delt Setting'},
-    {n:'Shrugs',                         s:'3 × 12',     g:'TRAPS',    alt:'Barbell Shrugs'},
+    {n:'Back Squats',                      s:'4 × 6-8',   g:'QUADS',    alt:'Smith Machine Squat'},
+    {n:'Romanian Deadlifts',               s:'4 × 10',    g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Leg Press Machine',                s:'3 × 10',    g:'QUADS',    alt:'Bulgarian Split Squats'},
+    {n:'Leg Back Curl Machine',            s:'4 × 12-15', g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Bulgarian Split Squats',           s:'3 × 12 each',g:'QUADS',   alt:'Walking Lunges'},
+    {n:'Standing Calf Raises',             s:'4 × 15',    g:'CALVES',   alt:'Seated Calf Raises'},
   ]},
-  {label:'Arms',title:'DAY 4 — ARMS',sub:'BICEPS → TRICEPS → FINISHER',
-   mission:'ARM SIZE + PEAK DEFINITION',
-   note:'Arms get a full dedicated session. Biceps lead — W-bar curl for mass, incline curl for the long-head stretch that builds the peak, preacher for isolation. Triceps second — overhead extension for long head, rope pushdown for all three heads. Concentration curl as the finisher to fully exhaust the bicep.',
+  {label:'Push 2',title:'PUSH DAY 2',sub:'SHOULDERS → CHEST → TRICEPS → ABS',
+   mission:'OVERHEAD STRENGTH + SIDE DELT VOLUME',
+   note:'Shoulder-led today — overhead press at 4×6-8 builds the deltoid mass that creates the wide shoulder look. Decline for lower chest shape. Cable laterals get 4 sets — second side delt priority session of the week. Dips as tricep compound finisher. Machine press for chest detail volume.',
    exercises:[
-    {n:'Cable Bicep Curl (W Bar)',        s:'4 × 10',    g:'BICEPS',  alt:'Cable Bicep Curl (Straight Bar)'},
-    {n:'Cable Tricep Pushdown (V-Bar)',   s:'4 × 8',     g:'TRICEPS', alt:'Cable Overhead Tricep Extension'},
-    {n:'Hammer Curls',                   s:'3 × 10',    g:'BICEPS',  alt:'Incline DB Curls'},
-    {n:'Cable Overhead Tricep Extension',s:'3 × 12',    g:'TRICEPS', alt:'Cable Tricep Pushdown (Straight Bar)'},
-    {n:'Preacher Curl',                  s:'3 × 10',    g:'BICEPS',  alt:'Cable Bicep Curl (W Bar)'},
-    {n:'Cable Tricep Pushdown (Straight Bar)',s:'3 × 15',g:'TRICEPS',alt:'Cable Tricep Pushdown (V-Bar)'},
-    {n:'Cable Bicep Curl (Straight Bar)',s:'2 × 12',    g:'BICEPS',  alt:'Hammer Curls'},
+    {n:'Seated Dumbbell Shoulder Press',   s:'4 × 6-8',   g:'SHOULDERS',alt:'Smith Machine Shoulder Press'},
+    {n:'Decline Dumbbell Press',           s:'3 × 8-10',  g:'CHEST',    alt:'Flat Barbell Bench Press'},
+    {n:'Cable Lateral Raises',             s:'4 × 15',    g:'SHOULDERS',alt:'Lateral Raises'},
+    {n:'Tricep Dips',                      s:'3 × 10',    g:'TRICEPS',  alt:'Cable Tricep Pushdown (V-Bar)'},
+    {n:'Plate Loaded Incline Chest Press Machine',s:'3 × 12',g:'CHEST', alt:'Incline Dumbbell Press'},
+    {n:'Decline Sit-Up Bench',             s:'3 × 45sec', g:'ABS',      alt:'Ab Coaster'},
   ]},
-  {label:'Legs',title:'DAY 5 — LEGS',sub:'QUADS → HAMSTRINGS → CALVES',
-   mission:'COMPLETE LEG DEVELOPMENT',
-   note:'Squats first — compound that works the entire leg. RDL second for hamstring priority. Leg press for quad volume. Leg curl for hamstring isolation. Walking lunges for unilateral leg balance and outer sweep. Leg extension finishes the quads with isolation. Calves close the session with high volume.',
+  {label:'Pull 2',title:'PULL DAY 2',sub:'BACK → REAR DELTS → BICEPS',
+   mission:'MID BACK THICKNESS + REAR DELT DETAIL',
+   note:'Rack pull variation first — heavy hip hinge for back thickness. Chest-supported row is the mid-back priority exercise of the week — 4 sets with peak contraction squeeze. Single-arm row for unilateral balance. Reverse pec deck for rear delt isolation. Hammer curls for bicep thickness. Finish with 25 min cycling.',
    exercises:[
-    {n:'Back Squats',                    s:'4 × 8',     g:'QUADS',   alt:'Smith Machine Squat'},
-    {n:'Romanian Deadlifts',             s:'4 × 8',     g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
-    {n:'Leg Press Machine',              s:'3 × 10',    g:'QUADS',   alt:'Bulgarian Split Squats'},
-    {n:'Leg Back Curl Machine',          s:'3 × 12',    g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
-    {n:'Bulgarian Split Squats',         s:'3 × 12 each',g:'QUADS',  alt:'Walking Lunges'},
-    {n:'Leg Extension Machine',          s:'3 × 15',    g:'QUADS',   alt:'Leg Press Machine'},
-    {n:'Standing Calf Raises',           s:'4 × 15',    g:'CALVES',  alt:'Seated Calf Raises'},
+    {n:'Smith Machine Romanian Deadlift',  s:'3 × 6',     g:'BACK',     alt:'Chest Supported T-Bar Row'},
+    {n:'Chest Supported T-Bar Row',        s:'4 × 10',    g:'BACK',     alt:'Seated Cable Row (Wide Ergonomic Handle)'},
+    {n:'Seated Cable Row (Chrome U Handle)',s:'3 × 10',   g:'BACK',     alt:'Seated Cable Row (Narrow Handle)'},
+    {n:'Pec Dec Rear Delt Setting',        s:'3 × 15',    g:'REAR DELTS',alt:'Face Pulls'},
+    {n:'Hammer Curls',                     s:'3 × 12',    g:'BICEPS',   alt:'Cable Bicep Curl (W Bar)'},
   ]},
-  {label:'Core',title:'DAY 6 — CORE + WEAK POINTS',sub:'STRENGTH → HAMSTRINGS → CORE',
-   mission:'DEADLIFT STRENGTH + CORE FINISHER',
-   note:'Deadlift at 4×5 — heaviest strength work of the week. Chest-supported row follows for mid-back density. Hamstring curl for posterior chain. Then full core circuit: hanging leg raises, cable woodchopper for obliques, ab wheel for deep core, weighted plank for stability. This session brings everything together.',
+  {label:'Legs 2',title:'LEG DAY 2',sub:'QUADS → HAMSTRINGS → CALVES → ABS',
+   mission:'HAMSTRING FOCUS + POSTERIOR CHAIN',
+   note:'Front squat or hack squat variation for quad detail and sweep. Stiff-leg deadlift for hamstring stretch under load — 4 second eccentric is mandatory. Bulgarian split squat for unilateral glute and quad. Seated leg curl finishes hamstrings with full isolation. Calves and abs close the session.',
    exercises:[
-    {n:'Smith Machine Romanian Deadlift',s:'4 × 5',     g:'BACK',    alt:'Romanian Deadlifts'},
-    {n:'Chest Supported T-Bar Row',      s:'3 × 10',    g:'BACK',    alt:'Seated Cable Row (Wide Ergonomic Handle)'},
-    {n:'Leg Back Curl Machine',          s:'3 × 12',    g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
-    {n:'Hanging Leg Raises',             s:'4 × 15',    g:'ABS',     alt:'Ab Coaster'},
-    {n:'Rotary Torso Machine',           s:'3 × 15 each',g:'ABS',    alt:'Bicycle Crunches'},
-    {n:'Seated Ab Crunch Machine',       s:'3 × 12',    g:'ABS',     alt:'Decline Sit-Up Bench'},
-    {n:'Decline Sit-Up Bench',           s:'3 × 45sec', g:'ABS',     alt:'Ab Coaster'},
+    {n:'Smith Machine Squat',              s:'4 × 8',     g:'QUADS',    alt:'Back Squats'},
+    {n:'Romanian Deadlifts',               s:'4 × 10',    g:'HAMSTRINGS',alt:'Smith Machine Romanian Deadlift'},
+    {n:'Bulgarian Split Squats',           s:'3 × 10 each',g:'QUADS',   alt:'Leg Press Machine'},
+    {n:'Leg Back Curl Machine',            s:'3 × 15',    g:'HAMSTRINGS',alt:'Romanian Deadlifts'},
+    {n:'Standing Calf Raises',             s:'4 × 15',    g:'CALVES',   alt:'Seated Calf Raises'},
+    {n:'Hanging Leg Raises',              s:'3 × 15',    g:'ABS',      alt:'Seated Ab Crunch Machine'},
   ]},
 ];
 
@@ -1395,7 +1560,177 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   var ps=$('wtPanelSave');if(ps)ps.onclick=saveWtPanel;
   var pi=$('wtPanelInp');if(pi)pi.addEventListener('keydown',function(e){if(e.key==='Enter')saveWtPanel();});
+  renderBodyGrid();renderStretches('chest');
 });
+
+// ═══ STRETCH DATA ═══
+var STRETCH_PARTS=[
+  {id:'chest',name:'CHEST',icon:'🫁',color:'#E8173A',count:4,note:'Do these immediately after your Push session. Hold each stretch — do not bounce.'},
+  {id:'back',name:'BACK',icon:'🔙',color:'#3B82F6',count:5,note:'Do these after Pull day. Focus on breathing into each stretch — the back releases on the exhale.'},
+  {id:'shoulders',name:'SHOULDERS',icon:'💪',color:'#FFD166',count:4,note:'Critical after shoulder sessions. Tight shoulders cause injury. Never rush these.'},
+  {id:'arms',name:'ARMS',icon:'🦾',color:'#8B5CF6',count:4,note:'Do after arm training. Wrist and elbow health prevents long-term injury.'},
+  {id:'legs',name:'LEGS',icon:'🦵',color:'#10B981',count:6,note:'Most important recovery session. Tight hip flexors and hamstrings hold back your entire physique development.'},
+  {id:'core',name:'CORE',icon:'⭕',color:'#06B6D4',count:4,note:'Can be done every day. Releases lower back tension and improves posture over time.'},
+];
+
+var STRETCHES={
+  chest:[
+    {name:'Doorway Chest Stretch',icon:'🚪',dur:'30 sec × 2 sides',target:'Pectoralis Major',color:'#E8173A',
+     steps:['Stand in a doorway — place both forearms on the door frame at shoulder height','Step one foot forward through the doorway','Lean your chest forward until you feel a deep stretch across the chest','Hold 30 seconds — breathe steadily — switch lead foot and repeat'],
+     tip:'The stretch should be felt across the chest and front shoulders — not in the elbow. If elbows hurt, lower your arms slightly.'},
+    {name:'Cross-Body Shoulder & Pec Stretch',icon:'✖️',dur:'30 sec × each side',target:'Pec Minor + Front Delt',color:'#E8173A',
+     steps:['Bring one arm across your body at chest height','Use your opposite hand to press the arm closer to your chest','Hold — feel the stretch in the back of the shoulder and outer chest','Switch arms after 30 seconds'],
+     tip:'Keep the arm parallel to the floor. Dropping it changes the target muscle.'},
+    {name:'Lying Chest Opener',icon:'🛏️',dur:'60 sec hold',target:'Sternum + Full Pec',color:'#E8173A',
+     steps:['Lie on your back on a bench or the floor','Allow your arms to drop out to the sides naturally with palms facing up','Breathe deeply — let gravity open the chest with each exhale','Completely relax — no active stretching — let the weight of your arms do the work'],
+     tip:'Best stretch for removing post-bench tightness. The key is complete relaxation — do not fight the stretch.'},
+    {name:'Behind-Back Clasp Stretch',icon:'🤝',dur:'30 sec × 3 sets',target:'Chest + Anterior Shoulder',color:'#E8173A',
+     steps:['Stand tall — clasp both hands behind your back with straight arms','Squeeze your shoulder blades together and lift your hands away from your body','Hold at the top — chest pushed forward — deep breaths','Slowly release and repeat'],
+     tip:'If you cannot clasp hands, hold a towel or resistance band between both hands instead.'},
+  ],
+  back:[
+    {name:"Child's Pose",icon:'🙇',dur:'60-90 sec hold',target:'Lower Back + Lats',color:'#3B82F6',
+     steps:['Kneel on the floor — sit back toward your heels','Reach both arms forward on the floor as far as possible','Lower your chest toward the floor — forehead rests down','Breathe into the lower back — feel the spine lengthening with each exhale'],
+     tip:'Walk hands to the left and hold 30 sec, then right — this adds a lat stretch on top of the lower back release.'},
+    {name:'Seated Spinal Twist',icon:'🌀',dur:'30 sec × each side',target:'Mid-Back + Rhomboids',color:'#3B82F6',
+     steps:['Sit on the floor with legs straight','Cross one leg over and place that foot flat on the floor beside the opposite knee','Twist toward the bent leg — use your opposite elbow to deepen the rotation','Sit tall — look over your shoulder — hold and breathe'],
+     tip:'The twist comes from the spine — not the shoulders. Keep your sit bones pressed into the floor throughout.'},
+    {name:'Lat Overhead Stretch',icon:'📐',dur:'30 sec × each side',target:'Latissimus Dorsi',color:'#3B82F6',
+     steps:['Stand tall — raise one arm overhead','Grab the wrist with your opposite hand and gently pull to the side','Feel the stretch down the side of your body from armpit to hip','Hold — breathe — switch sides'],
+     tip:'The lat stretch is what removes that stiff feeling after heavy pulldowns. Do not skip this one.'},
+    {name:'Thread the Needle',icon:'🪡',dur:'30 sec × each side',target:'Upper Back + Rhomboids',color:'#3B82F6',
+     steps:['Start on hands and knees — wrists under shoulders','Slide one arm under your body along the floor, palm facing up','Rotate your upper back toward the floor — rest the shoulder and ear on the floor','Use the other hand to deepen the stretch — hold and breathe'],
+     tip:'This specifically targets the rhomboids and mid-traps — the exact muscles that make up mid-back thickness.'},
+    {name:'Cat-Cow Spinal Mobilisation',icon:'🐈',dur:'10 slow reps',target:'Full Spine + Lower Back',color:'#3B82F6',
+     steps:['On hands and knees — wrists under shoulders, knees under hips','Inhale — drop your belly toward the floor and lift your head (Cow)','Exhale — round your spine to the ceiling, tuck chin to chest (Cat)','Move slowly and deliberately — feel every vertebra moving'],
+     tip:'Not just a stretch — this is spine health. Do this every morning and every training day.'},
+  ],
+  shoulders:[
+    {name:'Sleeper Stretch',icon:'😴',dur:'30 sec × each side',target:'Posterior Shoulder Capsule',color:'#FFD166',
+     steps:['Lie on your side — the shoulder being stretched is underneath','Extend the bottom arm out at shoulder height','Use your top hand to gently push the bottom wrist toward the floor','Hold — feel the stretch deep inside the back of the shoulder joint'],
+     tip:'This is the most important shoulder injury-prevention stretch. Tight posterior capsule causes impingement. Do it every training day.'},
+    {name:'Cross-Body Stretch',icon:'🤲',dur:'30 sec × each side',target:'Rear Delt + Posterior Shoulder',color:'#FFD166',
+     steps:['Bring one arm straight across your chest','Place your opposite forearm under the arm and press it closer','Hold at the point of a deep stretch — not pain','Repeat on the other side'],
+     tip:'If your shoulder clicks during this stretch, reduce the tension and do not force range of motion.'},
+    {name:'Doorway Overhead Stretch',icon:'🚪',dur:'30 sec hold',target:'Front Delt + Shoulder Capsule',color:'#FFD166',
+     steps:['Stand in a doorway — raise both arms to a goalpost position (90-90)','Press forearms into the frame and step through gently','Feel the stretch across the front of both shoulders and upper chest','Hold steady — breathe deeply — do not lean aggressively'],
+     tip:'Do this after every pressing session. Front delts get chronically tight from bench and overhead work.'},
+    {name:'Wall Angel Stretch',icon:'😇',dur:'10 slow reps',target:'Full Shoulder + Upper Back Mobility',color:'#FFD166',
+     steps:['Stand with your back flat against a wall — feet 15cm from the wall','Press lower back, upper back, and head against the wall','Raise arms to goalpost position — back of hands against wall','Slowly slide arms overhead as far as possible while keeping all contact with wall'],
+     tip:'If your lower back gaps from the wall during this, your shoulder and thoracic mobility needs serious work. Start slow.'},
+  ],
+  arms:[
+    {name:'Bicep Wall Stretch',icon:'🧱',dur:'30 sec × each side',target:'Biceps Brachii + Forearm Flexors',color:'#8B5CF6',
+     steps:['Stand sideways to a wall — extend one arm out and place palm flat on wall at shoulder height','Rotate your body away from the wall slowly — fingers pointing backward','Feel the stretch down the entire bicep and into the forearm','Hold — breathe — switch sides'],
+     tip:'Go slow rotating. The bicep stretch can be intense — stop before any sharp pain.'},
+    {name:'Overhead Tricep Stretch',icon:'☝️',dur:'30 sec × each side',target:'Triceps Long Head',color:'#8B5CF6',
+     steps:['Raise one arm overhead — bend the elbow so hand reaches down behind the head','Use your opposite hand to gently push the elbow back and down further','Hold at the point of a deep stretch in the back of the upper arm','Switch arms — hold 30 seconds each side'],
+     tip:'This is the most effective tricep stretch. The long head — the biggest part — only gets stretched in the overhead position.'},
+    {name:'Wrist Flexor Stretch',icon:'🙏',dur:'30 sec × each side',target:'Forearm Flexors + Elbow Health',color:'#8B5CF6',
+     steps:['Extend one arm straight in front of you — palm facing forward','Use your other hand to pull the fingers back gently toward your body','Hold — feel the stretch along the inside of the forearm and wrist','Switch sides — hold 30 seconds each'],
+     tip:'Critical for preventing elbow tendinitis from heavy curling. Do this every session.'},
+    {name:'Wrist Extensor Stretch',icon:'👇',dur:'30 sec × each side',target:'Forearm Extensors + Elbow Health',color:'#8B5CF6',
+     steps:['Extend one arm straight in front of you — make a fist, knuckles facing up','Use your other hand to press the fist downward toward the floor','Feel the stretch along the top of the forearm — hold steady','Switch sides — 30 seconds each'],
+     tip:'Works the opposite side from the flexor stretch. Both are needed for complete forearm health.'},
+  ],
+  legs:[
+    {name:'Standing Quad Stretch',icon:'🦵',dur:'45 sec × each side',target:'Quadriceps + Hip Flexors',color:'#10B981',
+     steps:['Stand on one leg — use a wall for balance if needed','Bend the other knee and grab the ankle behind you','Pull heel toward glute — keep knees together — push hips forward slightly','Hold — feel the stretch across the front of the thigh'],
+     tip:'Tight quads tilt your pelvis forward (anterior pelvic tilt) — this stretch directly corrects it.'},
+    {name:'Hamstring Stretch (Standing)',icon:'🖐️',dur:'45 sec × each side',target:'Hamstrings + Lower Back',color:'#10B981',
+     steps:['Place one heel on a bench or elevated surface in front of you','Keep that leg straight — flex the foot toward you','Hinge forward from the hips — keep your back straight — reach toward the foot','Hold at the point of tension — breathe into the back of the leg'],
+     tip:'This directly counters the tightness from RDLs and leg curls. Your hamstrings will grow more when they are flexible.'},
+    {name:'Kneeling Hip Flexor Lunge',icon:'🧎',dur:'45 sec × each side',target:'Hip Flexors + Psoas',color:'#10B981',
+     steps:['Kneel on one knee — front foot flat on the floor, knee at 90 degrees','Drive your hips forward gently — feel the stretch in the front of the back hip','Raise the same side arm overhead to deepen the stretch','Hold — breathe — switch sides'],
+     tip:'Tight hip flexors are the number one cause of lower back pain and reduced squat depth. Do this every leg day.'},
+    {name:'Pigeon Pose (Glute & Hip)',icon:'🕊️',dur:'60 sec × each side',target:'Glute + Hip Rotators',color:'#10B981',
+     steps:['From a push-up position, bring one knee forward behind the same-side wrist','Extend the back leg straight behind you','Lower your hips toward the floor — keep hips square','Rest on forearms or flat on the floor — hold and breathe deeply'],
+     tip:'The most effective glute and hip stretch in existence. 60 seconds minimum each side. It will feel intense — that is normal.'},
+    {name:'Wall Calf Stretch',icon:'🧱',dur:'45 sec × each side',target:'Gastrocnemius + Soleus',color:'#10B981',
+     steps:['Face a wall — place both hands on it for support','Step one foot back into a lunge position — back heel flat on floor','Lean forward until you feel the stretch in the back of the lower leg','For soleus: bend the back knee slightly — hold both positions'],
+     tip:'Straight-knee version hits gastrocnemius. Bent-knee hits soleus. Do both — especially after heavy calf raises.'},
+    {name:'Seated IT Band & Glute Stretch',icon:'🪑',dur:'30 sec × each side',target:'IT Band + Glute Medius',color:'#10B981',
+     steps:['Sit on the floor with legs extended','Cross one leg over the other — foot flat on floor beside opposite knee','Hug the bent knee toward your chest — twist slightly toward it','Hold — breathe — repeat on the other side'],
+     tip:'IT band tightness causes knee pain during squats and lunges. This stretch prevents it.'},
+  ],
+  core:[
+    {name:'Cobra Pose',icon:'🐍',dur:'30 sec × 3 sets',target:'Abs + Hip Flexors + Lower Back',color:'#06B6D4',
+     steps:['Lie face down — hands flat beside your chest, elbows bent','Press through your hands to lift your chest off the floor — elbows slightly bent','Arch the upper back — look forward or slightly up','Hold — breathe — slowly lower back down'],
+     tip:'Counteracts the rounded posture from heavy rows and cable work. Opens the front of the body completely.'},
+    {name:'Supine Twist',icon:'🌀',dur:'30 sec × each side',target:'Lower Back + Obliques',color:'#06B6D4',
+     steps:['Lie on your back — bring one knee to your chest','Guide that knee across your body to the opposite side — arms out wide','Keep both shoulders flat on the floor — look away from the knee','Hold — breathe into the lower back — switch sides'],
+     tip:'One of the best lower back relief stretches. Do this after every training session — even non-leg days.'},
+    {name:'Standing Side Bend',icon:'🏹',dur:'30 sec × each side',target:'Obliques + Quadratus Lumborum',color:'#06B6D4',
+     steps:['Stand tall — feet shoulder-width apart — raise one arm overhead','Lean slowly to the opposite side — feel the stretch along the entire side of the body','Hold at maximum comfortable range — do not lean forward','Switch sides — hold 30 seconds each'],
+     tip:'Releases the obliques and the deep QL muscle that causes lower back stiffness. Especially good after rotary torso machine.'},
+    {name:'Downward Dog',icon:'🐕',dur:'45-60 sec hold',target:'Full Posterior Chain + Calves + Back',color:'#06B6D4',
+     steps:['Start on hands and knees — hands shoulder-width, fingers spread wide','Press through your hands and lift hips up and back — form an inverted V','Straighten legs as much as possible — push heels toward the floor','Hold — pedal feet alternately to warm up — then hold both heels down'],
+     tip:'The single best total-body recovery stretch. Hits hamstrings, calves, back, and shoulders simultaneously. Do it daily.'},
+  ],
+};
+
+var ACTIVE_PART='chest';
+
+function renderBodyGrid(){
+  var h='';
+  STRETCH_PARTS.forEach(function(p){
+    var active=p.id===ACTIVE_PART;
+    h+='<div class="bp-card'+(active?' active':'')+'" onclick="selectPart(\''+p.id+'\')" style="border-color:'+(active?p.color:'')+';">';
+    h+='<div class="bp-icon">'+p.icon+'</div>';
+    h+='<div class="bp-name" style="color:'+(active?p.color:'var(--t2)')+'">'+p.name+'</div>';
+    h+='<div class="bp-count">'+p.count+' stretches</div>';
+    h+='</div>';
+  });
+  var el=$('bodyGrid');if(el)el.innerHTML=h;
+}
+
+function selectPart(id){
+  ACTIVE_PART=id;
+  renderBodyGrid();
+  renderStretches(id);
+}
+
+function renderStretches(id){
+  var part=STRETCH_PARTS.find(function(p){return p.id===id});
+  var list=STRETCHES[id]||[];
+  var h='<div class="stretch-day-note">'+
+    '<strong style="color:var(--mint)">'+part.icon+' '+part.name+' RECOVERY</strong><br>'+
+    part.note+
+  '</div>';
+  list.forEach(function(s,i){
+    h+='<div class="stretch-card">';
+    h+='<div class="stretch-top" onclick="toggleStretch(\'s'+id+i+'\')">';
+    h+='<span class="stretch-icon">'+s.icon+'</span>';
+    h+='<div class="stretch-info">';
+    h+='<div class="stretch-name">'+s.name+'</div>';
+    h+='<div class="stretch-dur" style="color:'+s.color+'">'+s.dur+'</div>';
+    h+='<div class="stretch-target">Targets: '+s.target+'</div>';
+    h+='</div>';
+    h+='<div class="stretch-tog" id="stog'+id+i+'">+</div>';
+    h+='</div>';
+    h+='<div class="stretch-body" id="sbody'+id+i+'">';
+    h+='<div class="stretch-sec">';
+    h+='<div class="stretch-sh" style="color:'+s.color+'">📐 HOW TO DO IT</div>';
+    h+='<div class="stretch-steps">';
+    s.steps.forEach(function(step,si){
+      h+='<div class="stretch-step"><span class="stretch-num" style="background:'+s.color+';color:'+(s.color==='#FFD166'?'#000':'#fff')+'}">'+(si+1)+'</span><span>'+step+'</span></div>';
+    });
+    h+='</div>';
+    h+='<div class="stretch-tip"><span>⚡</span><span>'+s.tip+'</span></div>';
+    h+='</div></div></div>';
+  });
+  var el=$('stretchContent');if(el)el.innerHTML=h;
+}
+
+function toggleStretch(id){
+  var body=$('sbody'+id.slice(1));
+  var tog=$('stog'+id.slice(1));
+  if(!body)return;
+  var o=body.classList.contains('open');
+  document.querySelectorAll('.stretch-body').forEach(function(b){b.classList.remove('open')});
+  document.querySelectorAll('.stretch-tog').forEach(function(t){t.classList.remove('open')});
+  if(!o){body.classList.add('open');if(tog)tog.classList.add('open');}
+}
 
 </script>
 </body>
