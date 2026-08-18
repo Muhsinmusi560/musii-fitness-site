@@ -1561,6 +1561,8 @@ document.addEventListener('DOMContentLoaded',function(){
   var ps=$('wtPanelSave');if(ps)ps.onclick=saveWtPanel;
   var pi=$('wtPanelInp');if(pi)pi.addEventListener('keydown',function(e){if(e.key==='Enter')saveWtPanel();});
   renderBodyGrid();renderStretches('chest');
+  renderDailyQuote();
+  renderWeeklyStats();
 });
 
 // ═══ STRETCH DATA ═══
@@ -1571,6 +1573,7 @@ var STRETCH_PARTS=[
   {id:'arms',name:'ARMS',icon:'🦾',color:'#8B5CF6',count:4,note:'Do after arm training. Wrist and elbow health prevents long-term injury.'},
   {id:'legs',name:'LEGS',icon:'🦵',color:'#10B981',count:6,note:'Most important recovery session. Tight hip flexors and hamstrings hold back your entire physique development.'},
   {id:'core',name:'CORE',icon:'⭕',color:'#06B6D4',count:4,note:'Can be done every day. Releases lower back tension and improves posture over time.'},
+  {id:'total',name:'TOTAL BODY',icon:'🌟',color:'#C084FC',count:6,note:'These are the 6 highest-rated full-body stretches — S and A tier. Each one hits multiple muscle groups simultaneously. Do this entire circuit on rest days for complete recovery.'},
 ];
 
 var STRETCHES={
@@ -1667,6 +1670,27 @@ var STRETCHES={
      steps:['Start on hands and knees — hands shoulder-width, fingers spread wide','Press through your hands and lift hips up and back — form an inverted V','Straighten legs as much as possible — push heels toward the floor','Hold — pedal feet alternately to warm up — then hold both heels down'],
      tip:'The single best total-body recovery stretch. Hits hamstrings, calves, back, and shoulders simultaneously. Do it daily.'},
   ],
+  total:[
+    {name:"World's Greatest Stretch",icon:'🌍',dur:'5 reps × each side',target:'Hip Flexors + Thoracic Spine + Hamstrings + Glutes',color:'#C084FC',
+     steps:['Start in a deep lunge — front foot flat, back knee hovering off the ground','Place both hands on the floor either side of your front foot','Rotate your torso and reach the same-side hand as your front foot up toward the ceiling','Follow your hand with your eyes — hold 2 seconds at the top','Return hand to floor, straighten both legs briefly, then switch sides'],
+     tip:'S-TIER. Called the greatest because it hits hip flexors, hamstrings, thoracic rotation and glutes in a single movement. 5 reps each side every morning changes your posture within 2 weeks.'},
+    {name:'Side-Lying Thoracic Rotation',icon:'🔄',dur:'8 reps × each side',target:'Thoracic Spine + Lats + Chest + Posterior Capsule',color:'#C084FC',
+     steps:['Lie on your side — knees stacked at 90 degrees, both arms extended forward together','Keep hips completely still and stacked throughout — they do not move','Rotate only your upper body — top arm sweeps open across the floor behind you','Let your top shoulder blade touch or nearly touch the floor — breathe out fully','Hold 2 seconds at full rotation, return, and repeat'],
+     tip:'S-TIER. The hips staying still while the thoracic spine rotates is what makes this work. Most people rotate their hips — that defeats the purpose entirely.'},
+    {name:'Overhead Wall Lat Stretch',icon:'🧱',dur:'45 sec × each side',target:'Lats + Posterior Shoulder + Thoracic Spine',color:'#C084FC',
+     steps:['Stand facing a wall — place one forearm vertically on the wall at shoulder height','Step back slightly — hinge at the hip and let your torso drop forward','Feel the stretch pull from your armpit down through the entire side of your lat','Press into the wall lightly to deepen the stretch — hold and breathe into the lat','Switch arms and repeat — look for asymmetry between sides'],
+     tip:'S-TIER. This is the stretch that removes the stiffness after heavy lat pulldowns and rows. If one side feels tighter than the other, do an extra set on the tight side.'},
+    {name:'Kneeling Hip Flexor Stretch',icon:'🧎',dur:'45 sec × each side',target:'Psoas + Hip Flexors + Quad',color:'#C084FC',
+     steps:['Kneel on one knee — front foot flat, front knee at 90 degrees directly over ankle','Drive your hips forward gently — feel the stretch deep in the front of the back hip','Raise the same-side arm as the back knee overhead to deepen the stretch','Tuck your pelvis under slightly — this dramatically increases the stretch depth','Hold — breathe — do not lean forward, lean UP and forward'],
+     tip:'A-TIER. Tight hip flexors are the number one posture killer. This directly corrects anterior pelvic tilt — the cause of the lower belly pooch and lower back pain. Do it every single day.'},
+    {name:'Supine Figure-4 Piriformis Stretch',icon:'4️⃣',dur:'60 sec × each side',target:'Piriformis + Glute + Hip Rotators',color:'#C084FC',
+     steps:['Lie on your back — both knees bent, feet flat on the floor','Cross one ankle over the opposite knee — flex that foot to protect the knee joint','Either hold this position and breathe, OR reach through and pull the uncrossed leg toward your chest','Feel the stretch deep inside the glute and outer hip area — not the knee','Hold 60 seconds — this muscle is deep and takes time to release'],
+     tip:'A-TIER. The piriformis is under the glute — it gets chronically tight from heavy squats and hip thrusts. When it tightens it compresses the sciatic nerve causing back pain. This stretch prevents it.'},
+    {name:'Cat-Cow Spinal Flow',icon:'🐈',dur:'12 slow breaths',target:'Full Spine + Lower Back + Core',color:'#C084FC',
+     steps:['On hands and knees — wrists directly under shoulders, knees under hips','INHALE: drop belly toward floor, lift chest and tailbone — Cow position','EXHALE: round spine to ceiling, tuck chin to chest, tuck pelvis under — Cat position','Move slowly — the breath drives the movement — feel every vertebra','Never rush — 4-5 seconds each position — full range every rep'],
+     tip:'A-TIER. This is spine health maintenance. Every vertebra moves through full range. Do 12 breaths every morning before training and every night before sleep — your lower back will thank you in 10 years.'},
+  ]
+
 };
 
 var ACTIVE_PART='chest';
@@ -1731,6 +1755,237 @@ function toggleStretch(id){
   document.querySelectorAll('.stretch-tog').forEach(function(t){t.classList.remove('open')});
   if(!o){body.classList.add('open');if(tog)tog.classList.add('open');}
 }
+
+
+// ═══ COACH QUOTES ═══
+var QUOTES=[
+  {msg:"The body achieves what the mind believes. Every rep you do today is a vote for the physique you want.",attr:"Day 1 mindset — never lose it"},
+  {msg:"You do not rise to the level of your goals. You fall to the level of your systems. Build the habit.",attr:"Consistency over intensity"},
+  {msg:"Your side delts are your biggest visual opportunity. Every lateral raise you do today reshapes your silhouette.",attr:"Train your weak points first"},
+  {msg:"The mid-back separates good physiques from great ones. Think about squeezing at every rep — that pause is density.",attr:"Mind-muscle connection"},
+  {msg:"Progressive overload is the only rule that matters. If the weight does not go up over time, nothing changes.",attr:"Track your weights. Increase them."},
+  {msg:"Your hamstrings are 5/10. Every RDL you do with a proper 4-second negative is a direct investment in your physique.",attr:"Weak points get priority"},
+  {msg:"CBum does not have a better frame than you. He just trained his weak points harder and longer. You have the same genetics advantage.",attr:"Your clavicle width is elite"},
+  {msg:"Recovery is training. Sleep is training. The stretch session is training. Everything outside the gym matters.",attr:"The 24-hour athlete"},
+  {msg:"If you only train when you feel motivated, you will never build the physique you want. Discipline beats motivation every time.",attr:"Show up regardless"},
+  {msg:"The physique is built in the overlap between hard training and smart recovery. You need both — not one.",attr:"Balance is the strategy"},
+  {msg:"Chest gets 16 sets because it is lagging. That extra volume today is the exact reason your chest will look different in 12 months.",attr:"Volume drives growth"},
+  {msg:"One year from now you will wish you had started the heavier weights today. Add 2.5kg. Do not wait.",attr:"Progressive overload starts now"},
+  {msg:"The V-taper is built from the outside in — wide shoulders, wide back, narrow waist. Every session moves the ratio.",attr:"Visual physique strategy"},
+  {msg:"You are 22 with 9/10 genetics. Most people would train 10 years for your starting point. Use the advantage.",attr:"Elite starting position"},
+];
+function getDailyQuote(){
+  var d=new Date();
+  var idx=(d.getDate()+d.getMonth())%QUOTES.length;
+  return QUOTES[idx];
+}
+function renderDailyQuote(){
+  var q=getDailyQuote();
+  var t=$('dqText'),a=$('dqAuthor');
+  if(t)t.textContent=q.msg;
+  if(a)a.textContent='— '+q.attr;
+}
+
+// ═══ HOME WEEKLY STATS ═══
+function renderWeeklyStats(){
+  var now=new Date();
+  var weekStart=new Date(now);
+  weekStart.setDate(now.getDate()-now.getDay()+1);
+  weekStart.setHours(0,0,0,0);
+  var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var dots=$('weekDots');
+  if(dots){
+    var h='';
+    for(var i=0;i<7;i++){
+      var d=new Date(weekStart);d.setDate(weekStart.getDate()+i);
+      var ds=d.toISOString().split('T')[0];
+      var isToday=ds===today();
+      var status=tDays[ds];
+      var cls='wd'+(status==='trained'?' done':isToday?' today':'');
+      h+='<div class="'+cls+'" title="'+days[i]+'"></div>';
+    }
+    dots.innerHTML=h;
+  }
+  var weekStr=weekStart.toISOString().split('T')[0];
+  var weekSess=SESS.filter(function(s){return s.date>=weekStr&&s.date<=today()});
+  var wc=$('weekCount');if(wc)wc.textContent=weekSess.length;
+  var ws=$('weekStreak');if(ws)ws.textContent=($('curStr')||{textContent:'0'}).textContent||'0';
+  var totalPRs=Object.keys(WEIGHTS).length;
+  var wp=$('weekPRs');if(wp)wp.textContent=totalPRs;
+}
+
+// ═══ SESSION SUMMARY MODAL ═══
+function showSessionSummary(dayLabel,done,total,prsBeat){
+  var modal=$('sessionModal');
+  if(!modal)return;
+  var mt=$('modalTitle'),ms=$('modalSub'),mst=$('modalStats');
+  if(mt)mt.textContent='SESSION COMPLETE';
+  if(ms)ms.textContent=dayLabel+' — '+new Date().toLocaleDateString('en',{weekday:'long',month:'short',day:'numeric'});
+  var pct=Math.round((done/total)*100);
+  var timeStr=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  if(mst)mst.innerHTML=
+    '<div class="sstat"><div class="sstat-val" style="color:var(--mint)">'+done+'/'+total+'</div><div class="sstat-lbl">Exercises</div></div>'+
+    '<div class="sstat"><div class="sstat-val" style="color:var(--gold)">'+pct+'%</div><div class="sstat-lbl">Completion</div></div>'+
+    '<div class="sstat"><div class="sstat-val" style="color:var(--blue)">'+timeStr+'</div><div class="sstat-lbl">Finished At</div></div>';
+  var mp=$('modalPRs');
+  if(mp){
+    if(prsBeat.length){
+      var ph='<div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">🏆 NEW PERSONAL RECORDS</div><div class="pr-list">';
+      prsBeat.forEach(function(pr){
+        ph+='<div class="pr-item"><span class="pr-icon">🏆</span><div class="pr-info"><strong>'+pr.name+'</strong><span style="color:var(--gold)">'+pr.weight+'kg — NEW BEST!</span></div></div>';
+      });
+      ph+='</div>';
+      mp.innerHTML=ph;
+    } else {
+      mp.innerHTML='';
+    }
+  }
+  var q=getDailyQuote();
+  var mc=$('modalCoachMsg');
+  if(mc)mc.innerHTML='<div class="coach-msg-text">"'+q.msg+'"</div><div class="coach-msg-attr">'+q.attr+'</div>';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  var m=$('sessionModal');if(m)m.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ═══ PROGRESS — PR RECORDS ═══
+function renderPRRecords(){
+  var el=$('prRecords'),cnt=$('prCount');
+  var prs=Object.entries(WEIGHTS);
+  if(cnt)cnt.textContent=prs.length;
+  if(!el)return;
+  if(!prs.length){el.innerHTML='<div class="empty"><span>🏆</span>Log weights during training to track PRs</div>';return;}
+  prs.sort(function(a,b){return new Date(b[1].date)-new Date(a[1].date)});
+  var h='<div class="pr-records">';
+  prs.slice(0,10).forEach(function(entry){
+    var name=entry[0],data=entry[1];
+    var diff=data.current-data.previous;
+    var diffStr=diff>0?'+'+diff+'kg':diff<0?diff+'kg':'';
+    var c=diff>0?'var(--mint)':diff<0?'var(--red)':'var(--t2)';
+    h+='<div class="pr-rec">';
+    h+='<span class="pr-rec-icon">🏋️</span>';
+    h+='<div class="pr-rec-info"><div class="pr-rec-name">'+name+'</div>';
+    h+='<div class="pr-rec-detail">'+data.date+(diffStr?' · <span style="color:'+c+'">'+diffStr+'</span>':'')+'</div></div>';
+    h+='<div class="pr-rec-val">'+data.current+'<span style="font-size:11px;color:var(--t2)">kg</span></div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  el.innerHTML=h;
+}
+
+// ═══ STRETCH TIMER ═══
+var sTimerInterval=null,sTimerRunning=false;
+
+function parseDuration(durStr){
+  var m=durStr.match(/(\d+)\s*sec/);
+  return m?parseInt(m[1]):30;
+}
+function startStretchTimer(id,durStr){
+  if(sTimerInterval)clearInterval(sTimerInterval);
+  var secs=parseDuration(durStr);
+  var total=secs,rem=secs;
+  var ring=$('sring'+id),num=$('snum'+id),btn=$('sbtn'+id),done=$('sdone'+id);
+  if(!ring)return;
+  if(btn)btn.style.display='none';
+  ring.style.display='flex';
+  function tick(){
+    rem--;
+    var deg=((total-rem)/total)*360;
+    ring.style.background='conic-gradient(var(--mint) '+deg+'deg,var(--c3) '+deg+'deg)';
+    if(num)num.textContent=rem;
+    if(rem<=0){
+      clearInterval(sTimerInterval);sTimerRunning=false;
+      if(num)num.textContent='✓';
+      ring.style.background='conic-gradient(var(--mint) 360deg,var(--c3) 360deg)';
+      if(done)done.style.display='block';
+      try{var ctx=new(window.AudioContext||window.webkitAudioContext)();
+        var o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);o.frequency.value=660;
+        g.gain.setValueAtTime(.3,ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.4);
+        o.start();o.stop(ctx.currentTime+.4);
+      }catch(e){}
+    }
+  }
+  sTimerInterval=setInterval(tick,1000);
+  sTimerRunning=true;
+}
+
+// ═══ OVERRIDE finishWorkout to show summary ═══
+var _origFinish=finishWorkout;
+finishWorkout=function(){
+  var day=PROGS[CUR_PROG][CUR],exs=day.exercises;
+  var done=exs.filter(function(_,i){return !!DONE[dk(CUR,i)]}).length;
+  var prsBeat=[];
+  exs.forEach(function(ex){
+    var w=WEIGHTS[ex.n];
+    if(w&&w.current>w.previous)prsBeat.push({name:ex.n,weight:w.current});
+  });
+  SESS.unshift({date:today(),dayIdx:CUR,label:day.label,done:done,total:exs.length});
+  if(SESS.length>300)SESS=SESS.slice(0,300);sv('sess',SESS);
+  exs.forEach(function(_,i){delete DONE[dk(CUR,i)]});sv('done',DONE);
+  tDays[today()]='trained';sv('tDays',tDays);
+  renderDay();updateDash();renderWeeklyStats();renderStreak();renderCal();
+  showSessionSummary(day.label,done,exs.length,prsBeat);
+};
+
+// ═══ OVERRIDE renderStretches to add timers ═══
+var _origRenderStretches=renderStretches;
+renderStretches=function(id){
+  var part=STRETCH_PARTS.find(function(p){return p.id===id});
+  var list=STRETCHES[id]||[];
+  var h='<div class="stretch-day-note">'+
+    '<strong style="color:var(--mint)">'+part.icon+' '+part.name+' RECOVERY</strong><br>'+
+    part.note+'</div>';
+  list.forEach(function(s,i){
+    var tid=id+'_'+i;
+    var secs=parseDuration(s.dur);
+    h+='<div class="stretch-card">';
+    h+='<div class="stretch-top" onclick="toggleStretch(\'s'+id+i+'\')">';
+    h+='<span class="stretch-icon">'+s.icon+'</span>';
+    h+='<div class="stretch-info">';
+    h+='<div class="stretch-name">'+s.name+'</div>';
+    h+='<div class="stretch-dur" style="color:'+s.color+'">'+s.dur+'</div>';
+    h+='<div class="stretch-target">Targets: '+s.target+'</div>';
+    h+='</div>';
+    h+='<div class="stretch-tog" id="stog'+id+i+'">+</div></div>';
+    h+='<div class="stretch-body" id="sbody'+id+i+'">';
+    h+='<div class="stretch-sec">';
+    h+='<div class="stretch-sh" style="color:'+s.color+'">📐 HOW TO DO IT</div>';
+    h+='<div class="stretch-steps">';
+    s.steps.forEach(function(step,si){
+      h+='<div class="stretch-step"><span class="stretch-num" style="background:'+s.color+';color:'+(s.color==='#FFD166'?'#000':'#fff')+'}">'+(si+1)+'</span><span>'+step+'</span></div>';
+    });
+    h+='</div>';
+    h+='<div class="stretch-tip"><span>⚡</span><span>'+s.tip+'</span></div>';
+    h+='<button class="stretch-start-btn" id="sbtn'+tid+'" onclick="startStretchTimer(\''+tid+'\',\''+s.dur+'\')">▶ START TIMER — '+secs+'s</button>';
+    h+='<div class="sring-wrap" id="sring'+tid+'" style="display:none">';
+    h+='<div class="s-timer-ring" style="background:conic-gradient(var(--mint) 0deg,var(--c3) 0deg)">';
+    h+='<span class="s-timer-num" id="snum'+tid+'">'+secs+'</span></div>';
+    h+='<div class="s-timer-done" id="sdone'+tid+'" style="display:none">✅ Done! Switch sides if needed.</div>';
+    h+='</div>';
+    h+='</div></div></div>';
+  });
+  var el=$('stretchContent');if(el)el.innerHTML=h;
+};
+
+// ═══ IMPROVED updateDash ═══
+var _origUpdateDash=updateDash;
+updateDash=function(){
+  _origUpdateDash();
+  renderDailyQuote();
+  renderWeeklyStats();
+};
+
+// ═══ IMPROVED updateMonthly ═══
+var _origUpdateMonthly=updateMonthly;
+updateMonthly=function(){
+  _origUpdateMonthly();
+  renderPRRecords();
+};
 
 </script>
 </body>
